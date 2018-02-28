@@ -1,0 +1,2 @@
+# projekt
+Softvér pre Vzdelávanie
