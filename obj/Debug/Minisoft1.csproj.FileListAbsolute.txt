@@ -1,0 +1,63 @@
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\bin\Debug\Minisoft1.exe.config
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\bin\Debug\Minisoft1.exe
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\bin\Debug\Minisoft1.pdb
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.exe
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Martin\Documents\SharpDevelop Projects\Minisoft1\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\bin\Debug\Minisoft1.exe.config
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.exe
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\bin\Debug\Minisoft1.exe
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Minisoft1_v03\bin\Debug\Minisoft1.pdb
+C:\Users\Tomas\Desktop\Minisoft1_v03\bin\Debug\Minisoft1.exe.config
+C:\Users\Tomas\Desktop\Minisoft1_v03\bin\Debug\Minisoft1.exe
+C:\Users\Tomas\Desktop\Minisoft1_v03\bin\Debug\Minisoft1.pdb
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.csproj.CoreCompileInputs.cache
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.exe
+C:\Users\Tomas\Desktop\Minisoft1_v03\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe.config
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.exe
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.pdb
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Martin\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.Editor.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe.config
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.exe
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.pdb
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.Editor.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameFormMode2.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe.config
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.exe
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\bin\Debug\Minisoft1.pdb
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csprojResolveAssemblyReference.cache
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.Editor.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameForm.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameFormMode2.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.MainForm.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csproj.GenerateResource.Cache
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.csproj.CoreCompileInputs.cache
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.exe
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.pdb
+C:\Users\Martin\OneDrive\Dokumenty\UKAIN\mAIN_SPV\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameFormMode1.resources
+C:\Users\Tomas\Documents\GitHub\Skupina-2\Minisoft1_final\obj\Debug\Minisoft1.GameFormMode1.resources
