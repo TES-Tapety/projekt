@@ -1,2 +1,5 @@
-# projekt
-SoftvÃ©r pre VzdelÃ¡vanie
+# Tvorba edukaèného softvéru
+Projekt Tapety
+
+Martin Reguly
+Jakub Trubaè
