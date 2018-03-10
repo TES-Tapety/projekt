@@ -74,7 +74,7 @@
             this.Controls.Add(this.back_to_menu);
             this.Controls.Add(this.AnotherGame);
             this.Name = "GameFormMode1";
-            this.Text = "GameFormMode1";
+            this.Text = "Tapety";
             this.Shown += new System.EventHandler(this.GameFormMode1_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameFormMode1_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFormMode1_MouseDown);

@@ -71,7 +71,7 @@ namespace Minisoft1
             this.Controls.Add(this.back_to_menu);
             this.Controls.Add(this.AnotherGame);
             this.Name = "GameForm";
-            this.Text = "GameForm";
+            this.Text = "Tapety";
             this.Shown += new System.EventHandler(this.GameFormShown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameFormPaint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFormMouseDown);

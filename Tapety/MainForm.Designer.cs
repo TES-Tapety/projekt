@@ -241,7 +241,7 @@ namespace Minisoft1
             this.Controls.Add(this.RowsLabel);
             this.Controls.Add(this.TapetyLabel);
             this.Name = "MainForm";
-            this.Text = "Minisoft1";
+            this.Text = "Tapety";
             this.Shown += new System.EventHandler(this.MainFormShown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainFormPaint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);

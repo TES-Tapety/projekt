@@ -50,35 +50,72 @@ namespace Minisoft1
         public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
         {        // funkcia
             bool spravne = false;
+            bool jednotkovahrana = false;
             int r, s, t;                                                //nahodne premenne
             Random rnd = new Random();                                //vytvorenie random generatoru 
             for (int i = 0; i < pocet_casti - 1; i++)
             {                   //ideme delit v kazdej iteracii cyklu 1 nahodnu cast na 2 mensie
                 while (!spravne)
                 {                                        //nie kazdu malu cast vieme rozdelit(taku co ma velkost jedna uz nerozdelime)
-                                                            //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
+                                                         //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
                     r = rnd.Next(i + 1);                            //nahodne vyberieme, ze ktory utvar ideme delit
-                    s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku
+                    s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku                                     
                     if (s == 0)
                     {                                  //ak 0, tak ideme rezat na sirku
-                        if (obdl[r].x > 1)
+                        if ((obdl[r].x > 2) && (obdl[r].y > 1))
                         {                          //ak mozme rezat, teda ak ma sirku aspon 2, inak znova prejde while cyklus a znovu sa vygeneruju nahodne premenne
-                            t = rnd.Next(1, obdl[r].x);               //nahodne miesto kde ho rozdelime
-                            obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
-                            obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
-                            obdl[r].x = t;                            //stary skratime o velkost noveho
-                            spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
+                            if (!jednotkovahrana)
+                            {
+                                t = rnd.Next(1, obdl[r].x);               //nahodne miesto kde ho rozdelime
+                                if ((t == 1) || (t == (obdl[r].x - 1)))
+                                {
+                                    jednotkovahrana = true;
+                                }
+                                obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
+                                obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
+                                obdl[r].x = t;                            //stary skratime o velkost noveho
+                                spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
+                            }
+                            else
+                            {
+                                t = rnd.Next(2, obdl[r].x - 1);               //nahodne miesto kde ho rozdelime
+                                if ((t > 2) && (t < obdl[r].x - 1))
+                                {
+                                    obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
+                                    obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
+                                    obdl[r].x = t;                            //stary skratime o velkost noveho
+                                    spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
+                                }
+                            }
                         }
                     }
                     else
                     {
-                        if (obdl[r].y > 1)
+                        if ((obdl[r].y > 2) && (obdl[r].x > 1))
                         {                          //ak nie nula, teda inak, ideme rezat na vysku
-                            t = rnd.Next(1, obdl[r].y);               //to iste ako for nad nami len nerezeme na sirku ale na vysku
-                            obdl[i + 1].y = obdl[r].y - t;
-                            obdl[i + 1].x = obdl[r].x;
-                            obdl[r].y = t;
-                            spravne = true;
+                            if (!jednotkovahrana)
+                            {
+                                t = rnd.Next(1, obdl[r].y);               //to iste ako for nad nami len nerezeme na sirku ale na vysku
+                                if ((t == 1) || (t == (obdl[r].y - 1)))
+                                {
+                                    jednotkovahrana = true;
+                                }
+                                obdl[i + 1].y = obdl[r].y - t;
+                                obdl[i + 1].x = obdl[r].x;
+                                obdl[r].y = t;
+                                spravne = true;
+                            }
+                            else
+                            {
+                                t = rnd.Next(2, obdl[r].y - 1);               //nahodne miesto kde ho rozdelime
+                                if ((t > 2) && (t < obdl[r].y - 1))
+                                {
+                                    obdl[i + 1].y = obdl[r].y - t;
+                                    obdl[i + 1].x = obdl[r].x;
+                                    obdl[r].y = t;
+                                    spravne = true;
+                                }
+                            }
                         }
                     }
                 }
@@ -86,6 +123,46 @@ namespace Minisoft1
             }
             return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
         }
+
+        //public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
+        //{        // funkcia
+        //    bool spravne = false;
+        //    int r, s, t;                                                //nahodne premenne
+        //    Random rnd = new Random();                                //vytvorenie random generatoru 
+        //    for (int i = 0; i < pocet_casti - 1; i++)
+        //    {                   //ideme delit v kazdej iteracii cyklu 1 nahodnu cast na 2 mensie
+        //        while (!spravne)
+        //        {                                        //nie kazdu malu cast vieme rozdelit(taku co ma velkost jedna uz nerozdelime)
+        //                                                    //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
+        //            r = rnd.Next(i + 1);                            //nahodne vyberieme, ze ktory utvar ideme delit
+        //            s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku
+        //            if (s == 0)
+        //            {                                  //ak 0, tak ideme rezat na sirku
+        //                if (obdl[r].x > 1)
+        //                {                          //ak mozme rezat, teda ak ma sirku aspon 2, inak znova prejde while cyklus a znovu sa vygeneruju nahodne premenne
+        //                    t = rnd.Next(1, obdl[r].x);               //nahodne miesto kde ho rozdelime
+        //                    obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
+        //                    obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
+        //                    obdl[r].x = t;                            //stary skratime o velkost noveho
+        //                    spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (obdl[r].y > 1)
+        //                {                          //ak nie nula, teda inak, ideme rezat na vysku
+        //                    t = rnd.Next(1, obdl[r].y);               //to iste ako for nad nami len nerezeme na sirku ale na vysku
+        //                    obdl[i + 1].y = obdl[r].y - t;
+        //                    obdl[i + 1].x = obdl[r].x;
+        //                    obdl[r].y = t;
+        //                    spravne = true;
+        //                }
+        //            }
+        //        }
+        //        spravne = false;                                //opat vratime na povodnu hodnotu, aby nam v dalsej iteracii for cyklu bezal aj while cyklus
+        //    }
+        //    return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
+        //}
 
         void draw_game()
         {
