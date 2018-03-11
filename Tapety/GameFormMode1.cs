@@ -232,7 +232,7 @@ namespace Minisoft1
                                 }
                             }
 
-                            // check game over
+                            // check if game is over
                             int num = 0;
                             for (int r = 0; r < this.settings.rows; r++)
                             {
