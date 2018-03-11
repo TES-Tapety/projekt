@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
+using System.Linq;
 
 namespace Minisoft1
 {
@@ -15,6 +17,7 @@ namespace Minisoft1
 		Random rnd;
         int[,] playground;
         MainForm mainForm;
+        List<Block> lastMoved = new List<Block>();
 
 
         const int INDENT_X = 0;
@@ -292,16 +295,26 @@ namespace Minisoft1
             }
         }
 
-		void GameFormMouseDown(object sender, MouseEventArgs e)
-		{
+        void GameFormMouseDown(object sender, MouseEventArgs e){
+			Debug.WriteLine(lastMoved.Count);
             for (int i= 0; i < blocks.Length; i++)
 			{
 				if (e.X < blocks[i].x+ blocks[i].width && e.X > blocks[i].x)
 				{
 					if (e.Y < blocks[i].y+ blocks[i].height && e.Y > blocks[i].y)
 					{
-                        // remember selected block and clicked coords
 						selected = blocks[i];
+						//if in playground is selected last moved?
+						if ((e.X <= settings.cols*this.settings.cell_size) && (e.Y <= settings.rows*this.settings.cell_size)){
+							if (lastMoved.Last() != selected){
+								selected = lastMoved.Last();
+								return;
+							}
+							else{
+								lastMoved.RemoveAt(lastMoved.Count -1);
+							}
+						}
+                       // remember selected block and clicked coords
                         deltaX = e.X - selected.x;
                         deltaY = e.Y - selected.y;
 						clicked = true;
@@ -396,6 +409,9 @@ namespace Minisoft1
                                     playground[r, s] = selected.id;
                                 }
                             }
+                        }
+                        if(return_to_start == false && lastMoved.Contains(selected) == false){
+							lastMoved.Add(selected);
                         }
 
                         // check game over
