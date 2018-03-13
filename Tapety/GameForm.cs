@@ -296,58 +296,59 @@ namespace Minisoft1
         }
 
         void GameFormMouseDown(object sender, MouseEventArgs e){
-			Debug.WriteLine(lastMoved.Count);
-            for (int i= 0; i < blocks.Length; i++)
-			{
-				if (e.X < blocks[i].x+ blocks[i].width && e.X > blocks[i].x)
-				{
-					if (e.Y < blocks[i].y+ blocks[i].height && e.Y > blocks[i].y)
-					{
-						selected = blocks[i];
-						//if in playground is selected last moved?
-						if ((e.X <= settings.cols*this.settings.cell_size) && (e.Y <= settings.rows*this.settings.cell_size)){
-							if (lastMoved.Last() != selected){
-								selected = lastMoved.Last();
-								return;
-							}
-							else{
-								lastMoved.RemoveAt(lastMoved.Count -1);
-							}
-						}
-                       // remember selected block and clicked coords
-                        deltaX = e.X - selected.x;
-                        deltaY = e.Y - selected.y;
-						clicked = true;
+			if (e.Button == MouseButtons.Left)
+            {
+                for (int i = 0; i < blocks.Length; i++)
+                {
+                    if (e.X < blocks[i].x + blocks[i].width && e.X > blocks[i].x)
+                    {
+                        if (e.Y < blocks[i].y + blocks[i].height && e.Y > blocks[i].y)
+                        {
+                            selected = blocks[i];
+                            //if in playground is selected last moved?
+                            if ((e.X <= settings.cols * this.settings.cell_size) && (e.Y <= settings.rows * this.settings.cell_size))
+                            {
+                                if (lastMoved.Last() != selected)
+                                {
+                                    selected = lastMoved.Last();
+                                    return;
+                                }
+                                else
+                                {
+                                    lastMoved.RemoveAt(lastMoved.Count - 1);
+                                }
+                            }
+                            // remember selected block and clicked coords
+                            deltaX = e.X - selected.x;
+                            deltaY = e.Y - selected.y;
+                            clicked = true;
 
-                        // set selected as last in array so it is above all other blocks
-                        Block last = blocks[blocks.Length-1];
-                        blocks[blocks.Length - 1] = blocks[i];
-                        blocks[i] = last;
-                        Invalidate();
-						break;
-					}
-				}
-			}
+                            // set selected as last in array so it is above all other blocks
+                            Block last = blocks[blocks.Length - 1];
+                            blocks[blocks.Length - 1] = blocks[i];
+                            blocks[i] = last;
+                            Invalidate();
+                            break;
+                        }
+                    }
+                }
+            }            
         }
 
         void GameFormMouseMove(object sender, MouseEventArgs e)
 		{
-			if(clicked) 
-			{
-                int dx = e.X - deltaX;
-                int dy = e.Y - deltaY;
+            if (e.Button == MouseButtons.Left)
+            {
+                if (clicked)
+                {
+                    int dx = e.X - deltaX;
+                    int dy = e.Y - deltaY;
 
-                // if in window size
-                //if (dx > 0 &&  dx + selected.width < this.ClientSize.Width)
-                //{
-                //    if(dy > 0 && dy+ selected.height < this.ClientSize.Height)
-                //    {
-                        selected.x = dx;
-                        selected.y = dy;
-                        Invalidate();
-                //    }
-                //}             
-			}
+                    selected.x = dx;
+                    selected.y = dy;
+                    Invalidate();
+                }
+            }
 		}
 
         private void AnotherGame_Click(object sender, EventArgs e)
@@ -359,125 +360,153 @@ namespace Minisoft1
 
         void GameFormMouseUp(object sender, MouseEventArgs e)
         {
-            clicked = false;
-            if (selected != null)
+            if (e.Button == MouseButtons.Left)
             {
 
-                if ((selected.x >= 0 && selected.x < this.settings.cols * this.settings.cell_size) &&
-                    (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
+                if (selected != null)
                 {
-                    selected.x = (selected.x / this.settings.cell_size) * this.settings.cell_size;
-                    selected.y = (selected.y / this.settings.cell_size) * this.settings.cell_size;
+                    clicked = false;
 
-                    // moved same object
-                    for (int r = 0; r < this.settings.rows; r++)
+                    if ((selected.x >= 0 && selected.x < this.settings.cols * this.settings.cell_size) &&
+                        (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
                     {
-                        for (int s = 0; s < this.settings.cols; s++)
+                        // doskakovanie
+                        int dx = selected.x % this.settings.cell_size;
+                        int dy = selected.y % this.settings.cell_size;
+                        int half_size = settings.cell_size / 2;
+
+                        // dole v pravo
+                        if (dx > half_size && dy > half_size)
                         {
-                            // moved same object
-                            if (playground[r, s] == selected.id)
-                            {
-                                playground[r, s] = 0;
-                            }
+                            selected.x += settings.cell_size - dx;
+                            selected.y += settings.cell_size - dy;
                         }
-                    }
-                    // playing
-                    int fromX = selected.x / this.settings.cell_size;
-                    int fromY = selected.y / this.settings.cell_size;
-
-                    int toX = (selected.width / this.settings.cell_size) + fromX;
-                    int toY = (selected.height / this.settings.cell_size) + fromY;
-
-                    bool return_to_start = false;
-
-                    // if in playground borders
-                    if ((toX <= settings.cols) && (toY <= settings.rows))
-                    {
-                        // set ocupied space to selected block id
-                        for (int r = fromY; r < toY; r++)
+                        // hore v pravo
+                        else if (dx > half_size && dy <= half_size)
                         {
-                            for (int s = fromX; s < toX; s++)
-                            {
-                                // occupied place
-                                if (playground[r, s] != 0)
-                                {
-                                    return_to_start = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    playground[r, s] = selected.id;
-                                }
-                            }
+                            selected.x += settings.cell_size - dx;
                         }
-                        if(return_to_start == false && lastMoved.Contains(selected) == false){
-							lastMoved.Add(selected);
+                        // dole v lavo
+                        else if (dx <= half_size && dy > half_size)
+                        {
+                            selected.y += settings.cell_size - dy;
                         }
 
-                        // check game over
-                        int num = 0;
+                        // konecny prepocet doskakovania
+                        selected.x = (selected.x / this.settings.cell_size) * this.settings.cell_size;
+                        selected.y = (selected.y / this.settings.cell_size) * this.settings.cell_size;
+
+                        // moved same object
                         for (int r = 0; r < this.settings.rows; r++)
                         {
                             for (int s = 0; s < this.settings.cols; s++)
                             {
-                                // empty place
-                                if (playground[r, s] == 0)
+                                // moved same object
+                                if (playground[r, s] == selected.id)
                                 {
-                                    num += 1;
+                                    playground[r, s] = 0;
                                 }
                             }
                         }
+                        // playing
+                        int fromX = selected.x / this.settings.cell_size;
+                        int fromY = selected.y / this.settings.cell_size;
 
-                        // game over -- filled all blocks
-                        if (num == 0)
+                        int toX = (selected.width / this.settings.cell_size) + fromX;
+                        int toY = (selected.height / this.settings.cell_size) + fromY;
+
+                        bool return_to_start = false;
+
+                        // if in playground borders
+                        if ((toX <= settings.cols) && (toY <= settings.rows))
                         {
+                            // set ocupied space to selected block id
+                            for (int r = fromY; r < toY; r++)
+                            {
+                                for (int s = fromX; s < toX; s++)
+                                {
+                                    // occupied place
+                                    if (playground[r, s] != 0)
+                                    {
+                                        return_to_start = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        playground[r, s] = selected.id;
+                                    }
+                                }
+                            }
+                            if (return_to_start == false && lastMoved.Contains(selected) == false)
+                            {
+                                lastMoved.Add(selected);
+                            }
+
+                            // check game over
+                            int num = 0;
                             for (int r = 0; r < this.settings.rows; r++)
                             {
                                 for (int s = 0; s < this.settings.cols; s++)
                                 {
-                                    // empty place aby sa nam resetla po vyhrati matica na nuly
-                                    playground[r, s] = 0;
+                                    // empty place
+                                    if (playground[r, s] == 0)
+                                    {
+                                        num += 1;
+                                    }
                                 }
                             }
-                            showWin = true;
-                            AnotherGame.Show();
+
+                            // game over -- filled all blocks
+                            if (num == 0)
+                            {
+                                for (int r = 0; r < this.settings.rows; r++)
+                                {
+                                    for (int s = 0; s < this.settings.cols; s++)
+                                    {
+                                        // empty place aby sa nam resetla po vyhrati matica na nuly
+                                        playground[r, s] = 0;
+                                    }
+                                }
+                                showWin = true;
+                                AnotherGame.Show();
+                            }
+
+                        }
+                        else
+                        {
+                            return_to_start = true;
                         }
 
+                        // move to start position
+                        if (return_to_start)
+                        {
+                            selected.x = selected.startX;
+                            selected.y = selected.startY;
+                        }
                     }
                     else
                     {
-                        return_to_start = true;
-                    }
-
-                    // move to start position
-                    if (return_to_start)
-                    {
                         selected.x = selected.startX;
                         selected.y = selected.startY;
-                    }
-                }
-                else
-                {
-                    selected.x = selected.startX;
-                    selected.y = selected.startY;
 
-                    // moved out of the playground
-                    for (int r = 0; r < this.settings.rows; r++)
-                    {
-                        for (int s = 0; s < this.settings.cols; s++)
+                        // moved out of the playground
+                        for (int r = 0; r < this.settings.rows; r++)
                         {
-                            // reset
-                            if (playground[r, s] == selected.id)
+                            for (int s = 0; s < this.settings.cols; s++)
                             {
-                                playground[r, s] = 0;
+                                // reset
+                                if (playground[r, s] == selected.id)
+                                {
+                                    playground[r, s] = 0;
+                                }
                             }
                         }
                     }
+                    deltaX = 0;
+                    deltaY = 0;
+                    selected = null;
+                    Invalidate();
                 }
-                deltaX = 0;
-                deltaY = 0;
-                selected = null;
-                Invalidate();
             }
         }
 
