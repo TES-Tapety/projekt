@@ -6,6 +6,9 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
+using System.Drawing;
+
 namespace Minisoft1
 {
 	partial class GameForm
@@ -38,6 +41,10 @@ namespace Minisoft1
 		{
             this.AnotherGame = new System.Windows.Forms.Button();
             this.back_to_menu = new System.Windows.Forms.Button();
+			this.color_lab1= new System.Windows.Forms.Label();
+			this.color_lab2= new System.Windows.Forms.Label();
+			this.color_lab3= new System.Windows.Forms.Label();
+			this.color_lab4= new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // AnotherGame
@@ -62,6 +69,29 @@ namespace Minisoft1
             this.back_to_menu.Text = "Menu";
             this.back_to_menu.UseVisualStyleBackColor = true;
             this.back_to_menu.Click += new System.EventHandler(this.back_to_menu_Click);
+			// 
+			// color_labels
+			// 
+			this.color_lab1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.color_lab1.Location = new System.Drawing.Point(450, 313);
+			this.color_lab1.Name = "color_lab1";
+			this.color_lab1.Size = new System.Drawing.Size(20, 20);
+			this.color_lab1.BackColor = Color.Aqua;
+			this.color_lab2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.color_lab2.Location = new System.Drawing.Point(425, 313);
+			this.color_lab2.Name = "color_lab2";
+			this.color_lab2.Size = new System.Drawing.Size(20, 20);
+			this.color_lab2.BackColor = Color.Aqua;
+			this.color_lab3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.color_lab3.Location = new System.Drawing.Point(400, 313);
+			this.color_lab3.Name = "color_lab3";
+			this.color_lab3.Size = new System.Drawing.Size(20, 20);
+			this.color_lab3.BackColor = Color.Aqua;
+			this.color_lab4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.color_lab4.Location = new System.Drawing.Point(375, 313);
+			this.color_lab4.Name = "color_lab4";
+			this.color_lab4.Size = new System.Drawing.Size(20, 20);
+			this.color_lab4.BackColor = Color.Aqua;
             // 
             // GameForm
             // 
@@ -69,6 +99,10 @@ namespace Minisoft1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(567, 348);
             this.Controls.Add(this.back_to_menu);
+			this.Controls.Add(this.color_lab1);
+			this.Controls.Add(this.color_lab2);
+			this.Controls.Add(this.color_lab3);
+			this.Controls.Add(this.color_lab4);
             this.Controls.Add(this.AnotherGame);
             this.Name = "GameForm";
             this.Text = "Tapety";
@@ -83,5 +117,9 @@ namespace Minisoft1
 
         private System.Windows.Forms.Button AnotherGame;
         private System.Windows.Forms.Button back_to_menu;
+		private System.Windows.Forms.Label color_lab1;
+		private System.Windows.Forms.Label color_lab2;
+		private System.Windows.Forms.Label color_lab3;
+		private System.Windows.Forms.Label color_lab4;
     }
 }

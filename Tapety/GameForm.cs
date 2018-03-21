@@ -17,7 +17,6 @@ namespace Minisoft1
 		Random rnd;
         int[,] playground;
         MainForm mainForm;
-        List<Block> lastMoved = new List<Block>();
 
 
         const int INDENT_X = 0;
@@ -305,19 +304,6 @@ namespace Minisoft1
                         if (e.Y < blocks[i].y + blocks[i].height && e.Y > blocks[i].y)
                         {
                             selected = blocks[i];
-                            //if in playground is selected last moved?
-                            if ((e.X <= settings.cols * this.settings.cell_size) && (e.Y <= settings.rows * this.settings.cell_size))
-                            {
-                                if (lastMoved.Last() != selected)
-                                {
-                                    selected = lastMoved.Last();
-                                    return;
-                                }
-                                else
-                                {
-                                    lastMoved.RemoveAt(lastMoved.Count - 1);
-                                }
-                            }
                             // remember selected block and clicked coords
                             deltaX = e.X - selected.x;
                             deltaY = e.Y - selected.y;
@@ -437,9 +423,9 @@ namespace Minisoft1
                                     }
                                 }
                             }
-                            if (return_to_start == false && lastMoved.Contains(selected) == false)
+                            if (return_to_start == false)
                             {
-                                lastMoved.Add(selected);
+                                update_colors(selected.color);
                             }
 
                             // check game over
@@ -515,5 +501,13 @@ namespace Minisoft1
             this.Hide();
             mainForm.Show();
         }
+
+	    private void update_colors(Color color)
+	    {
+	        color_lab1.BackColor = color_lab2.BackColor;
+	        color_lab2.BackColor = color_lab3.BackColor;
+	        color_lab3.BackColor = color_lab4.BackColor;
+	        color_lab4.BackColor = color;
+	    }
     }
 }

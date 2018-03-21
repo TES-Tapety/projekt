@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -25,6 +26,7 @@ namespace Minisoft1
         Dictionary<int, Color> idcolor_map;
         Point delta;
         string path = "mode2";
+        List<Block> lastMoved = new List<Block>();
 
         public GameFormMode2(MainForm mainForm)
         {
@@ -151,7 +153,19 @@ namespace Minisoft1
                     if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
                     {
                         // remember selected block and clicked coords
-                        selected = settings.blocks[i];
+                        selected = settings.blocks[i];                       
+                        if ((e.X <= settings.cols * this.settings.cell_size) && (e.Y <= settings.rows * this.settings.cell_size))
+                        {
+                            if (lastMoved.Last() != selected)
+                            {
+                                selected = lastMoved.Last();
+                                return;
+                            }
+                            else
+                            {
+                                lastMoved.RemoveAt(lastMoved.Count - 1);
+                            }
+                        }
                         delta = new Point(e.X - selected.x, e.Y - selected.y);
                         clicked = true;
 
@@ -281,6 +295,14 @@ namespace Minisoft1
                             selected.x = selected.startX;
                             selected.y = selected.startY;
                         }
+                        else
+                        {
+                            update_colors(selected.color);
+                            if (lastMoved.Contains(selected) == false)
+                            {
+                                lastMoved.Add(selected);
+                            }
+                        }
                     }
                     else
                     {
@@ -356,6 +378,13 @@ namespace Minisoft1
                 AnotherGame.Hide();
             }
             Invalidate();
+        }
+        private void update_colors(Color color)
+        {
+            color_lab1.BackColor = color_lab2.BackColor;
+            color_lab2.BackColor = color_lab3.BackColor;
+            color_lab3.BackColor = color_lab4.BackColor;
+            color_lab4.BackColor = color;
         }
     }
 }

@@ -273,6 +273,10 @@ namespace Minisoft1
                             selected.x = selected.startX;
                             selected.y = selected.startY;
                         }
+                        else
+                        {
+                            update_colors(selected.color);
+                        }
                     }
                     else
                     {
@@ -318,6 +322,13 @@ namespace Minisoft1
                     }
                 }
             }
+        }
+        private void update_colors(Color color)
+        {
+            color_lab1.BackColor = color_lab2.BackColor;
+            color_lab2.BackColor = color_lab3.BackColor;
+            color_lab3.BackColor = color_lab4.BackColor;
+            color_lab4.BackColor = color;
         }
     }
 }
