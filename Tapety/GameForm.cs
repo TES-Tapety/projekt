@@ -295,8 +295,8 @@ namespace Minisoft1
         }
 
         void GameFormMouseDown(object sender, MouseEventArgs e){
-			if (e.Button == MouseButtons.Left)
-            {
+			//if (e.Button == MouseButtons.Left)
+   //         {
                 for (int i = 0; i < blocks.Length; i++)
                 {
                     if (e.X < blocks[i].x + blocks[i].width && e.X > blocks[i].x)
@@ -318,13 +318,13 @@ namespace Minisoft1
                         }
                     }
                 }
-            }            
+            //}            
         }
 
         void GameFormMouseMove(object sender, MouseEventArgs e)
 		{
-            if (e.Button == MouseButtons.Left)
-            {
+            //if (e.Button == MouseButtons.Left)
+            //{
                 if (clicked)
                 {
                     int dx = e.X - deltaX;
@@ -334,7 +334,7 @@ namespace Minisoft1
                     selected.y = dy;
                     Invalidate();
                 }
-            }
+            //}
 		}
 
         private void AnotherGame_Click(object sender, EventArgs e)
@@ -346,8 +346,8 @@ namespace Minisoft1
 
         void GameFormMouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
+            //if (e.Button == MouseButtons.Left)
+            //{
 
                 if (selected != null)
                 {
@@ -494,7 +494,7 @@ namespace Minisoft1
                     Invalidate();
                 }
             }
-        }
+        //}
 
         private void back_to_menu_Click(object sender, EventArgs e)
         {
