@@ -591,12 +591,21 @@ namespace Minisoft1
                     Directory.CreateDirectory(path);
                     var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
                     int n = files.Length + 1;
+
+                    // pozicie okolo vyriesi algoritmus
+                    //foreach (Block block in blocks)
+                    //{
+                    //    block.x -= (INDENT_X - 30);
+                    //    block.startX = block.x;
+                    //    block.startY = block.y;
+                    //}
+
                     foreach (Block block in blocks)
                     {
-                        block.x -= (INDENT_X - 30);
-                        block.startX = block.x;
-                        block.startY = block.y;
+                        block.finalX = (block.x - INDENT_X) / settings.cell_size;
+                        block.finalY = block.y / settings.cell_size;
                     }
+
                     settings.blockCount = blocks.Count;
                     settings.blocks = blocks;
                     settings.playground = playground;
@@ -627,21 +636,6 @@ namespace Minisoft1
             }
         }
 
-        private void save_2_playground_Click(object sender, EventArgs e)
-        {
-            // save only playground for Mode 2
-            if (blocks.Count > 0)
-            {
-                mode2_playground = playground;
-                save_2_blocks.Enabled = true;
-                save_2_playground.Enabled = false;
-            }
-            else
-            {
-                MessageBox.Show("Nevytvoril si žiadne tapety");
-            }
-        }
-
         private void save_2_blocks_Click(object sender, EventArgs e)
         {
             // save blocks
@@ -654,11 +648,20 @@ namespace Minisoft1
                 int n = files.Length + 1;
 
                 settings.blockCount = blocks.Count;
+
+                // pozicie okolo vyriesi algoritmus
+                //foreach (Block block in blocks)
+                //{
+                //    block.startX = block.x;
+                //    block.startY = block.y;
+                //}
+
                 foreach (Block block in blocks)
                 {
-                    block.startX = block.x;
-                    block.startY = block.y;
+                    block.finalX = (block.x - INDENT_X) / settings.cell_size;
+                    block.finalY = block.y / settings.cell_size;
                 }
+
                 settings.blocks = blocks;
                 settings.playground = mode2_playground;
                 settings.window_width = Size.Width;
@@ -682,7 +685,6 @@ namespace Minisoft1
                 Invalidate();
 
                 save_2_blocks.Enabled = false;          //spatne prepnutie
-                save_2_playground.Enabled = true;
             }
         }
     }

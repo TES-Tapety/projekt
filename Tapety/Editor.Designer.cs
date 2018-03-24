@@ -44,7 +44,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.create_block = new System.Windows.Forms.Button();
-            this.save_2_playground = new System.Windows.Forms.Button();
             this.save_first_mode = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.save_2_blocks = new System.Windows.Forms.Button();
@@ -60,7 +59,7 @@
             // back_to_menu
             // 
             this.back_to_menu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_to_menu.Location = new System.Drawing.Point(497, 376);
+            this.back_to_menu.Location = new System.Drawing.Point(497, 346);
             this.back_to_menu.Name = "back_to_menu";
             this.back_to_menu.Size = new System.Drawing.Size(75, 23);
             this.back_to_menu.TabIndex = 0;
@@ -220,23 +219,13 @@
             this.create_block.UseVisualStyleBackColor = true;
             this.create_block.Click += new System.EventHandler(this.create_block_Click);
             // 
-            // save_2_playground
-            // 
-            this.save_2_playground.Location = new System.Drawing.Point(12, 347);
-            this.save_2_playground.Name = "save_2_playground";
-            this.save_2_playground.Size = new System.Drawing.Size(133, 23);
-            this.save_2_playground.TabIndex = 30;
-            this.save_2_playground.Text = "Ulož riešenie";
-            this.save_2_playground.UseVisualStyleBackColor = true;
-            this.save_2_playground.Click += new System.EventHandler(this.save_2_playground_Click);
-            // 
             // save_first_mode
             // 
             this.save_first_mode.Location = new System.Drawing.Point(12, 300);
             this.save_first_mode.Name = "save_first_mode";
             this.save_first_mode.Size = new System.Drawing.Size(133, 23);
             this.save_first_mode.TabIndex = 31;
-            this.save_first_mode.Text = "Ulož hru";
+            this.save_first_mode.Text = "Ulož riešenie";
             this.save_first_mode.UseVisualStyleBackColor = true;
             this.save_first_mode.Click += new System.EventHandler(this.save_first_mode_Click);
             // 
@@ -251,12 +240,11 @@
             // 
             // save_2_blocks
             // 
-            this.save_2_blocks.Enabled = false;
-            this.save_2_blocks.Location = new System.Drawing.Point(12, 376);
+            this.save_2_blocks.Location = new System.Drawing.Point(12, 347);
             this.save_2_blocks.Name = "save_2_blocks";
             this.save_2_blocks.Size = new System.Drawing.Size(133, 23);
             this.save_2_blocks.TabIndex = 33;
-            this.save_2_blocks.Text = "Ulož tapety";
+            this.save_2_blocks.Text = "Ulož riešenie";
             this.save_2_blocks.UseVisualStyleBackColor = true;
             this.save_2_blocks.Click += new System.EventHandler(this.save_2_blocks_Click);
             // 
@@ -283,13 +271,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 411);
+            this.ClientSize = new System.Drawing.Size(584, 381);
             this.Controls.Add(this.delete_block);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.save_2_blocks);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.save_first_mode);
-            this.Controls.Add(this.save_2_playground);
             this.Controls.Add(this.create_block);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.block_height);
@@ -340,7 +327,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button create_block;
-        private System.Windows.Forms.Button save_2_playground;
         private System.Windows.Forms.Button save_first_mode;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button save_2_blocks;

@@ -60,6 +60,64 @@ namespace Minisoft1
                 string fname = $"{files[game_level_index]}";  // first inde starts from 0
                 this.settings = sm.load(fname);
 
+                // rozmiestni okolo hracej plochy
+                // TODO: musi sa zlepsit !!!!
+
+                int gap = 5;
+                int px = (this.settings.cols * this.settings.cell_size) + gap;
+                int py = (this.settings.rows * this.settings.cell_size) + gap;
+
+                int posunX_vedla = gap;
+                int posunX_dole = gap;
+                int posunY_dole_max = 0;
+
+                int x, y;
+
+                foreach (Block block in settings.blocks)
+                {
+
+                    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+
+                    int width = this.settings.cell_size * block.W;
+                    int height = this.settings.cell_size * block.H;
+
+                    // na pravo od hracej plochy
+                    if (height >= width)
+                    {
+                        x = px + posunX_vedla;
+                        y = 0;
+
+                        posunX_vedla += width + gap;
+                    }
+                    // pod hraciu plochu
+                    else
+                    {
+                        // placing out of window WIDTH
+                        if ((gap + width + posunX_dole) > this.ClientRectangle.Width)
+                        {
+                            py += posunY_dole_max + gap;
+                            posunY_dole_max = 0;
+                            posunX_dole = gap;
+                        }
+
+                        // max height
+                        if (height > posunY_dole_max)
+                        {
+                            posunY_dole_max = height;
+                        }
+
+                        x = posunX_dole;
+                        y = py;
+
+                        posunX_dole += width + gap;
+                    }
+
+                    block.x = x;
+                    block.y = y;
+                    block.startX = x;                    
+                    block.startY = y;
+                }
+
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 this.Size = new Size(settings.window_width, settings.window_height);
                 Invalidate();
@@ -174,6 +232,16 @@ namespace Minisoft1
         {
             this.Hide();
             mainForm.Show();
+        }
+
+        private void show_final_state_Click(object sender, EventArgs e)
+        {
+            foreach (Block block in this.settings.blocks)
+            {
+                block.x = block.finalX * settings.cell_size;
+                block.y = block.finalY * settings.cell_size;
+            }
+            Invalidate();
         }
 
         private void GameFormMode1_MouseUp(object sender, MouseEventArgs e)

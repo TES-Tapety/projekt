@@ -6,7 +6,7 @@ namespace Minisoft1
     [Serializable]
     public class Block
     {
-        public int id, x, y, startX, startY, width, height, W, H, cell_size;
+        public int id, x, y, startX, startY, finalX, finalY, width, height, W, H, cell_size;
         public Color color;
 
         public Block(int id, int x, int y, int W, int H, int cell_size, Color color)

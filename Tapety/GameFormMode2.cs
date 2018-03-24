@@ -52,13 +52,72 @@ namespace Minisoft1
 
             if (max_game_level_index == 0)
             {
-                this.Hide();
+                this.Hide(); // o uroven vyssie?
                 mainForm.Show();
             }
             else
             { 
                 string fname = $"{files[game_level_index]}";
-                this.settings = sm.load(fname);            
+                this.settings = sm.load(fname);
+
+
+                // rozmiestni okolo hracej plochy
+                // TODO: musi sa zlepsit !!!!
+
+                int gap = 5;
+                int px = (this.settings.cols * this.settings.cell_size) + gap;
+                int py = (this.settings.rows * this.settings.cell_size) + gap;
+
+                int posunX_vedla = gap;
+                int posunX_dole = gap;
+                int posunY_dole_max = 0;
+
+                int x, y;
+
+                foreach (Block block in settings.blocks)
+                {
+
+                    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+
+                    int width = this.settings.cell_size * block.W;
+                    int height = this.settings.cell_size * block.H;
+
+                    // na pravo od hracej plochy
+                    if (height >= width)
+                    {
+                        x = px + posunX_vedla;
+                        y = 0;
+
+                        posunX_vedla += width + gap;
+                    }
+                    // pod hraciu plochu
+                    else
+                    {
+                        // placing out of window WIDTH
+                        if ((gap + width + posunX_dole) > this.ClientRectangle.Width)
+                        {
+                            py += posunY_dole_max + gap;
+                            posunY_dole_max = 0;
+                            posunX_dole = gap;
+                        }
+
+                        // max height
+                        if (height > posunY_dole_max)
+                        {
+                            posunY_dole_max = height;
+                        }
+
+                        x = posunX_dole;
+                        y = py;
+
+                        posunX_dole += width + gap;
+                    }
+
+                    block.x = x;
+                    block.y = y;
+                    block.startX = x;
+                    block.startY = y;
+                }
 
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 this.Size = new Size(settings.window_width, settings.window_height);                
@@ -80,8 +139,7 @@ namespace Minisoft1
                 }
             }
             
-            // draw blocks
-            
+            // do st
             foreach (Block block in this.settings.blocks)
             {
                 block.Kresli(e.Graphics);
@@ -90,39 +148,34 @@ namespace Minisoft1
                     idcolor_map.Add(block.id, block.color);
                 }                
             }
-            
+
+            // do st
             int indentX = this.settings.cols * this.settings.cell_size;
             for (int i = 0; i < this.settings.cols; i++)
             {
                 for (int j = 0; j < this.settings.rows; j++)
                 {
-                    
-                    if(idcolor_map.ContainsKey(settings.playground[j, i]))
+
+                    if (idcolor_map.ContainsKey(settings.playground[j, i]))
                     {
                         Color c = idcolor_map[settings.playground[j, i]];
                         Brush brush = new SolidBrush(c);
                         e.Graphics.FillRectangle(brush, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
 
-                        
+
                     }
                     else
                     {
-                        Pen blackPen = new Pen(Color.Black, 1);
-                        e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
-                        Pen pen = new Pen(Color.Black, 1);
-                        e.Graphics.DrawRectangle(pen, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
+                        //Pen blackPen = new Pen(Color.Black, 1);
+                        //e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
+                        //Pen pen = new Pen(Color.Black, 1);
+                        //e.Graphics.DrawRectangle(pen, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
                     }
-                    
+
                 }
             }
-            
 
-            // draw blocks
-            
-            foreach (Block block in this.settings.blocks)
-            {
-                block.Kresli(e.Graphics);
-            }
+
             if (showWin)
             {
                 Graphics g = e.Graphics;
@@ -379,6 +432,17 @@ namespace Minisoft1
             }
             Invalidate();
         }
+
+        private void show_final_state_Click(object sender, EventArgs e)
+        {
+            foreach (Block block in this.settings.blocks)
+            {
+                block.x = block.finalX * settings.cell_size;
+                block.y = block.finalY * settings.cell_size;
+            }
+            Invalidate();
+        }
+
         private void update_colors(Color color)
         {
             color_lab1.BackColor = color_lab2.BackColor;
