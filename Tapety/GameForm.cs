@@ -17,36 +17,73 @@ namespace Minisoft1
 		Random rnd;
         int[,] playground;
         MainForm mainForm;
-
-
-        const int INDENT_X = 0;
-		const int INDENT_Y = 0;
-
         int deltaX, deltaY;
-		
-		public GameForm(Settings settings, MainForm mainForm)
+        int old_indentX, old_indentY;
+        int INDENT_X, INDENT_Y;
+
+        public GameForm(Settings settings, MainForm mainForm)
 		{	
 			DoubleBuffered = true;
 			InitializeComponent();
 			
 			this.settings = settings;
-			this.clicked = false;
+            this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 100;
+            this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 54 - 100;          
+            this.clicked = false;
             this.showWin = false;
 			this.rnd = new Random();
             this.playground = new int[this.settings.rows, this.settings.cols];
             this.mainForm = mainForm;
-				
-		}
+        }
+
+        private void GameForm_Resize(object sender, EventArgs e)
+        {
+            Control control = (Control)sender;
+
+            old_indentX = INDENT_X;
+            old_indentY = INDENT_Y;
+
+            this.INDENT_X = control.Size.Width - (settings.cols * settings.cell_size) - 100;
+            this.INDENT_Y = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+
+            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
+
+            if (this.blocks != null)
+            {
+                foreach (Block block in this.blocks)
+                {
+                    if (block.in_playground)
+                    {
+                        block.x += INDENT_X - old_indentX;
+                        block.y += INDENT_Y - old_indentY;
+                    }
+                }
+            }
+
+            Invalidate();
+        }
 
         void GameFormShown(object sender, EventArgs e)
         {
-            this.Size = new Size((settings.rows*settings.cell_size), (settings.cols * settings.cell_size));
+            //int min_width = (settings.cols * settings.cell_size) * 3;
+            //int min_height = Screen.PrimaryScreen.WorkingArea.Height;
+
+            //Console.WriteLine($"SHOWN {min_width} {min_height}");
+
+            //if (Screen.PrimaryScreen.WorkingArea.Width < min_width * 2)
+            //    this.WindowState = FormWindowState.Maximized;
+            //if (Screen.PrimaryScreen.WorkingArea.Height < min_height)
+            //    this.WindowState = FormWindowState.Maximized;
+
+            this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+            this.OnResize(EventArgs.Empty);
             this.draw_game();
         }
 
         public struct obdlznik
         {
             public int x, y;
+            public int posX, posY;
         }
 
         public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
@@ -126,46 +163,6 @@ namespace Minisoft1
             return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
         }
 
-        //public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
-        //{        // funkcia
-        //    bool spravne = false;
-        //    int r, s, t;                                                //nahodne premenne
-        //    Random rnd = new Random();                                //vytvorenie random generatoru 
-        //    for (int i = 0; i < pocet_casti - 1; i++)
-        //    {                   //ideme delit v kazdej iteracii cyklu 1 nahodnu cast na 2 mensie
-        //        while (!spravne)
-        //        {                                        //nie kazdu malu cast vieme rozdelit(taku co ma velkost jedna uz nerozdelime)
-        //                                                    //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
-        //            r = rnd.Next(i + 1);                            //nahodne vyberieme, ze ktory utvar ideme delit
-        //            s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku
-        //            if (s == 0)
-        //            {                                  //ak 0, tak ideme rezat na sirku
-        //                if (obdl[r].x > 1)
-        //                {                          //ak mozme rezat, teda ak ma sirku aspon 2, inak znova prejde while cyklus a znovu sa vygeneruju nahodne premenne
-        //                    t = rnd.Next(1, obdl[r].x);               //nahodne miesto kde ho rozdelime
-        //                    obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
-        //                    obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
-        //                    obdl[r].x = t;                            //stary skratime o velkost noveho
-        //                    spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (obdl[r].y > 1)
-        //                {                          //ak nie nula, teda inak, ideme rezat na vysku
-        //                    t = rnd.Next(1, obdl[r].y);               //to iste ako for nad nami len nerezeme na sirku ale na vysku
-        //                    obdl[i + 1].y = obdl[r].y - t;
-        //                    obdl[i + 1].x = obdl[r].x;
-        //                    obdl[r].y = t;
-        //                    spravne = true;
-        //                }
-        //            }
-        //        }
-        //        spravne = false;                                //opat vratime na povodnu hodnotu, aby nam v dalsej iteracii for cyklu bezal aj while cyklus
-        //    }
-        //    return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
-        //}
-
         void draw_game()
         {
             Invalidate();
@@ -188,23 +185,22 @@ namespace Minisoft1
                 else return o1.y.CompareTo(o2.y);
             });
 
+            // algoritmus rozmiestenia okolo hracej plochy
             int ix = 0;
-            int gap = 5;
-            int px = (this.settings.cols * this.settings.cell_size) + gap;
-            int py = (this.settings.rows * this.settings.cell_size) + gap;
+            int gap = settings.cell_size / 2;
+            int px = gap;
+            int py = (this.settings.rows * this.settings.cell_size) + gap*2;
 
             int posunX_vedla = gap;
             int posunX_dole = gap;
 
             int posunY_dole_max = 0;
-                    
-            int x, y;
+
+            int x = gap;
+            int y = gap;
 
             foreach (obdlznik obdl in ob)
             {
-                // TODO: rozumny generator farieb - mozno nastavit BG color na bielu a spavit mnozinu farieb a to len pridelit Bloku
-                // TODO: GameForm - dalsia hra pomocou nejakeho obrazku pre deti
-
                 Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 int W = obdl.x; 
                 int H = obdl.y;
@@ -215,7 +211,7 @@ namespace Minisoft1
                 if (height >= width)
                 {
                     x = px + posunX_vedla;
-                    y = 0;
+                    y = gap;
 
                     posunX_vedla += width + gap;
                 }
@@ -223,7 +219,7 @@ namespace Minisoft1
                 else
                 {
                     // placing out of window WIDTH
-                    if ((gap+ width + posunX_dole) > this.ClientRectangle.Width)
+                    if ((gap+ width + posunX_dole) > (this.settings.cols * this.settings.cell_size) + 100)
                     {
                         py += posunY_dole_max + gap;
                         posunY_dole_max = 0;
@@ -245,21 +241,7 @@ namespace Minisoft1
                 Block block = new Block(ix+1, x, y, W, H, this.settings.cell_size, color);
                 blocks[ix] = block;
                 ix += 1;
-            }
-
-            // resize WIDTH if needed
-            if ((px + posunX_vedla + this.settings.cell_size) > ClientRectangle.Width)
-            {
-                this.Size = new Size((px + posunX_vedla + gap + (2*this.settings.cell_size)), ClientRectangle.Height);
-            }
-
-
-            // resize HEIGHT if needed
-            if ((py + this.settings.cell_size + posunY_dole_max) > ClientRectangle.Height)
-            {
-                this.Size = new Size(ClientRectangle.Width, (2*this.settings.cell_size + py + posunY_dole_max));
-            }
-
+            }     
         }      
 
 
@@ -349,151 +331,161 @@ namespace Minisoft1
             //if (e.Button == MouseButtons.Left)
             //{
 
-                if (selected != null)
+            if (selected != null)
+            {
+                clicked = false;
+                int half_size = settings.cell_size / 2;
+
+                if ((selected.x >= INDENT_X - half_size && selected.x < INDENT_X + half_size + (this.settings.cols * this.settings.cell_size)) &&
+                    (selected.y >= INDENT_Y - half_size && selected.y < INDENT_Y + half_size + (this.settings.rows * this.settings.cell_size)))
                 {
-                    clicked = false;
+                    // suradnice bez odsunutia
+                    var noindentX = (selected.x - INDENT_X);
+                    var noindentY = (selected.y - INDENT_Y);
 
-                    if ((selected.x >= 0 && selected.x < this.settings.cols * this.settings.cell_size) &&
-                        (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
+                    // doskakovanie
+                    int dx = noindentX % this.settings.cell_size;
+                    int dy = noindentY % this.settings.cell_size;
+                    
+
+                    // dole v pravo
+                    if (dx > half_size && dy > half_size)
                     {
-                        // doskakovanie
-                        int dx = selected.x % this.settings.cell_size;
-                        int dy = selected.y % this.settings.cell_size;
-                        int half_size = settings.cell_size / 2;
+                        noindentX += settings.cell_size - dx;
+                        noindentY += settings.cell_size - dy;
+                    }
+                    // hore v pravo
+                    else if (dx > half_size && dy <= half_size)
+                    {
+                        noindentX += settings.cell_size - dx;
+                    }
+                    // dole v lavo
+                    else if (dx <= half_size && dy > half_size)
+                    {
+                        noindentY += settings.cell_size - dy;
+                    }
 
-                        // dole v pravo
-                        if (dx > half_size && dy > half_size)
+                    // konecny prepocet doskakovania
+                    selected.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
+                    selected.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
+
+                    selected.in_playground = true;
+
+                    // moved same object
+                    for (int r = 0; r < this.settings.rows; r++)
+                    {
+                        for (int s = 0; s < this.settings.cols; s++)
                         {
-                            selected.x += settings.cell_size - dx;
-                            selected.y += settings.cell_size - dy;
+                            // moved same object
+                            if (playground[r, s] == selected.id)
+                            {
+                                playground[r, s] = 0;
+                            }
                         }
-                        // hore v pravo
-                        else if (dx > half_size && dy <= half_size)
+                    }
+                    // playing
+                    int fromX = noindentX / this.settings.cell_size;
+                    int fromY = noindentY / this.settings.cell_size;
+
+                    Console.WriteLine($"{INDENT_X} {INDENT_Y}, {selected.x} {selected.y}");
+
+                    int toX = (selected.width / this.settings.cell_size) + fromX;
+                    int toY = (selected.height / this.settings.cell_size) + fromY;
+
+                    bool return_to_start = false;
+
+                    // if in playground borders
+                    if ((toX <= settings.cols) && (toY <= settings.rows))
+                    {
+                        // set ocupied space to selected block id
+                        for (int r = fromY; r < toY; r++)
                         {
-                            selected.x += settings.cell_size - dx;
+                            for (int s = fromX; s < toX; s++)
+                            {
+                                // occupied place
+                                if (playground[r, s] != 0)
+                                {
+                                    return_to_start = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    playground[r, s] = selected.id;
+                                }
+                            }
                         }
-                        // dole v lavo
-                        else if (dx <= half_size && dy > half_size)
+                        if (return_to_start == false)
                         {
-                            selected.y += settings.cell_size - dy;
+                            update_colors(selected.color);
                         }
 
-                        // konecny prepocet doskakovania
-                        selected.x = (selected.x / this.settings.cell_size) * this.settings.cell_size;
-                        selected.y = (selected.y / this.settings.cell_size) * this.settings.cell_size;
-
-                        // moved same object
+                        // check game over
+                        int num = 0;
                         for (int r = 0; r < this.settings.rows; r++)
                         {
                             for (int s = 0; s < this.settings.cols; s++)
                             {
-                                // moved same object
-                                if (playground[r, s] == selected.id)
+                                // empty place
+                                if (playground[r, s] == 0)
                                 {
-                                    playground[r, s] = 0;
+                                    num += 1;
                                 }
                             }
                         }
-                        // playing
-                        int fromX = selected.x / this.settings.cell_size;
-                        int fromY = selected.y / this.settings.cell_size;
 
-                        int toX = (selected.width / this.settings.cell_size) + fromX;
-                        int toY = (selected.height / this.settings.cell_size) + fromY;
-
-                        bool return_to_start = false;
-
-                        // if in playground borders
-                        if ((toX <= settings.cols) && (toY <= settings.rows))
+                        // game over -- filled all blocks
+                        if (num == 0)
                         {
-                            // set ocupied space to selected block id
-                            for (int r = fromY; r < toY; r++)
-                            {
-                                for (int s = fromX; s < toX; s++)
-                                {
-                                    // occupied place
-                                    if (playground[r, s] != 0)
-                                    {
-                                        return_to_start = true;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        playground[r, s] = selected.id;
-                                    }
-                                }
-                            }
-                            if (return_to_start == false)
-                            {
-                                update_colors(selected.color);
-                            }
-
-                            // check game over
-                            int num = 0;
                             for (int r = 0; r < this.settings.rows; r++)
                             {
                                 for (int s = 0; s < this.settings.cols; s++)
                                 {
-                                    // empty place
-                                    if (playground[r, s] == 0)
-                                    {
-                                        num += 1;
-                                    }
+                                    // empty place aby sa nam resetla po vyhrati matica na nuly
+                                    playground[r, s] = 0;
                                 }
                             }
-
-                            // game over -- filled all blocks
-                            if (num == 0)
-                            {
-                                for (int r = 0; r < this.settings.rows; r++)
-                                {
-                                    for (int s = 0; s < this.settings.cols; s++)
-                                    {
-                                        // empty place aby sa nam resetla po vyhrati matica na nuly
-                                        playground[r, s] = 0;
-                                    }
-                                }
-                                showWin = true;
-                                AnotherGame.Show();
-                            }
-
-                        }
-                        else
-                        {
-                            return_to_start = true;
-                        }
-
-                        // move to start position
-                        if (return_to_start)
-                        {
-                            selected.x = selected.startX;
-                            selected.y = selected.startY;
+                            showWin = true;
+                            AnotherGame.Show();
                         }
                     }
                     else
                     {
+                        return_to_start = true;
+                    }
+
+                    // move to start position
+                    if (return_to_start)
+                    {
                         selected.x = selected.startX;
                         selected.y = selected.startY;
+                        selected.in_playground = false;
+                    }
+                }
+                else
+                {
+                    selected.x = selected.startX;
+                    selected.y = selected.startY;
+                    selected.in_playground = false;
 
-                        // moved out of the playground
-                        for (int r = 0; r < this.settings.rows; r++)
+                    // moved out of the playground
+                    for (int r = 0; r < this.settings.rows; r++)
+                    {
+                        for (int s = 0; s < this.settings.cols; s++)
                         {
-                            for (int s = 0; s < this.settings.cols; s++)
+                            // reset
+                            if (playground[r, s] == selected.id)
                             {
-                                // reset
-                                if (playground[r, s] == selected.id)
-                                {
-                                    playground[r, s] = 0;
-                                }
+                                playground[r, s] = 0;
                             }
                         }
                     }
-                    deltaX = 0;
-                    deltaY = 0;
-                    selected = null;
-                    Invalidate();
                 }
+                deltaX = 0;
+                deltaY = 0;
+                selected = null;
+                Invalidate();
             }
+        }
         //}
 
         private void back_to_menu_Click(object sender, EventArgs e)

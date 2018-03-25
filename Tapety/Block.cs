@@ -8,6 +8,7 @@ namespace Minisoft1
     {
         public int id, x, y, startX, startY, finalX, finalY, width, height, W, H, cell_size;
         public Color color;
+        public bool in_playground;
 
         public Block(int id, int x, int y, int W, int H, int cell_size, Color color)
         {
@@ -22,6 +23,7 @@ namespace Minisoft1
             this.cell_size = cell_size;
             this.width = cell_size * W;
             this.height = cell_size * H;
+            this.in_playground = false;
         }
 
         public void recalculate_shape(int new_size)

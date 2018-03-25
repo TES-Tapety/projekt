@@ -122,6 +122,16 @@ namespace Minisoft1
             // NumberOfRows
             // 
             this.NumberOfRows.Location = new System.Drawing.Point(104, 40);
+            this.NumberOfRows.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.NumberOfRows.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.NumberOfRows.Name = "NumberOfRows";
             this.NumberOfRows.Size = new System.Drawing.Size(48, 20);
             this.NumberOfRows.TabIndex = 10;
@@ -135,6 +145,16 @@ namespace Minisoft1
             // NumberOfCols
             // 
             this.NumberOfCols.Location = new System.Drawing.Point(104, 64);
+            this.NumberOfCols.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.NumberOfCols.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.NumberOfCols.Name = "NumberOfCols";
             this.NumberOfCols.Size = new System.Drawing.Size(48, 20);
             this.NumberOfCols.TabIndex = 11;
@@ -147,7 +167,22 @@ namespace Minisoft1
             // 
             // CellSize
             // 
+            this.CellSize.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.CellSize.Location = new System.Drawing.Point(104, 88);
+            this.CellSize.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.CellSize.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.CellSize.Name = "CellSize";
             this.CellSize.Size = new System.Drawing.Size(48, 20);
             this.CellSize.TabIndex = 12;
