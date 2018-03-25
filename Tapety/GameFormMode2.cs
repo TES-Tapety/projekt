@@ -168,8 +168,8 @@ namespace Minisoft1
                     {
                         //Pen blackPen = new Pen(Color.Black, 1);
                         //e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
-                        //Pen pen = new Pen(Color.Black, 1);
-                        //e.Graphics.DrawRectangle(pen, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
+                        Pen pen = new Pen(Color.Black, 1);
+                        e.Graphics.DrawRectangle(pen, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
                     }
 
                 }

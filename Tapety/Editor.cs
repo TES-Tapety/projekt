@@ -650,11 +650,11 @@ namespace Minisoft1
                 settings.blockCount = blocks.Count;
 
                 // pozicie okolo vyriesi algoritmus
-                //foreach (Block block in blocks)
-                //{
-                //    block.startX = block.x;
-                //    block.startY = block.y;
-                //}
+                foreach (Block block in blocks)
+                {
+                    block.startX = block.x;
+                    block.startY = block.y;
+                }
 
                 foreach (Block block in blocks)
                 {
@@ -663,7 +663,7 @@ namespace Minisoft1
                 }
 
                 settings.blocks = blocks;
-                settings.playground = mode2_playground;
+                settings.playground = playground;
                 settings.window_width = Size.Width;
                 settings.window_height = Size.Height;
 
