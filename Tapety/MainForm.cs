@@ -97,6 +97,7 @@ namespace Minisoft1
                 blockCount = count
             };
             gameForm = new GameForm(settings, this);
+            gameForm.ob = gameForm.generate_blocks();
 
             this.Hide();
             gameForm.Show();

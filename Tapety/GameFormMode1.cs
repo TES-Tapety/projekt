@@ -393,10 +393,10 @@ namespace Minisoft1
         }
         private void update_colors(Color color)
         {
-            color_lab1.BackColor = color_lab2.BackColor;
-            color_lab2.BackColor = color_lab3.BackColor;
-            color_lab3.BackColor = color_lab4.BackColor;
-            color_lab4.BackColor = color;
+            //color_lab1.BackColor = color_lab2.BackColor;
+            //color_lab2.BackColor = color_lab3.BackColor;
+            //color_lab3.BackColor = color_lab4.BackColor;
+            //color_lab4.BackColor = color;
         }
     }
 }

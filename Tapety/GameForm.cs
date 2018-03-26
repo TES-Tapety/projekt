@@ -6,9 +6,17 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 
+
+
 namespace Minisoft1
 {
-	public partial class GameForm : Form
+    public struct obdlznik
+    {
+        public int x, y;
+        public int posX, posY;
+    }
+
+    public partial class GameForm : Form
 	{
 		Settings settings;
 		Block[] blocks;
@@ -22,6 +30,7 @@ namespace Minisoft1
         int deltaX, deltaY;
         int old_indentX, old_indentY;
         int INDENT_X, INDENT_Y;
+        public obdlznik[] ob;
 
         public GameForm(Settings settings, MainForm mainForm)
 		{	
@@ -36,7 +45,8 @@ namespace Minisoft1
 			this.rnd = new Random();
             this.playground = new int[this.settings.rows, this.settings.cols];
             this.mainForm = mainForm;
-		    this.gridBlocks = new List<Block>();
+
+            this.gridBlocks = new List<Block>();
 		    this.colorLabels = new List<Label>();
 		    this.colorLabels.Add(color_lab1);
 		    this.colorLabels.Add(color_lab2);
@@ -94,25 +104,42 @@ namespace Minisoft1
             this.draw_game();
         }
 
-        public struct obdlznik
+        public obdlznik[] generate_blocks()
         {
-            public int x, y;
-            public int posX, posY;
+            ob = new obdlznik[this.settings.blockCount];
+            ob[0].x = this.settings.cols;
+            ob[0].y = this.settings.rows;
+            ob = rozdel(this.settings.blockCount, ob);
+            while (ob == null)
+            {
+                ob = new obdlznik[this.settings.blockCount];
+                ob[0].x = this.settings.cols;
+                ob[0].y = this.settings.rows;
+                ob = rozdel(this.settings.blockCount, ob);
+            }
+            return ob;
         }
 
         public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
         {        // funkcia
             bool spravne = false;
             bool jednotkovahrana = false;
+            obdl[0].posX = 0;
+            obdl[0].posY = 0;
             int r, s, t;                                                //nahodne premenne
             Random rnd = new Random();                                //vytvorenie random generatoru 
+            int rozdiel = 0;
+            int counter = 0;
+            // Console.WriteLine("posX: " + obdl[0].posX + " posY: " + obdl[0].posY + " x: " + obdl[0].x + " y: " + obdl[0].y);
             for (int i = 0; i < pocet_casti - 1; i++)
             {                   //ideme delit v kazdej iteracii cyklu 1 nahodnu cast na 2 mensie
                 while (!spravne)
                 {                                        //nie kazdu malu cast vieme rozdelit(taku co ma velkost jedna uz nerozdelime)
                                                          //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
                     r = rnd.Next(i + 1);                            //nahodne vyberieme, ze ktory utvar ideme delit
-                    s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku                                     
+                    s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku      
+                    counter++;
+                    if (counter == 40) return null;
                     if (s == 0)
                     {                                  //ak 0, tak ideme rezat na sirku
                         if ((obdl[r].x > 2) && (obdl[r].y > 1))
@@ -127,6 +154,9 @@ namespace Minisoft1
                                 obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
                                 obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
                                 obdl[r].x = t;                            //stary skratime o velkost noveho
+                                obdl[i + 1].posX = obdl[r].posX + t;
+                                obdl[i + 1].posY = obdl[r].posY;
+                                rozdiel = t;
                                 spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
                             }
                             else
@@ -137,6 +167,9 @@ namespace Minisoft1
                                     obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
                                     obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
                                     obdl[r].x = t;                            //stary skratime o velkost noveho
+                                    obdl[i + 1].posX = obdl[r].posX + t;
+                                    obdl[i + 1].posY = obdl[r].posY;
+                                    rozdiel = t;
                                     spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
                                 }
                             }
@@ -156,6 +189,9 @@ namespace Minisoft1
                                 obdl[i + 1].y = obdl[r].y - t;
                                 obdl[i + 1].x = obdl[r].x;
                                 obdl[r].y = t;
+                                obdl[i + 1].posX = obdl[r].posX;
+                                obdl[i + 1].posY = obdl[r].posY + t;
+                                rozdiel = t;
                                 spravne = true;
                             }
                             else
@@ -166,13 +202,18 @@ namespace Minisoft1
                                     obdl[i + 1].y = obdl[r].y - t;
                                     obdl[i + 1].x = obdl[r].x;
                                     obdl[r].y = t;
+                                    obdl[i + 1].posX = obdl[r].posX;
+                                    obdl[i + 1].posY = obdl[r].posY + t;
+                                    rozdiel = t;
                                     spravne = true;
                                 }
                             }
                         }
                     }
                 }
+                // Console.WriteLine("posX: " + obdl[i + 1].posX + " posY: " + obdl[i + 1].posY + " x: " + obdl[i + 1].x + " y: " + obdl[i + 1].y + " t: " + rozdiel);
                 spravne = false;                                //opat vratime na povodnu hodnotu, aby nam v dalsej iteracii for cyklu bezal aj while cyklus
+                counter = 0;
             }
             return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
         }
@@ -182,11 +223,6 @@ namespace Minisoft1
             Invalidate();
             this.AnotherGame.Hide();
             this.blocks = new Block[this.settings.blockCount];
-            obdlznik[] ob = new obdlznik[this.settings.blockCount];
-
-            ob[0].x = this.settings.cols;
-            ob[0].y = this.settings.rows;
-            ob = rozdel(this.settings.blockCount, ob);
 
             // sort by the ob.x and ob.y
             Array.Sort(ob, delegate (obdlznik o1, obdlznik o2) {
@@ -253,6 +289,8 @@ namespace Minisoft1
                 }
 
                 Block block = new Block(ix+1, x, y, W, H, this.settings.cell_size, color);
+                block.finalX = obdl.posX;
+                block.finalY = obdl.posY;
                 blocks[ix] = block;
                 ix += 1;
             }     
@@ -333,12 +371,27 @@ namespace Minisoft1
             //}
 		}
 
+        private void show_final_state_Click(object sender, EventArgs e)
+        {
+            
+            foreach (Block block in blocks)
+            {
+                block.x = INDENT_X + (block.finalX * settings.cell_size);
+                block.y = INDENT_Y + (block.finalY * settings.cell_size);
+                gridBlocks.Add(block);
+            }
+            
+            update_colors();
+            Invalidate();
+        }
+
         private void AnotherGame_Click(object sender, EventArgs e)
         {
-            this.Size = new Size((settings.rows * settings.cell_size), (settings.cols * settings.cell_size));
+            //this.Size = new Size((settings.rows * settings.cell_size), (settings.cols * settings.cell_size));
             this.showWin = false;
             this.gridBlocks = new List<Block>();
             update_colors();
+            generate_blocks();
             this.draw_game();
         }
 
