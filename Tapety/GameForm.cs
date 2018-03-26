@@ -12,6 +12,8 @@ namespace Minisoft1
 	{
 		Settings settings;
 		Block[] blocks;
+	    List<Block> gridBlocks;
+	    List<Label> colorLabels;
 		Block selected;
 		bool clicked, showWin;
 		Random rnd;
@@ -34,7 +36,19 @@ namespace Minisoft1
 			this.rnd = new Random();
             this.playground = new int[this.settings.rows, this.settings.cols];
             this.mainForm = mainForm;
-        }
+		    this.gridBlocks = new List<Block>();
+		    this.colorLabels = new List<Label>();
+		    this.colorLabels.Add(color_lab1);
+		    this.colorLabels.Add(color_lab2);
+		    this.colorLabels.Add(color_lab3);
+		    this.colorLabels.Add(color_lab4);
+		    this.colorLabels.Add(color_lab5);
+		    this.colorLabels.Add(color_lab6);
+		    this.colorLabels.Add(color_lab7);
+		    this.colorLabels.Add(color_lab8);
+		    this.colorLabels.Add(color_lab9);
+		    this.colorLabels.Add(color_lab10);
+		}
 
         private void GameForm_Resize(object sender, EventArgs e)
         {
@@ -323,6 +337,8 @@ namespace Minisoft1
         {
             this.Size = new Size((settings.rows * settings.cell_size), (settings.cols * settings.cell_size));
             this.showWin = false;
+            this.gridBlocks = new List<Block>();
+            update_colors();
             this.draw_game();
         }
 
@@ -416,9 +432,12 @@ namespace Minisoft1
                         }
                         if (return_to_start == false)
                         {
-                            update_colors(selected.color);
+                            if (!gridBlocks.Contains(selected))
+                            {
+                                gridBlocks.Add(selected);
+                                update_colors();
+                            }
                         }
-
                         // check game over
                         int num = 0;
                         for (int r = 0; r < this.settings.rows; r++)
@@ -459,6 +478,11 @@ namespace Minisoft1
                         selected.x = selected.startX;
                         selected.y = selected.startY;
                         selected.in_playground = false;
+                        if (gridBlocks.Contains(selected))
+                        {
+                            gridBlocks.Remove(selected);
+                            update_colors();
+                        }
                     }
                 }
                 else
@@ -476,6 +500,11 @@ namespace Minisoft1
                             if (playground[r, s] == selected.id)
                             {
                                 playground[r, s] = 0;
+                                if (gridBlocks.Contains(selected))
+                                {
+                                    gridBlocks.Remove(selected);
+                                    update_colors();
+                                }
                             }
                         }
                     }
@@ -494,12 +523,20 @@ namespace Minisoft1
             mainForm.Show();
         }
 
-	    private void update_colors(Color color)
+	    private void update_colors()
 	    {
-	        color_lab1.BackColor = color_lab2.BackColor;
-	        color_lab2.BackColor = color_lab3.BackColor;
-	        color_lab3.BackColor = color_lab4.BackColor;
-	        color_lab4.BackColor = color;
+	        for (int i=0 ; i<colorLabels.Count; i++)
+	        {
+	            if (i < gridBlocks.Count)
+	            {
+	                colorLabels[i].BackColor = gridBlocks[i].color;
+	            }
+	            else
+	            {
+	                colorLabels[i].BackColor = SystemColors.Control;
+	            }
+	            
+	        }
 	    }
     }
 }
