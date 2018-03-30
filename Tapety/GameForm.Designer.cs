@@ -85,6 +85,7 @@ namespace Minisoft1
             this.color_lab1.Name = "color_lab1";
             this.color_lab1.Size = new System.Drawing.Size(20, 20);
             this.color_lab1.TabIndex = 3;
+			this.color_lab1.Visible = false;
             // 
             // color_lab2
             // 
@@ -93,6 +94,7 @@ namespace Minisoft1
             this.color_lab2.Name = "color_lab2";
             this.color_lab2.Size = new System.Drawing.Size(20, 20);
             this.color_lab2.TabIndex = 4;
+			this.color_lab2.Visible = false;
             // 
             // color_lab3
             // 
@@ -101,6 +103,7 @@ namespace Minisoft1
             this.color_lab3.Name = "color_lab3";
             this.color_lab3.Size = new System.Drawing.Size(20, 20);
             this.color_lab3.TabIndex = 5;
+			this.color_lab3.Visible = false;
             // 
             // color_lab4
             // 
@@ -109,6 +112,7 @@ namespace Minisoft1
             this.color_lab4.Name = "color_lab4";
             this.color_lab4.Size = new System.Drawing.Size(20, 20);
             this.color_lab4.TabIndex = 6;
+			this.color_lab4.Visible = false;
             // 
             // color_lab5
             // 
@@ -117,6 +121,7 @@ namespace Minisoft1
             this.color_lab5.Name = "color_lab5";
             this.color_lab5.Size = new System.Drawing.Size(20, 20);
             this.color_lab5.TabIndex = 6;
+			this.color_lab5.Visible = false;
             // 
             // color_lab6
             // 
@@ -125,6 +130,7 @@ namespace Minisoft1
             this.color_lab6.Name = "color_lab6";
             this.color_lab6.Size = new System.Drawing.Size(20, 20);
             this.color_lab6.TabIndex = 6;
+			this.color_lab6.Visible = false;
             // 
             // color_lab7
             // 
@@ -133,30 +139,34 @@ namespace Minisoft1
             this.color_lab7.Name = "color_lab7";
             this.color_lab7.Size = new System.Drawing.Size(20, 20);
             this.color_lab7.TabIndex = 6;
+			this.color_lab7.Visible = false;
             // 
             // color_lab8
             // 
             this.color_lab8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab8.Location = new System.Drawing.Point(250, 326);
+            this.color_lab8.Location = new System.Drawing.Point(275, 326);
             this.color_lab8.Name = "color_lab8";
             this.color_lab8.Size = new System.Drawing.Size(20, 20);
             this.color_lab8.TabIndex = 6;
+			this.color_lab8.Visible = false;
             // 
             // color_lab9
             // 
             this.color_lab9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab9.Location = new System.Drawing.Point(250, 326);
+            this.color_lab9.Location = new System.Drawing.Point(300, 326);
             this.color_lab9.Name = "color_lab9";
             this.color_lab9.Size = new System.Drawing.Size(20, 20);
             this.color_lab9.TabIndex = 6;
+			this.color_lab9.Visible = false;
             // 
             // color_lab10
             // 
             this.color_lab10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab10.Location = new System.Drawing.Point(250, 326);
+            this.color_lab10.Location = new System.Drawing.Point(325, 326);
             this.color_lab10.Name = "color_lab10";
             this.color_lab10.Size = new System.Drawing.Size(20, 20);
             this.color_lab10.TabIndex = 6;
+			this.color_lab10.Visible = false;
             // 
             // text_lab1
             // 

@@ -37,6 +37,13 @@ namespace Minisoft1
             this.color_lab2 = new System.Windows.Forms.Label();
             this.color_lab3 = new System.Windows.Forms.Label();
             this.color_lab4 = new System.Windows.Forms.Label();
+            this.color_lab5 = new System.Windows.Forms.Label();
+            this.color_lab6 = new System.Windows.Forms.Label();
+            this.color_lab7 = new System.Windows.Forms.Label();
+            this.color_lab8 = new System.Windows.Forms.Label();
+            this.color_lab9 = new System.Windows.Forms.Label();
+            this.color_lab10 = new System.Windows.Forms.Label();
+            this.text_lab1 = new System.Windows.Forms.Label();
             this.show_final_state = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -74,39 +81,92 @@ namespace Minisoft1
             // 
             // color_lab1
             // 
-            this.color_lab1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab1.BackColor = System.Drawing.Color.Aqua;
-            this.color_lab1.Location = new System.Drawing.Point(450, 313);
+            this.color_lab1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab1.Location = new System.Drawing.Point(100, 326);
             this.color_lab1.Name = "color_lab1";
             this.color_lab1.Size = new System.Drawing.Size(20, 20);
-            this.color_lab1.TabIndex = 7;
+            this.color_lab1.TabIndex = 3;
             // 
             // color_lab2
             // 
-            this.color_lab2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab2.BackColor = System.Drawing.Color.Aqua;
-            this.color_lab2.Location = new System.Drawing.Point(425, 313);
+            this.color_lab2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab2.Location = new System.Drawing.Point(125, 326);
             this.color_lab2.Name = "color_lab2";
             this.color_lab2.Size = new System.Drawing.Size(20, 20);
-            this.color_lab2.TabIndex = 8;
+            this.color_lab2.TabIndex = 4;
             // 
             // color_lab3
             // 
-            this.color_lab3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab3.BackColor = System.Drawing.Color.Aqua;
-            this.color_lab3.Location = new System.Drawing.Point(400, 313);
+            this.color_lab3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab3.Location = new System.Drawing.Point(150, 326);
             this.color_lab3.Name = "color_lab3";
             this.color_lab3.Size = new System.Drawing.Size(20, 20);
-            this.color_lab3.TabIndex = 9;
+            this.color_lab3.TabIndex = 5;
             // 
             // color_lab4
             // 
-            this.color_lab4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.color_lab4.BackColor = System.Drawing.Color.Aqua;
-            this.color_lab4.Location = new System.Drawing.Point(375, 313);
+            this.color_lab4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab4.Location = new System.Drawing.Point(175, 326);
             this.color_lab4.Name = "color_lab4";
             this.color_lab4.Size = new System.Drawing.Size(20, 20);
-            this.color_lab4.TabIndex = 10;
+            this.color_lab4.TabIndex = 6;
+            // 
+            // color_lab5
+            // 
+            this.color_lab5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab5.Location = new System.Drawing.Point(200, 326);
+            this.color_lab5.Name = "color_lab5";
+            this.color_lab5.Size = new System.Drawing.Size(20, 20);
+            this.color_lab5.TabIndex = 6;
+            // 
+            // color_lab6
+            // 
+            this.color_lab6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab6.Location = new System.Drawing.Point(225, 326);
+            this.color_lab6.Name = "color_lab6";
+            this.color_lab6.Size = new System.Drawing.Size(20, 20);
+            this.color_lab6.TabIndex = 6;
+            // 
+            // color_lab7
+            // 
+            this.color_lab7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.color_lab7.Location = new System.Drawing.Point(250, 326);
+            this.color_lab7.Name = "color_lab7";
+            this.color_lab7.Size = new System.Drawing.Size(20, 20);
+            this.color_lab7.TabIndex = 6;
+            // 
+            // color_lab8
+            // 
+            this.color_lab8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.color_lab8.Location = new System.Drawing.Point(250, 326);
+            this.color_lab8.Name = "color_lab8";
+            this.color_lab8.Size = new System.Drawing.Size(20, 20);
+            this.color_lab8.TabIndex = 6;
+            // 
+            // color_lab9
+            // 
+            this.color_lab9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.color_lab9.Location = new System.Drawing.Point(250, 326);
+            this.color_lab9.Name = "color_lab9";
+            this.color_lab9.Size = new System.Drawing.Size(20, 20);
+            this.color_lab9.TabIndex = 6;
+            // 
+            // color_lab10
+            // 
+            this.color_lab10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.color_lab10.Location = new System.Drawing.Point(250, 326);
+            this.color_lab10.Name = "color_lab10";
+            this.color_lab10.Size = new System.Drawing.Size(20, 20);
+            this.color_lab10.TabIndex = 6;
+            // 
+            // text_lab1
+            // 
+            this.text_lab1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.text_lab1.Location = new System.Drawing.Point(10, 326);
+            this.text_lab1.Name = "text_lab1";
+            this.text_lab1.Size = new System.Drawing.Size(109, 23);
+            this.text_lab1.TabIndex = 3;
+            this.text_lab1.Text = "Postupnosť farieb";
             // 
             // show_final_state
             // 
@@ -131,6 +191,13 @@ namespace Minisoft1
             this.Controls.Add(this.color_lab2);
             this.Controls.Add(this.color_lab3);
             this.Controls.Add(this.color_lab4);
+            this.Controls.Add(this.color_lab5);
+            this.Controls.Add(this.color_lab6);
+            this.Controls.Add(this.color_lab7);
+            this.Controls.Add(this.color_lab8);
+            this.Controls.Add(this.color_lab9);
+            this.Controls.Add(this.color_lab10);
+            this.Controls.Add(this.text_lab1);
             this.Controls.Add(this.AnotherGame);
             this.Name = "GameFormMode2";
             this.Text = "Tapety";
@@ -153,6 +220,13 @@ namespace Minisoft1
         private System.Windows.Forms.Label color_lab2;
         private System.Windows.Forms.Label color_lab3;
         private System.Windows.Forms.Label color_lab4;
+        private System.Windows.Forms.Label color_lab5;
+        private System.Windows.Forms.Label color_lab6;
+        private System.Windows.Forms.Label color_lab7;
+        private System.Windows.Forms.Label color_lab8;
+        private System.Windows.Forms.Label color_lab9;
+        private System.Windows.Forms.Label color_lab10;
+        private System.Windows.Forms.Label text_lab1;
         private System.Windows.Forms.Button show_final_state;
     }
 }

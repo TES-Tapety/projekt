@@ -21,6 +21,8 @@ namespace Minisoft1
         int[,] playground;
         int game_level_index;
         int max_game_level_index;
+        List<Block> gridBlocks;
+        List<Label> colorLabels;
         MainForm mainForm;
         SaveLoadManager sm;
         Dictionary<int, Color> idcolor_map;
@@ -38,6 +40,18 @@ namespace Minisoft1
             this.clicked = false;
             this.showWin = false;
             this.rnd = new Random();
+            this.gridBlocks = new List<Block>();
+            this.colorLabels = new List<Label>();
+            this.colorLabels.Add(color_lab1);
+            this.colorLabels.Add(color_lab2);
+            this.colorLabels.Add(color_lab3);
+            this.colorLabels.Add(color_lab4);
+            this.colorLabels.Add(color_lab5);
+            this.colorLabels.Add(color_lab6);
+            this.colorLabels.Add(color_lab7);
+            this.colorLabels.Add(color_lab8);
+            this.colorLabels.Add(color_lab9);
+            this.colorLabels.Add(color_lab10);
 
             this.mainForm = mainForm;
         }
@@ -347,10 +361,19 @@ namespace Minisoft1
                         {
                             selected.x = selected.startX;
                             selected.y = selected.startY;
+                            if (gridBlocks.Contains(selected))
+                            {
+                                gridBlocks.Remove(selected);
+                                update_colors();
+                            }
                         }
                         else
                         {
-                            update_colors(selected.color);
+                            if (!gridBlocks.Contains(selected))
+                            {
+                                gridBlocks.Add(selected);
+                                update_colors();
+                            }
                             if (lastMoved.Contains(selected) == false)
                             {
                                 lastMoved.Add(selected);
@@ -361,6 +384,11 @@ namespace Minisoft1
                     {
                         selected.x = selected.startX;
                         selected.y = selected.startY;
+                        if (gridBlocks.Contains(selected))
+                        {
+                            gridBlocks.Remove(selected);
+                            update_colors();
+                        }
 
                         // moved out of the playground
                         for (int r = 0; r < this.settings.rows; r++)
@@ -412,6 +440,8 @@ namespace Minisoft1
             // TODO: load another level
             game_level_index++;
             showWin = false;
+            this.gridBlocks = new List<Block>();
+            update_colors();
 
             var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
             
@@ -443,12 +473,20 @@ namespace Minisoft1
             Invalidate();
         }
 
-        private void update_colors(Color color)
+        private void update_colors()
         {
-            color_lab1.BackColor = color_lab2.BackColor;
-            color_lab2.BackColor = color_lab3.BackColor;
-            color_lab3.BackColor = color_lab4.BackColor;
-            color_lab4.BackColor = color;
+            for (int i=0 ; i<colorLabels.Count; i++)
+            {
+                if (i < gridBlocks.Count)
+                {
+                    colorLabels[i].BackColor = gridBlocks[i].color;
+                }
+                else
+                {
+                    colorLabels[i].BackColor = SystemColors.Control;
+                }
+	            
+            }
         }
     }
 }

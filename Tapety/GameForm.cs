@@ -21,6 +21,7 @@ namespace Minisoft1
 		Settings settings;
 		Block[] blocks;
 	    List<Block> gridBlocks;
+	    List<Block> positionedBlocks;
 	    List<Label> colorLabels;
 		Block selected;
 		bool clicked, showWin;
@@ -47,6 +48,7 @@ namespace Minisoft1
             this.mainForm = mainForm;
 
             this.gridBlocks = new List<Block>();
+		    this.positionedBlocks = new List<Block>();
 		    this.colorLabels = new List<Label>();
 		    this.colorLabels.Add(color_lab1);
 		    this.colorLabels.Add(color_lab2);
@@ -236,63 +238,70 @@ namespace Minisoft1
             });
 
             // algoritmus rozmiestenia okolo hracej plochy
-            int ix = 0;
-            int gap = settings.cell_size / 2;
-            int px = gap;
-            int py = (this.settings.rows * this.settings.cell_size) + gap*2;
-
-            int posunX_vedla = gap;
-            int posunX_dole = gap;
-
-            int posunY_dole_max = 0;
-
-            int x = gap;
-            int y = gap;
+            int ix = 0;       
+            int posX = INDENT_X - settings.cell_size ;
+            int posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+            Rectangle boundRect = new Rectangle(0, INDENT_Y + this.settings.cell_size * this.settings.cols, 2000, 10);
 
             foreach (obdlznik obdl in ob)
             {
+                int round = 0;
                 Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 int W = obdl.x; 
                 int H = obdl.y;
                 int width = this.settings.cell_size * W;
                 int height = this.settings.cell_size * H;
 
-                // na pravo od hracej plochy
-                if (height >= width)
+                while (true)
                 {
-                    x = px + posunX_vedla;
-                    y = gap;
-
-                    posunX_vedla += width + gap;
-                }
-                // pod hraciu plochu
-                else
-                {
-                    // placing out of window WIDTH
-                    if ((gap+ width + posunX_dole) > (this.settings.cols * this.settings.cell_size) + 100)
+                   
+                    Rectangle r1 = new Rectangle(posX, posY, width, height);
+                    Rectangle r2 = new Rectangle(INDENT_X, INDENT_Y,
+                        settings.cols * settings.cell_size, settings.rows * settings.cell_size);
+                    
+                    Boolean free = true;
+                    foreach (Block b in positionedBlocks)
                     {
-                        py += posunY_dole_max + gap;
-                        posunY_dole_max = 0;
-                        posunX_dole = gap;
+                        Rectangle r = new Rectangle(b.x , b.y, b.width, b.height);
+                        if (r1.IntersectsWith(r))
+                        {
+                            free = false;
+                        }
                     }
-
-                    // max height
-                    if (height > posunY_dole_max)
+                    if (!(r1.IntersectsWith(r2)) && free && !(r1.IntersectsWith(boundRect)))
                     {
-                        posunY_dole_max = height;
+                        Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, color);
+                        block.finalX = obdl.posX;
+                        block.finalY = obdl.posY;
+                        blocks[ix] = block;
+                        ix += 1;
+                        posX = INDENT_X - settings.cell_size;
+                        posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+                        positionedBlocks.Add(block);
+                        //Debug.WriteLine("UMIESTNUJEM");
+                        break;
                     }
-
-                    x = posunX_dole;
-                    y = py;
-
-                    posunX_dole += width + gap;
-                }
-
-                Block block = new Block(ix+1, x, y, W, H, this.settings.cell_size, color);
-                block.finalX = obdl.posX;
-                block.finalY = obdl.posY;
-                blocks[ix] = block;
-                ix += 1;
+                    else
+                    {
+                        if (posY > INDENT_Y - settings.cell_size * round)
+                        {
+                            posY -= settings.cell_size;
+                            //Debug.WriteLine("idem hore");
+                        }
+                        else if (posX + width < INDENT_X+settings.cols * settings.cell_size)
+                        {
+                            posX += settings.cell_size;
+                            //Debug.WriteLine("idem doprava");
+                        }
+                        else
+                        {
+                            round += 1;
+                            posX = INDENT_X - (1+round)*settings.cell_size;
+                            posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+                        }
+                        //Debug.WriteLine("x" + " " + posX + " / " + "y" + " "+ posY + " "+ "round"+round);
+                    }
+                } 
             }     
         }      
 
@@ -310,6 +319,13 @@ namespace Minisoft1
 					e.Graphics.DrawRectangle(blackPen, i*this.settings.cell_size+INDENT_X, j*this.settings.cell_size+INDENT_Y, this.settings.cell_size, this.settings.cell_size);
 				}
 			}
+		    
+		    /*Rectangle r2 = new Rectangle(INDENT_X - 5,
+		        INDENT_Y - 5,
+		        settings.rows * settings.cell_size + 10, settings.cols * settings.cell_size + 10);
+		    Pen gPen = new Pen(Color.Gold, 1);
+		    e.Graphics.DrawRectangle(gPen, r2);*/
+		    
             // draw blocks
             foreach(Block block in blocks)
 			{
@@ -373,12 +389,14 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            
             foreach (Block block in blocks)
             {
                 block.x = INDENT_X + (block.finalX * settings.cell_size);
                 block.y = INDENT_Y + (block.finalY * settings.cell_size);
-                gridBlocks.Add(block);
+                if (!gridBlocks.Contains(block))
+                {
+                    gridBlocks.Add(block);   
+                }
             }
             
             update_colors();
@@ -397,9 +415,6 @@ namespace Minisoft1
 
         void GameFormMouseUp(object sender, MouseEventArgs e)
         {
-            //if (e.Button == MouseButtons.Left)
-            //{
-
             if (selected != null)
             {
                 clicked = false;
@@ -531,6 +546,7 @@ namespace Minisoft1
                         selected.x = selected.startX;
                         selected.y = selected.startY;
                         selected.in_playground = false;
+                        Debug.WriteLine("pripad1");
                         if (gridBlocks.Contains(selected))
                         {
                             gridBlocks.Remove(selected);
@@ -543,6 +559,11 @@ namespace Minisoft1
                     selected.x = selected.startX;
                     selected.y = selected.startY;
                     selected.in_playground = false;
+                    if (gridBlocks.Contains(selected))
+                    {
+                        gridBlocks.Remove(selected);
+                        update_colors();
+                    }
 
                     // moved out of the playground
                     for (int r = 0; r < this.settings.rows; r++)
@@ -553,11 +574,6 @@ namespace Minisoft1
                             if (playground[r, s] == selected.id)
                             {
                                 playground[r, s] = 0;
-                                if (gridBlocks.Contains(selected))
-                                {
-                                    gridBlocks.Remove(selected);
-                                    update_colors();
-                                }
                             }
                         }
                     }
@@ -583,10 +599,12 @@ namespace Minisoft1
 	            if (i < gridBlocks.Count)
 	            {
 	                colorLabels[i].BackColor = gridBlocks[i].color;
+	                colorLabels[i].Visible = true;
 	            }
 	            else
 	            {
 	                colorLabels[i].BackColor = SystemColors.Control;
+	                colorLabels[i].Visible = false;
 	            }
 	            
 	        }
