@@ -29,6 +29,9 @@ namespace Minisoft1
         Point delta;
         string path = "mode2";
         List<Block> lastMoved = new List<Block>();
+        int old_indentX, old_indentY;
+        int INDENT_X, INDENT_Y;
+        int deltaX, deltaY;
 
         public GameFormMode2(MainForm mainForm)
         {
@@ -56,6 +59,34 @@ namespace Minisoft1
             this.mainForm = mainForm;
         }
 
+        private void GameFormMode2_Resize(object sender, EventArgs e)
+        {
+            Control control = (Control)sender;
+
+            // loaded in shown
+            old_indentX = INDENT_X;
+            old_indentY = INDENT_Y;
+
+            this.INDENT_X = control.Size.Width - (settings.cols * settings.cell_size) - 300;
+            this.INDENT_Y = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+
+            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
+
+            if (this.settings.blocks != null)
+            {
+                foreach (Block block in this.settings.blocks)
+                {
+                    if (block.in_playground)
+                    {
+                        block.x += INDENT_X - old_indentX;
+                        block.y += INDENT_Y - old_indentY;
+                    }
+                }
+            }
+
+            Invalidate();
+        }
+
         private void GameFormMode2_Shown(object sender, EventArgs e)
         {
             // load level - remember how many levels
@@ -74,6 +105,9 @@ namespace Minisoft1
                 string fname = $"{files[game_level_index]}";
                 this.settings = sm.load(fname);
 
+
+                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 100;
+                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 54 - 100;
 
                 // rozmiestni okolo hracej plochy
                 // TODO: musi sa zlepsit !!!!
@@ -134,61 +168,56 @@ namespace Minisoft1
                 }
 
                 this.playground = new int[this.settings.rows, this.settings.cols];
-                this.Size = new Size(settings.window_width, settings.window_height);                
-                this.draw_game();
+                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+                this.OnResize(EventArgs.Empty);
+
+                Invalidate();
+                this.AnotherGame.Hide();
             }
         }
 
         private void GameFormMode2_Paint(object sender, PaintEventArgs e)
         {
-            // draw playing area
-            // it goes first by the colls - X
-            
-            for (int i = 0; i < this.settings.cols; i++)
-            {
-                for (int j = 0; j < this.settings.rows; j++)
-                {
-                    Pen blackPen = new Pen(Color.Black, 1);
-                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
-                }
-            }
-            
-            // do st
+
+            // map block id to its color
             foreach (Block block in this.settings.blocks)
-            {
-                block.Kresli(e.Graphics);
+            {                
                 if (!idcolor_map.ContainsKey(block.id))
                 {
                     idcolor_map.Add(block.id, block.color);
-                }                
+                }
             }
 
-            // do st
-            int indentX = this.settings.cols * this.settings.cell_size;
+            Control control = (Control)sender;
+            int local_indentX = control.Size.Width - 300 + settings.cell_size;
+            int local_indentY = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+
             for (int i = 0; i < this.settings.cols; i++)
             {
                 for (int j = 0; j < this.settings.rows; j++)
                 {
+                    // draw playing area
+                    Pen blackPen = new Pen(Color.Black, 1);
+                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X, j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
+
+                    // draw final state example area
+                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
 
                     if (idcolor_map.ContainsKey(settings.playground[j, i]))
                     {
                         Color c = idcolor_map[settings.playground[j, i]];
                         Brush brush = new SolidBrush(c);
-                        e.Graphics.FillRectangle(brush, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
-
-
-                    }
-                    else
-                    {
-                        //Pen blackPen = new Pen(Color.Black, 1);
-                        //e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
-                        Pen pen = new Pen(Color.Black, 1);
-                        e.Graphics.DrawRectangle(pen, i * this.settings.cell_size + (indentX + this.settings.cell_size), j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
+                        e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
                     }
 
                 }
             }
 
+            // draw blocks last
+            foreach (Block block in this.settings.blocks)
+            {
+                block.Kresli(e.Graphics);
+            }
 
             if (showWin)
             {
@@ -203,13 +232,6 @@ namespace Minisoft1
             }     
         }
 
-        void draw_game()
-        {
-            Invalidate();
-            this.AnotherGame.Hide();
-
-        }
-
         private void GameFormMode2_MouseDown(object sender, MouseEventArgs e)
         {
             //for (int i = 0; i < settings.blocks.Count; i++)
@@ -220,8 +242,9 @@ namespace Minisoft1
                     if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
                     {
                         // remember selected block and clicked coords
-                        selected = settings.blocks[i];                       
-                        if ((e.X <= settings.cols * this.settings.cell_size) && (e.Y <= settings.rows * this.settings.cell_size))
+                        selected = settings.blocks[i];
+                        if ((selected.x >= INDENT_X  && selected.x < INDENT_X + (this.settings.cols * this.settings.cell_size)) &&
+                            (selected.y >= INDENT_Y  && selected.y < INDENT_Y + (this.settings.rows * this.settings.cell_size)))
                         {
                             if (lastMoved.Last() != selected)
                             {
@@ -276,12 +299,43 @@ namespace Minisoft1
             {
                 if (selected != null)
                 {
+                    clicked = false;
+                    int half_size = settings.cell_size / 2;
 
-                    if ((selected.x >= 0 && selected.x < this.settings.cols * this.settings.cell_size) &&
-                        (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
+                    if ((selected.x >= 0 + INDENT_X - half_size  && selected.x < INDENT_X + half_size  + this.settings.cols * this.settings.cell_size) &&
+                        (selected.y >= 0 + INDENT_Y - half_size  && selected.y < INDENT_Y + half_size  + this.settings.rows * this.settings.cell_size))
                     {
-                        selected.x = (selected.x / this.settings.cell_size) * this.settings.cell_size;
-                        selected.y = (selected.y / this.settings.cell_size) * this.settings.cell_size;
+                        // suradnice bez odsunutia
+                        var noindentX = (selected.x - INDENT_X);
+                        var noindentY = (selected.y - INDENT_Y);
+
+                        // doskakovanie
+                        int dx = noindentX % this.settings.cell_size;
+                        int dy = noindentY % this.settings.cell_size;
+
+
+                        // dole v pravo
+                        if (dx > half_size && dy > half_size)
+                        {
+                            noindentX += settings.cell_size - dx;
+                            noindentY += settings.cell_size - dy;
+                        }
+                        // hore v pravo
+                        else if (dx > half_size && dy <= half_size)
+                        {
+                            noindentX += settings.cell_size - dx;
+                        }
+                        // dole v lavo
+                        else if (dx <= half_size && dy > half_size)
+                        {
+                            noindentY += settings.cell_size - dy;
+                        }
+
+                        // konecny prepocet doskakovania
+                        selected.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
+                        selected.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
+
+                        selected.in_playground = true;
 
                         // moved same object
                         for (int r = 0; r < this.settings.rows; r++)
@@ -295,9 +349,10 @@ namespace Minisoft1
                                 }
                             }
                         }
+
                         // playing
-                        int fromX = selected.x / this.settings.cell_size;
-                        int fromY = selected.y / this.settings.cell_size;
+                        int fromX = noindentX / this.settings.cell_size;
+                        int fromY = noindentY / this.settings.cell_size;
 
                         int toX = (selected.width / this.settings.cell_size) + fromX;
                         int toY = (selected.height / this.settings.cell_size) + fromY;
@@ -346,6 +401,15 @@ namespace Minisoft1
                             // game over -- filled all blocks
                             if (num == 0)
                             {
+                                for (int r = 0; r < this.settings.rows; r++)
+                                {
+                                    for (int s = 0; s < this.settings.cols; s++)
+                                    {
+                                        // empty place aby sa nam resetla po vyhrati matica na nuly
+                                        playground[r, s] = 0;
+                                    }
+
+                                }
                                 AnotherGame.Show();
                                 showWin = true;
                             }
@@ -403,6 +467,8 @@ namespace Minisoft1
                             }
                         }
                     }
+                    deltaX = 0;
+                    deltaY = 0;
                     selected = null;
                     Invalidate();
                 }
@@ -452,8 +518,7 @@ namespace Minisoft1
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
-
-                this.draw_game();
+                this.AnotherGame.Hide();
             }
             else
             {
@@ -465,11 +530,29 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            foreach (Block block in this.settings.blocks)
+            //foreach (Block block in settings.blocks)
+            //{
+            //    block.x = INDENT_X + (block.finalX * settings.cell_size);
+            //    block.y = INDENT_Y + (block.finalY * settings.cell_size);
+
+            //    if (!gridBlocks.Contains(block))
+            //    {
+            //        gridBlocks.Add(block);
+            //    }
+            //}
+
+            for (int i=0; i < settings.blocks.Count; i++)
             {
-                block.x = block.finalX * settings.cell_size;
-                block.y = block.finalY * settings.cell_size;
+                settings.blocks[i].x = INDENT_X + (settings.blocks[i].finalX * settings.cell_size);
+                settings.blocks[i].y = INDENT_Y + (settings.blocks[i].finalY * settings.cell_size);
+
+                if (!gridBlocks.Contains(settings.blocks[i]))
+                {
+                    gridBlocks.Add(settings.blocks[i]);
+                }
             }
+
+            update_colors();
             Invalidate();
         }
 

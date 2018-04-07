@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -25,8 +26,8 @@ namespace Minisoft1
         Dictionary<int, Color> idcolor_map;
         string path = "mode1";
 
-        const int INDENT_X = 0;
-        const int INDENT_Y = 0;
+        int old_indentX, old_indentY;
+        int INDENT_X, INDENT_Y;
 
         int deltaX, deltaY;
 
@@ -40,6 +41,34 @@ namespace Minisoft1
             this.rnd = new Random();
             this.sm = new SaveLoadManager();
             this.mainForm = mainForm;
+        }
+
+        private void GameFormMode1_Resize(object sender, EventArgs e)
+        {
+            Control control = (Control)sender;
+
+            // loaded in shown
+            old_indentX = INDENT_X;
+            old_indentY = INDENT_Y;
+
+            this.INDENT_X = control.Size.Width - (settings.cols * settings.cell_size) - 100;
+            this.INDENT_Y = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+
+            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
+
+            if (this.settings.blocks != null)
+            {
+                foreach (Block block in this.settings.blocks)
+                {
+                    if (block.in_playground)
+                    {
+                        block.x += INDENT_X - old_indentX;
+                        block.y += INDENT_Y - old_indentY;
+                    }
+                }
+            }
+
+            Invalidate();
         }
 
         private void GameFormMode1_Shown(object sender, EventArgs e)
@@ -60,66 +89,71 @@ namespace Minisoft1
                 string fname = $"{files[game_level_index]}";  // first inde starts from 0
                 this.settings = sm.load(fname);
 
+                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 100;
+                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 54 - 100;
+
                 // rozmiestni okolo hracej plochy
                 // TODO: musi sa zlepsit !!!!
 
-                int gap = 5;
-                int px = (this.settings.cols * this.settings.cell_size) + gap;
-                int py = (this.settings.rows * this.settings.cell_size) + gap;
+                //int gap = 5;
+                //int px = (this.settings.cols * this.settings.cell_size) + gap;
+                //int py = (this.settings.rows * this.settings.cell_size) + gap;
 
-                int posunX_vedla = gap;
-                int posunX_dole = gap;
-                int posunY_dole_max = 0;
+                //int posunX_vedla = gap;
+                //int posunX_dole = gap;
+                //int posunY_dole_max = 0;
 
-                int x, y;
+                //int x, y;
 
-                foreach (Block block in settings.blocks)
-                {
+                //foreach (Block block in settings.blocks)
+                //{
 
-                    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                //    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-                    int width = this.settings.cell_size * block.W;
-                    int height = this.settings.cell_size * block.H;
+                //    int width = this.settings.cell_size * block.W;
+                //    int height = this.settings.cell_size * block.H;
 
-                    // na pravo od hracej plochy
-                    if (height >= width)
-                    {
-                        x = px + posunX_vedla;
-                        y = 0;
+                //    // na pravo od hracej plochy
+                //    if (height >= width)
+                //    {
+                //        x = px + posunX_vedla;
+                //        y = 0;
 
-                        posunX_vedla += width + gap;
-                    }
-                    // pod hraciu plochu
-                    else
-                    {
-                        // placing out of window WIDTH
-                        if ((gap + width + posunX_dole) > this.ClientRectangle.Width)
-                        {
-                            py += posunY_dole_max + gap;
-                            posunY_dole_max = 0;
-                            posunX_dole = gap;
-                        }
+                //        posunX_vedla += width + gap;
+                //    }
+                //    // pod hraciu plochu
+                //    else
+                //    {
+                //        // placing out of window WIDTH
+                //        if ((gap + width + posunX_dole) > this.ClientRectangle.Width)
+                //        {
+                //            py += posunY_dole_max + gap;
+                //            posunY_dole_max = 0;
+                //            posunX_dole = gap;
+                //        }
 
-                        // max height
-                        if (height > posunY_dole_max)
-                        {
-                            posunY_dole_max = height;
-                        }
+                //        // max height
+                //        if (height > posunY_dole_max)
+                //        {
+                //            posunY_dole_max = height;
+                //        }
 
-                        x = posunX_dole;
-                        y = py;
+                //        x = posunX_dole;
+                //        y = py;
 
-                        posunX_dole += width + gap;
-                    }
+                //        posunX_dole += width + gap;
+                //    }
 
-                    block.x = x;
-                    block.y = y;
-                    block.startX = x;                    
-                    block.startY = y;
-                }
+                //    block.x = x;
+                //    block.y = y;
+                //    block.startX = x;                    
+                //    block.startY = y;
+                //}
 
                 this.playground = new int[this.settings.rows, this.settings.cols];
-                this.Size = new Size(settings.window_width, settings.window_height);
+                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+                this.OnResize(EventArgs.Empty);
+
                 Invalidate();
                 this.AnotherGame.Hide();
             }
@@ -135,7 +169,7 @@ namespace Minisoft1
                 for (int j = 0; j < this.settings.rows; j++)
                 {
                     Pen blackPen = new Pen(Color.Black, 1);
-                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size, j * this.settings.cell_size, this.settings.cell_size, this.settings.cell_size);
+                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X, j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
                 }
             }
 
@@ -236,11 +270,20 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            foreach (Block block in this.settings.blocks)
+            foreach (Block block in settings.blocks)
             {
-                block.x = block.finalX * settings.cell_size;
-                block.y = block.finalY * settings.cell_size;
+                block.x = INDENT_X + (block.finalX * settings.cell_size);
+                block.y = INDENT_Y + (block.finalY * settings.cell_size);
+
+                // TODO: chyba gridBlocks
+                //if (!gridBlocks.Contains(block))
+                //{
+                //    gridBlocks.Add(block);   
+                //}
             }
+
+            // TODO: chyba update_colors
+            //update_colors();
             Invalidate();
         }
 
@@ -251,12 +294,43 @@ namespace Minisoft1
             {
                 if (selected != null)
                 {
+                    clicked = false;
+                    int half_size = settings.cell_size / 2;
 
-                    if ((selected.x >= 0 && selected.x < this.settings.cols * this.settings.cell_size) &&
-                        (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
+                    if ((selected.x >= INDENT_X - half_size && selected.x < INDENT_X + half_size + (this.settings.cols * this.settings.cell_size)) &&
+                        (selected.y >= INDENT_Y - half_size && selected.y < INDENT_Y + half_size + (this.settings.rows * this.settings.cell_size)))
                     {
-                        selected.x = (selected.x / this.settings.cell_size) * this.settings.cell_size;
-                        selected.y = (selected.y / this.settings.cell_size) * this.settings.cell_size;
+                        // suradnice bez odsunutia
+                        var noindentX = (selected.x - INDENT_X);
+                        var noindentY = (selected.y - INDENT_Y);
+
+                        // doskakovanie
+                        int dx = noindentX % this.settings.cell_size;
+                        int dy = noindentY % this.settings.cell_size;
+
+
+                        // dole v pravo
+                        if (dx > half_size && dy > half_size)
+                        {
+                            noindentX += settings.cell_size - dx;
+                            noindentY += settings.cell_size - dy;
+                        }
+                        // hore v pravo
+                        else if (dx > half_size && dy <= half_size)
+                        {
+                            noindentX += settings.cell_size - dx;
+                        }
+                        // dole v lavo
+                        else if (dx <= half_size && dy > half_size)
+                        {
+                            noindentY += settings.cell_size - dy;
+                        }
+
+                        // konecny prepocet doskakovania
+                        selected.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
+                        selected.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
+
+                        selected.in_playground = true;
 
                         // moved same object
                         for (int r = 0; r < this.settings.rows; r++)
@@ -271,8 +345,10 @@ namespace Minisoft1
                             }
                         }
                         // playing
-                        int fromX = selected.x / this.settings.cell_size;
-                        int fromY = selected.y / this.settings.cell_size;
+                        int fromX = noindentX / this.settings.cell_size;
+                        int fromY = noindentY / this.settings.cell_size;
+
+                        Console.WriteLine($"{INDENT_X} {INDENT_Y}, {selected.x} {selected.y}");
 
                         int toX = (selected.width / this.settings.cell_size) + fromX;
                         int toY = (selected.height / this.settings.cell_size) + fromY;
@@ -299,8 +375,17 @@ namespace Minisoft1
                                     }
                                 }
                             }
+                            if (return_to_start == false)
+                            {
+                                // TODO: chyba gridBlocks
 
-                            // check if game is over
+                                //if (!gridBlocks.Contains(selected))
+                                //{
+                                //    gridBlocks.Add(selected);
+                                //    update_colors();
+                                //}
+                            }
+                            // check game over
                             int num = 0;
                             for (int r = 0; r < this.settings.rows; r++)
                             {
@@ -328,7 +413,6 @@ namespace Minisoft1
                                 showWin = true;
                                 AnotherGame.Show();
                             }
-
                         }
                         else
                         {
@@ -340,16 +424,32 @@ namespace Minisoft1
                         {
                             selected.x = selected.startX;
                             selected.y = selected.startY;
-                        }
-                        else
-                        {
-                            update_colors(selected.color);
+                            selected.in_playground = false;
+
+                            
+
+                            Debug.WriteLine("pripad1");
+
+                            // TODO: chyba gridBlocks
+                            //if (gridBlocks.Contains(selected))
+                            //{
+                            //    gridBlocks.Remove(selected);
+                            //    update_colors();
+                            //}
                         }
                     }
                     else
                     {
                         selected.x = selected.startX;
                         selected.y = selected.startY;
+                        selected.in_playground = false;
+
+                        // TODO: chyba gridBlocks
+                        //if (gridBlocks.Contains(selected))
+                        //{
+                        //    gridBlocks.Remove(selected);
+                        //    update_colors();
+                        //}
 
                         // moved out of the playground
                         for (int r = 0; r < this.settings.rows; r++)

@@ -206,6 +206,7 @@ namespace Minisoft1
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseUp);
+            this.Resize += new System.EventHandler(this.GameFormMode2_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
