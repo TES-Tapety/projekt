@@ -209,12 +209,11 @@ namespace Minisoft1
                         Brush brush = new SolidBrush(c);
                         e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
                     }
-
                 }
             }
 
             // draw blocks last
-            foreach (Block block in this.settings.blocks)
+            foreach (Block block in settings.blocks)
             {
                 block.Kresli(e.Graphics);
             }
@@ -276,19 +275,9 @@ namespace Minisoft1
         {
             if (clicked)
             {
-                int dx = e.X - delta.X;
-                int dy = e.Y - delta.Y;
-
-                // if in window size
-                //if (dx > 0 && dx + selected.width < this.ClientSize.Width)
-                //{
-                //    if (dy > 0 && dy + selected.height < this.ClientSize.Height)
-                //    {
-                        selected.x = dx;
-                        selected.y = dy;
-                        Invalidate();
-                //    }
-                //}
+                selected.x = e.X - delta.X;
+                selected.y = e.Y - delta.Y;
+                Invalidate();
             }
         }
 
@@ -350,14 +339,12 @@ namespace Minisoft1
                             }
                         }
 
-                        // playing
+                        // moved block - check if in playground and mark or rewrite ids in playground
                         int fromX = noindentX / this.settings.cell_size;
                         int fromY = noindentY / this.settings.cell_size;
 
                         int toX = (selected.width / this.settings.cell_size) + fromX;
                         int toY = (selected.height / this.settings.cell_size) + fromY;
-
-                        bool return_to_start = false;
 
                         // if in playground borders
                         if ((toX <= settings.cols) && (toY <= settings.rows))
@@ -365,12 +352,23 @@ namespace Minisoft1
                             // set ocupied space to selected block id
                             foreach (Block block in this.settings.blocks)
                             {
-                                fromX = block.x / this.settings.cell_size;
-                                fromY = block.y / this.settings.cell_size;
+                                
+                                // ak je uz v ploche odpocitaj INDENT
+                                if (block.in_playground)
+                                {
+                                    fromX = (block.x - INDENT_X) / this.settings.cell_size;
+                                    fromY = (block.y - INDENT_Y) / this.settings.cell_size;
+                                }
+                                else
+                                {
+                                    fromX = block.x  / this.settings.cell_size;
+                                    fromY = block.y / this.settings.cell_size;
+                                }
 
                                 toX = (block.width / this.settings.cell_size) + fromX;
                                 toY = (block.height / this.settings.cell_size) + fromY;
 
+                                // prepise sa playground podla aktualnych tapiet
                                 if ((toX <= settings.cols) && (toY <= settings.rows))
                                 {
                                     for (int r = fromY; r < toY; r++)
@@ -414,25 +412,8 @@ namespace Minisoft1
                                 showWin = true;
                             }
 
-                        }
-                        else
-                        {
-                            return_to_start = true;
-                        }
+                            // show block color 
 
-                        // move to start position
-                        if (return_to_start)
-                        {
-                            selected.x = selected.startX;
-                            selected.y = selected.startY;
-                            if (gridBlocks.Contains(selected))
-                            {
-                                gridBlocks.Remove(selected);
-                                update_colors();
-                            }
-                        }
-                        else
-                        {
                             if (!gridBlocks.Contains(selected))
                             {
                                 gridBlocks.Add(selected);
@@ -442,6 +423,20 @@ namespace Minisoft1
                             {
                                 lastMoved.Add(selected);
                             }
+
+                        }
+                        else
+                        {
+                            // return to start
+                            selected.x = selected.startX;
+                            selected.y = selected.startY;
+                            if (gridBlocks.Contains(selected))
+                            {
+                                gridBlocks.Remove(selected);
+                                update_colors();
+                            }
+
+                            selected.in_playground = false;
                         }
                     }
                     else
@@ -453,6 +448,8 @@ namespace Minisoft1
                             gridBlocks.Remove(selected);
                             update_colors();
                         }
+
+                        selected.in_playground = false;
 
                         // moved out of the playground
                         for (int r = 0; r < this.settings.rows; r++)
@@ -530,17 +527,6 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            //foreach (Block block in settings.blocks)
-            //{
-            //    block.x = INDENT_X + (block.finalX * settings.cell_size);
-            //    block.y = INDENT_Y + (block.finalY * settings.cell_size);
-
-            //    if (!gridBlocks.Contains(block))
-            //    {
-            //        gridBlocks.Add(block);
-            //    }
-            //}
-
             for (int i=0; i < settings.blocks.Count; i++)
             {
                 settings.blocks[i].x = INDENT_X + (settings.blocks[i].finalX * settings.cell_size);
@@ -549,10 +535,12 @@ namespace Minisoft1
                 if (!gridBlocks.Contains(settings.blocks[i]))
                 {
                     gridBlocks.Add(settings.blocks[i]);
+                    lastMoved.Add(settings.blocks[i]);
                 }
             }
 
             update_colors();
+
             Invalidate();
         }
 
