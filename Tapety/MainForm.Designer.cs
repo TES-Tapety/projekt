@@ -6,6 +6,9 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
+using Glass;
+
 namespace Minisoft1
 {
 	partial class MainForm
@@ -17,7 +20,7 @@ namespace Minisoft1
 		private System.Windows.Forms.Label TapetyLabel;
 		private System.Windows.Forms.Label ColsLabel;
 		private System.Windows.Forms.Label CellLabel;
-		private System.Windows.Forms.Button button_first_mode;
+		private Glass.GlassButton button_first_mode;
 		private System.Windows.Forms.Label BlockLabel;
 		private System.Windows.Forms.NumericUpDown NumberOfRows;
 		private System.Windows.Forms.NumericUpDown NumberOfCols;
@@ -50,15 +53,15 @@ namespace Minisoft1
             this.RowsLabel = new System.Windows.Forms.Label();
             this.ColsLabel = new System.Windows.Forms.Label();
             this.CellLabel = new System.Windows.Forms.Label();
-            this.button_first_mode = new System.Windows.Forms.Button();
+            this.button_first_mode = new Glass.GlassButton();
             this.BlockLabel = new System.Windows.Forms.Label();
             this.NumberOfRows = new System.Windows.Forms.NumericUpDown();
             this.NumberOfCols = new System.Windows.Forms.NumericUpDown();
             this.CellSize = new System.Windows.Forms.NumericUpDown();
             this.CountOfBlocks = new System.Windows.Forms.NumericUpDown();
-            this.button_second_mode = new System.Windows.Forms.Button();
-            this.game_editor_button = new System.Windows.Forms.Button();
-            this.mode_one_prepared = new System.Windows.Forms.Button();
+            this.button_second_mode = new Glass.GlassButton();
+            this.game_editor_button = new Glass.GlassButton();
+            this.mode_one_prepared = new Glass.GlassButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NumberOfRows)).BeginInit();
@@ -105,7 +108,7 @@ namespace Minisoft1
             // 
             this.button_first_mode.Location = new System.Drawing.Point(12, 138);
             this.button_first_mode.Name = "button_first_mode";
-            this.button_first_mode.Size = new System.Drawing.Size(135, 23);
+            this.button_first_mode.Size = new System.Drawing.Size(135, 33);
             this.button_first_mode.TabIndex = 4;
             this.button_first_mode.Text = "Hrať prvý mód";
             this.button_first_mode.UseVisualStyleBackColor = true;
@@ -207,9 +210,9 @@ namespace Minisoft1
             // 
             // button_second_mode
             // 
-            this.button_second_mode.Location = new System.Drawing.Point(12, 242);
+            this.button_second_mode.Location = new System.Drawing.Point(12, 252);
             this.button_second_mode.Name = "button_second_mode";
-            this.button_second_mode.Size = new System.Drawing.Size(135, 23);
+            this.button_second_mode.Size = new System.Drawing.Size(135, 33);
             this.button_second_mode.TabIndex = 14;
             this.button_second_mode.Text = "Hrať druhý mód";
             this.button_second_mode.UseVisualStyleBackColor = true;
@@ -219,7 +222,7 @@ namespace Minisoft1
             // 
             this.game_editor_button.Location = new System.Drawing.Point(12, 316);
             this.game_editor_button.Name = "game_editor_button";
-            this.game_editor_button.Size = new System.Drawing.Size(135, 23);
+            this.game_editor_button.Size = new System.Drawing.Size(135, 33);
             this.game_editor_button.TabIndex = 15;
             this.game_editor_button.Text = "Editor";
             this.game_editor_button.UseVisualStyleBackColor = true;
@@ -229,7 +232,7 @@ namespace Minisoft1
             // 
             this.mode_one_prepared.Location = new System.Drawing.Point(12, 214);
             this.mode_one_prepared.Name = "mode_one_prepared";
-            this.mode_one_prepared.Size = new System.Drawing.Size(135, 23);
+            this.mode_one_prepared.Size = new System.Drawing.Size(135, 33);
             this.mode_one_prepared.TabIndex = 16;
             this.mode_one_prepared.Text = "Hrať prvý mód";
             this.mode_one_prepared.UseVisualStyleBackColor = true;

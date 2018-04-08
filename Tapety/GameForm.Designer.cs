@@ -39,8 +39,8 @@ namespace Minisoft1
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.AnotherGame = new System.Windows.Forms.Button();
-            this.back_to_menu = new System.Windows.Forms.Button();
+            this.AnotherGame = new Glass.GlassButton();
+            this.back_to_menu = new Glass.GlassButton();
             this.color_lab1 = new System.Windows.Forms.Label();
             this.color_lab2 = new System.Windows.Forms.Label();
             this.color_lab3 = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@ namespace Minisoft1
             this.color_lab9 = new System.Windows.Forms.Label();
             this.color_lab10 = new System.Windows.Forms.Label();
             this.text_lab1 = new System.Windows.Forms.Label();
-            this.show_final_state = new System.Windows.Forms.Button();
+            this.show_final_state = new Glass.GlassButton();
             this.SuspendLayout();
             // 
             // AnotherGame

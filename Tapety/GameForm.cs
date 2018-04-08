@@ -255,14 +255,14 @@ namespace Minisoft1
                 while (true)
                 {
                    
-                    Rectangle r1 = new Rectangle(posX, posY, width, height);
-                    Rectangle r2 = new Rectangle(INDENT_X, INDENT_Y,
-                        settings.cols * settings.cell_size, settings.rows * settings.cell_size);
+                    Rectangle r1 = new Rectangle(posX-5, posY-5, width+5, height+5);
+                    Rectangle r2 = new Rectangle(INDENT_X-1, INDENT_Y-1,
+                        settings.cols * settings.cell_size+1, settings.rows * settings.cell_size+1);
                     
                     Boolean free = true;
                     foreach (Block b in positionedBlocks)
                     {
-                        Rectangle r = new Rectangle(b.x , b.y, b.width, b.height);
+                        Rectangle r = new Rectangle(b.x-5 , b.y-5, b.width+5, b.height+5);
                         if (r1.IntersectsWith(r))
                         {
                             free = false;
@@ -285,18 +285,18 @@ namespace Minisoft1
                     {
                         if (posY > INDENT_Y - settings.cell_size * round)
                         {
-                            posY -= settings.cell_size;
+                            posY -= 5;
                             //Debug.WriteLine("idem hore");
                         }
                         else if (posX + width < INDENT_X+settings.cols * settings.cell_size)
                         {
-                            posX += settings.cell_size;
+                            posX += 5;
                             //Debug.WriteLine("idem doprava");
                         }
                         else
                         {
                             round += 1;
-                            posX = INDENT_X - (1+round)*settings.cell_size;
+                            posX = INDENT_X - (1+round)*settings.cell_size - 5;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                         }
                         //Debug.WriteLine("x" + " " + posX + " / " + "y" + " "+ posY + " "+ "round"+round);

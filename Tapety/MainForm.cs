@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
+using static Glass.GlassButton;
 
 namespace Minisoft1
 {
