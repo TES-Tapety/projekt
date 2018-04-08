@@ -50,7 +50,7 @@ namespace Minisoft1
             // back_to_menu
             // 
             this.back_to_menu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_to_menu.Location = new System.Drawing.Point(497, 329);
+            this.back_to_menu.Location = new System.Drawing.Point(667, 329);
             this.back_to_menu.Name = "back_to_menu";
             this.back_to_menu.Size = new System.Drawing.Size(75, 23);
             this.back_to_menu.TabIndex = 5;
@@ -171,7 +171,7 @@ namespace Minisoft1
             // show_final_state
             // 
             this.show_final_state.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.show_final_state.Location = new System.Drawing.Point(476, 300);
+            this.show_final_state.Location = new System.Drawing.Point(657, 300);
             this.show_final_state.Name = "show_final_state";
             this.show_final_state.Size = new System.Drawing.Size(96, 23);
             this.show_final_state.TabIndex = 14;
@@ -183,7 +183,7 @@ namespace Minisoft1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 361);
+            this.ClientSize = new System.Drawing.Size(754, 361);
             this.Controls.Add(this.show_final_state);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.back_to_menu);

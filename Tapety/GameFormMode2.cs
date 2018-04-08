@@ -225,8 +225,8 @@ namespace Minisoft1
                 generate_blocks();
 
 
-                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 1050;
-                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 614;
+                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 1080;
+                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 415;
 
                 // rozmiestni okolo hracej plochy
                 // TODO: musi sa zlepsit !!!!
