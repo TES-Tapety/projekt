@@ -506,7 +506,7 @@ namespace Minisoft1
                         bool return_to_start = false;
 
                         // if in playground borders
-                        if ((toX <= settings.cols) && (toY <= settings.rows))
+                        if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
                         {
                             // set ocupied space to selected block id
                             for (int r = fromY; r < toY; r++)
@@ -574,11 +574,7 @@ namespace Minisoft1
                         {
                             selected.x = selected.startX;
                             selected.y = selected.startY;
-                            selected.in_playground = false;
-
-                            
-
-                            Debug.WriteLine("pripad1");
+                            selected.in_playground = false;                          
 
                             // TODO: chyba gridBlocks
                             if (gridBlocks.Contains(selected))
@@ -620,26 +616,26 @@ namespace Minisoft1
                     Invalidate();
                 }
             }
-            else if (MouseButtons.Right == e.Button)
-            {
-                for (int i = 0; i < settings.blocks.Count; i++)
-                {
-                    if (e.X < settings.blocks[i].x + settings.blocks[i].width && e.X > settings.blocks[i].x)
-                    {
-                        if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
-                        {
-                            // rotate - change W and H
-                            int W = settings.blocks[i].W;
-                            settings.blocks[i].W = settings.blocks[i].H;
-                            settings.blocks[i].H = W;
+            //else if (MouseButtons.Right == e.Button)
+            //{
+            //    for (int i = 0; i < settings.blocks.Count; i++)
+            //    {
+            //        if (e.X < settings.blocks[i].x + settings.blocks[i].width && e.X > settings.blocks[i].x)
+            //        {
+            //            if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
+            //            {
+            //                // rotate - change W and H
+            //                int W = settings.blocks[i].W;
+            //                settings.blocks[i].W = settings.blocks[i].H;
+            //                settings.blocks[i].H = W;
 
-                            settings.blocks[i].recalculate_shape(settings.blocks[i].cell_size);
-                            Invalidate();
-                            break;
-                        }
-                    }
-                }
-            }
+            //                settings.blocks[i].recalculate_shape(settings.blocks[i].cell_size);
+            //                Invalidate();
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
         }
         private void update_colors()
         {

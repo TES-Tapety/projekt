@@ -481,7 +481,7 @@ namespace Minisoft1
                         int toY = (selected.height / this.settings.cell_size) + fromY;
 
                         // if in playground borders
-                        if ((toX <= settings.cols) && (toY <= settings.rows))
+                        if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
                         {
                             // set ocupied space to selected block id
                             foreach (Block block in this.settings.blocks)
@@ -503,7 +503,7 @@ namespace Minisoft1
                                 toY = (block.height / this.settings.cell_size) + fromY;
 
                                 // prepise sa playground podla aktualnych tapiet
-                                if ((toX <= settings.cols) && (toY <= settings.rows))
+                                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX > 0) && (fromY > 0))
                                 {
                                     for (int r = fromY; r < toY; r++)
                                     {
@@ -604,26 +604,26 @@ namespace Minisoft1
                     Invalidate();
                 }
             }
-            else if (MouseButtons.Right == e.Button)
-            {
-                for (int i = 0; i < settings.blocks.Count; i++)
-                {
-                    if (e.X < settings.blocks[i].x + settings.blocks[i].width && e.X > settings.blocks[i].x)
-                    {
-                        if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
-                        {
-                            // rotate - change W and H
-                            int W = settings.blocks[i].W;
-                            settings.blocks[i].W = settings.blocks[i].H;
-                            settings.blocks[i].H = W;
+            //else if (MouseButtons.Right == e.Button)
+            //{
+            //    for (int i = 0; i < settings.blocks.Count; i++)
+            //    {
+            //        if (e.X < settings.blocks[i].x + settings.blocks[i].width && e.X > settings.blocks[i].x)
+            //        {
+            //            if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
+            //            {
+            //                // rotate - change W and H
+            //                int W = settings.blocks[i].W;
+            //                settings.blocks[i].W = settings.blocks[i].H;
+            //                settings.blocks[i].H = W;
 
-                            settings.blocks[i].recalculate_shape(settings.blocks[i].cell_size);
-                            Invalidate();
-                            break;
-                        }
-                    }
-                }
-            }
+            //                settings.blocks[i].recalculate_shape(settings.blocks[i].cell_size);
+            //                Invalidate();
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void back_to_menu_Click(object sender, EventArgs e)

@@ -479,7 +479,7 @@ namespace Minisoft1
                     bool return_to_start = false;
 
                     // if in playground borders
-                    if ((toX <= settings.cols) && (toY <= settings.rows))
+                    if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
                     {
                         // set ocupied space to selected block id
                         for (int r = fromY; r < toY; r++)

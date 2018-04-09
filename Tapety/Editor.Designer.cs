@@ -69,7 +69,22 @@
             // 
             // CellSize_editor
             // 
+            this.CellSize_editor.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.CellSize_editor.Location = new System.Drawing.Point(100, 81);
+            this.CellSize_editor.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.CellSize_editor.Minimum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.CellSize_editor.Name = "CellSize_editor";
             this.CellSize_editor.Size = new System.Drawing.Size(48, 20);
             this.CellSize_editor.TabIndex = 20;
@@ -83,6 +98,16 @@
             // NumberOfCols
             // 
             this.NumberOfCols.Location = new System.Drawing.Point(100, 57);
+            this.NumberOfCols.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.NumberOfCols.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.NumberOfCols.Name = "NumberOfCols";
             this.NumberOfCols.Size = new System.Drawing.Size(48, 20);
             this.NumberOfCols.TabIndex = 19;
@@ -96,6 +121,16 @@
             // NumberOfRows
             // 
             this.NumberOfRows.Location = new System.Drawing.Point(100, 33);
+            this.NumberOfRows.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.NumberOfRows.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.NumberOfRows.Name = "NumberOfRows";
             this.NumberOfRows.Size = new System.Drawing.Size(48, 20);
             this.NumberOfRows.TabIndex = 18;
@@ -163,6 +198,16 @@
             // block_height
             // 
             this.block_height.Location = new System.Drawing.Point(100, 165);
+            this.block_height.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.block_height.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.block_height.Name = "block_height";
             this.block_height.Size = new System.Drawing.Size(48, 20);
             this.block_height.TabIndex = 27;
@@ -175,6 +220,16 @@
             // block_width
             // 
             this.block_width.Location = new System.Drawing.Point(100, 141);
+            this.block_width.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.block_width.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.block_width.Name = "block_width";
             this.block_width.Size = new System.Drawing.Size(48, 20);
             this.block_width.TabIndex = 26;

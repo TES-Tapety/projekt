@@ -207,6 +207,7 @@ namespace Minisoft1
             0,
             0,
             0});
+            this.CountOfBlocks.ValueChanged += new System.EventHandler(this.CountOfBlocks_ValueChanged_1);
             // 
             // button_second_mode
             // 
@@ -290,11 +291,10 @@ namespace Minisoft1
             this.ResumeLayout(false);
 
 		}
-
-        private System.Windows.Forms.Button button_second_mode;
-        private System.Windows.Forms.Button game_editor_button;
-        private System.Windows.Forms.Button mode_one_prepared;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private GlassButton button_second_mode;
+        private GlassButton game_editor_button;
+        private GlassButton mode_one_prepared;
     }
 }

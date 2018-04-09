@@ -18,8 +18,9 @@ namespace Minisoft1
         Settings settings;
         Graphics g;
         int INDENT_X;
+        int INDENT_Y;
         int ix, old_cell_size;
-        List<Block> blocks;
+        List<Block> game_blocks, all_blocks;
 
         Block selected, changed;
         Point delta, prev_change;
@@ -45,6 +46,7 @@ namespace Minisoft1
             ix = 0;
             INDENT_X = 180;
             INDENT_X -= INDENT_X % Convert.ToInt32(CellSize_editor.Value);
+            INDENT_Y = 20;
 
             this.colours = new Color[]{Color.Aqua, Color.Yellow, Color.Red, Color.Green, Color.GreenYellow, Color.Gold, Color.Pink, Color.Gray, Color.Purple};
             colorInQueue = 0;
@@ -54,7 +56,8 @@ namespace Minisoft1
 
             sm = new SaveLoadManager();
 
-            blocks = new List<Block>();
+            game_blocks = new List<Block>();
+            all_blocks = new List<Block>();
         }
 
         private void Editor_Paint(object sender, PaintEventArgs e)
@@ -69,12 +72,12 @@ namespace Minisoft1
                 for (int j = 0; j < rows; j++)
                 {
                     Pen blackPen = new Pen(Color.Black, 1);
-                    e.Graphics.DrawRectangle(blackPen, i * cell_size + INDENT_X, j * cell_size, cell_size, cell_size);
+                    e.Graphics.DrawRectangle(blackPen, i * cell_size + INDENT_X, j * cell_size + INDENT_Y, cell_size, cell_size);
                 }
             }
 
             // draw blocks
-            foreach (Block block in blocks)
+            foreach (Block block in all_blocks)
             {
                 block.KresliEditovaci(e.Graphics);
             }
@@ -100,7 +103,7 @@ namespace Minisoft1
         private void create_block_Click(object sender, EventArgs e)
         {
             // get needed information from user's input
-            int indentY = Convert.ToInt32(NumberOfRows.Value)* this.settings.cell_size + 5;
+            int indentY = Convert.ToInt32(NumberOfRows.Value)* this.settings.cell_size + INDENT_Y + 5;
             int H = Convert.ToInt32(block_height.Value);
             int W = Convert.ToInt32(block_width.Value);
             int height = this.settings.cell_size * H;
@@ -109,7 +112,10 @@ namespace Minisoft1
 
             // create new block
             Block block = new Block(ix + 1, INDENT_X, indentY, W, H, this.settings.cell_size, color);
-            blocks.Add(block);
+
+            // toto az ked prida do pola
+            all_blocks.Add(block);
+
             Invalidate();
             ix++;
             if (colorInQueue < colours.Length-1)
@@ -139,17 +145,17 @@ namespace Minisoft1
 
         private void CellSize_editor_ValueChanged(object sender, EventArgs e)
         {
-            if(blocks != null)
+            if(all_blocks != null)
             {
                 this.settings.cell_size = Convert.ToInt32(CellSize_editor.Value);
                 int delta_coord = this.settings.cell_size - old_cell_size;
 
-                foreach (Block block in blocks)
+                foreach (Block block in all_blocks)
                 {
                     block.recalculate_shape(this.settings.cell_size);
                     block.cell_size = this.settings.cell_size;
                     block.x += delta_coord * (block.x - INDENT_X) / old_cell_size;
-                    block.y += delta_coord * (block.y / old_cell_size);
+                    block.y += delta_coord * (block.y - INDENT_Y) / old_cell_size;
                 }
                 old_cell_size = this.settings.cell_size;
                 Invalidate();
@@ -188,19 +194,19 @@ namespace Minisoft1
                 int d = r * 2;
                 float left_upper, right_upper, left_lower, right_lower;
 
-                for (int i = blocks.Count - 1; i >= 0; i--)
+                for (int i = all_blocks.Count - 1; i >= 0; i--)
                 {
-                    left_upper = Convert.ToSingle(Math.Sqrt(e.X - (blocks[i].x - d) ^ 2) + Math.Sqrt((e.Y - (blocks[i].y - d)) ^ 2));
-                    right_upper = Convert.ToSingle(Math.Sqrt(e.X - (blocks[i].x + blocks[i].width) ^ 2) + Math.Sqrt((e.Y - (blocks[i].y - d)) ^ 2));
-                    left_lower = Convert.ToSingle(Math.Sqrt(e.X - (blocks[i].x - d) ^ 2) + Math.Sqrt((e.Y - (blocks[i].y + blocks[i].height)) ^ 2));
-                    right_lower = Convert.ToSingle(Math.Sqrt(e.X - (blocks[i].x + blocks[i].width) ^ 2) + Math.Sqrt((e.Y - (blocks[i].y + blocks[i].height)) ^ 2));
+                    left_upper = Convert.ToSingle(Math.Sqrt(e.X - (all_blocks[i].x - d) ^ 2) + Math.Sqrt((e.Y - (all_blocks[i].y - d)) ^ 2));
+                    right_upper = Convert.ToSingle(Math.Sqrt(e.X - (all_blocks[i].x + all_blocks[i].width) ^ 2) + Math.Sqrt((e.Y - (all_blocks[i].y - d)) ^ 2));
+                    left_lower = Convert.ToSingle(Math.Sqrt(e.X - (all_blocks[i].x - d) ^ 2) + Math.Sqrt((e.Y - (all_blocks[i].y + all_blocks[i].height)) ^ 2));
+                    right_lower = Convert.ToSingle(Math.Sqrt(e.X - (all_blocks[i].x + all_blocks[i].width) ^ 2) + Math.Sqrt((e.Y - (all_blocks[i].y + all_blocks[i].height)) ^ 2));
 
                     // selected upper left corner circle
                     if (left_upper <= r)
                     {
                         bupper_left = true;
                         prev_change = new Point(e.X, e.Y);
-                        changed = blocks[i];
+                        changed = all_blocks[i];
                         break;
                     }
                     // selected upper right corner circle
@@ -208,7 +214,7 @@ namespace Minisoft1
                     {
                         bupper_right = true;
                         prev_change = new Point(e.X, e.Y);
-                        changed = blocks[i];
+                        changed = all_blocks[i];
                         break;
                     }
                     // selected lower left corner circle
@@ -216,7 +222,7 @@ namespace Minisoft1
                     {
                         blower_left = true;
                         prev_change = new Point(e.X, e.Y);
-                        changed = blocks[i];
+                        changed = all_blocks[i];
                         break;
                     }
                     // selected lower right corner circle
@@ -224,31 +230,31 @@ namespace Minisoft1
                     {
                         blower_right = true;
                         prev_change = new Point(e.X, e.Y);
-                        changed = blocks[i];
+                        changed = all_blocks[i];
                         break;
                     }
                     else
                     {
-                        if (e.X < blocks[i].x + blocks[i].width && e.X > blocks[i].x)
+                        if (e.X < all_blocks[i].x + all_blocks[i].width && e.X > all_blocks[i].x)
                         {
-                            if (e.Y < blocks[i].y + blocks[i].height && e.Y > blocks[i].y)
+                            if (e.Y < all_blocks[i].y + all_blocks[i].height && e.Y > all_blocks[i].y)
                             {
                                 if (start_deletion)
                                 {
-                                    blocks.Remove(blocks[i]);
+                                    all_blocks.Remove(all_blocks[i]);
                                 }
                                 else
                                 {
                                     // remember selected block and clicked coords
-                                    selected = blocks[i];
+                                    selected = all_blocks[i];
                                     delta = new Point(e.X - selected.x, e.Y - selected.y);
 
                                     // set selected as last in array so it is above all other blocks
-                                    for (int j = i; j < blocks.Count - 1; j++)
+                                    for (int j = i; j < all_blocks.Count - 1; j++)
                                     {
-                                        blocks[j] = blocks[j + 1];
+                                        all_blocks[j] = all_blocks[j + 1];
                                     }
-                                    blocks[blocks.Count - 1] = selected;
+                                    all_blocks[all_blocks.Count - 1] = selected;
                                 }
                                 break;
                             }
@@ -421,12 +427,45 @@ namespace Minisoft1
                     int rows = Convert.ToInt32(NumberOfRows.Value);
                     int cell_size = Convert.ToInt32(CellSize_editor.Value);
 
-                    selected.x = ((selected.x - INDENT_X) / cell_size) * cell_size + INDENT_X;
-                    selected.y = (selected.y / cell_size) * cell_size;
+                    int half_size = settings.cell_size / 2;
 
-                    if ((selected.x >= 150 && selected.x < this.settings.cols * this.settings.cell_size + INDENT_X) &&
-                                        (selected.y >= 0 && selected.y < this.settings.rows * this.settings.cell_size))
-                    {  
+                    // suradnice bez odsunutia
+                    var noindentX = (selected.x - INDENT_X);
+                    var noindentY = (selected.y - INDENT_Y);
+
+                    // doskakovanie
+                    int dx = noindentX % this.settings.cell_size;
+                    int dy = noindentY % this.settings.cell_size;
+
+
+                    // dole v pravo
+                    if (dx > half_size && dy > half_size)
+                    {
+                        noindentX += settings.cell_size - dx;
+                        noindentY += settings.cell_size - dy;
+                    }
+                    // hore v pravo
+                    else if (dx > half_size && dy <= half_size)
+                    {
+                        noindentX += settings.cell_size - dx;
+                    }
+                    // dole v lavo
+                    else if (dx <= half_size && dy > half_size)
+                    {
+                        noindentY += settings.cell_size - dy;
+                    }
+
+                    // konecny prepocet doskakovania
+                    selected.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
+                    selected.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
+
+                    
+
+                    if ((selected.x < this.settings.cols * this.settings.cell_size + INDENT_X) && 
+                        (selected.y >= INDENT_Y && selected.y < this.settings.rows * this.settings.cell_size))
+                    {
+
+                        
 
                         // moved same object
                         for (int r = 0; r < this.settings.rows; r++)
@@ -441,24 +480,28 @@ namespace Minisoft1
                             }
                         }
                         // playing
-                        int fromX = (selected.x-INDENT_X) / this.settings.cell_size;
-                        int fromY = selected.y / this.settings.cell_size;
+                        int fromX = noindentX / this.settings.cell_size;
+                        int fromY = noindentY / this.settings.cell_size;
 
                         int toX = (selected.width / this.settings.cell_size) + fromX;
                         int toY = (selected.height / this.settings.cell_size) + fromY;
 
                         // if in playground borders
-                        if ((toX <= settings.cols) && (toY <= settings.rows))
+                        if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
                         {
-                            foreach (Block block in this.blocks)
+                            // v poli a spravny
+                            if (!game_blocks.Contains(selected))
+                                game_blocks.Add(selected);
+
+                            foreach (Block block in this.game_blocks)
                             {
                                 fromX = (block.x - INDENT_X) / this.settings.cell_size;
-                                fromY = block.y / this.settings.cell_size;
+                                fromY = (block.y - INDENT_Y) / this.settings.cell_size;
 
                                 toX = (block.width / this.settings.cell_size) + fromX;
                                 toY = (block.height / this.settings.cell_size) + fromY;
 
-                                if ((toX <= settings.cols) && (toY <= settings.rows))
+                                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX > 0) && (fromY > 0))
                                 {
                                     for (int r = fromY; r < toY; r++)
                                     {
@@ -470,12 +513,16 @@ namespace Minisoft1
                                 }
                             }
                         }
-                        else
-                        {
-                            selected.x = selected.startX;
-                            selected.y = selected.startY;
-                        }
                     }
+                    else
+                    {
+                        if (game_blocks.Contains(selected))
+                            game_blocks.Remove(selected);
+                    }
+
+
+
+                    Console.WriteLine($"ASFAFSF {game_blocks.Count} {all_blocks.Count}");
                     selected = null;
                 }
                 // Upper Left reset and resize
@@ -557,32 +604,32 @@ namespace Minisoft1
                 }
                 Invalidate();
             }
-            else if (MouseButtons.Right == e.Button)
-            {
-                for (int i = 0; i < blocks.Count; i++)
-                {
-                    if (e.X < blocks[i].x + blocks[i].width && e.X > blocks[i].x)
-                    {
-                        if (e.Y < blocks[i].y + blocks[i].height && e.Y > blocks[i].y)
-                        {
-                            // rotate - change W and H
-                            int W = blocks[i].W;
-                            blocks[i].W = blocks[i].H;
-                            blocks[i].H = W;
+            //else if (MouseButtons.Right == e.Button)
+            //{
+            //    for (int i = 0; i < all_blocks.Count; i++)
+            //    {
+            //        if (e.X < all_blocks[i].x + all_blocks[i].width && e.X > all_blocks[i].x)
+            //        {
+            //            if (e.Y < all_blocks[i].y + all_blocks[i].height && e.Y > all_blocks[i].y)
+            //            {
+            //                // rotate - change W and H
+            //                int W = all_blocks[i].W;
+            //                all_blocks[i].W = all_blocks[i].H;
+            //                all_blocks[i].H = W;
 
-                            blocks[i].recalculate_shape(blocks[i].cell_size);
-                            Invalidate();
-                            break;
-                        }
-                    }
-                }
-            }
+            //                all_blocks[i].recalculate_shape(all_blocks[i].cell_size);
+            //                Invalidate();
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         // BUTTONS
         private void save_first_mode_Click(object sender, EventArgs e)
         {
-            if (blocks.Count > 0)
+            if (all_blocks.Count > 0)
             {
                 DialogResult dialogResult = MessageBox.Show("Naozaj chcete uložiť úlohu?", "Uloženie pre Mód 1.", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -600,14 +647,14 @@ namespace Minisoft1
                     //    block.startY = block.y;
                     //}
 
-                    foreach (Block block in blocks)
+                    foreach (Block block in game_blocks)
                     {
                         block.finalX = (block.x - INDENT_X) / settings.cell_size;
-                        block.finalY = block.y / settings.cell_size;
+                        block.finalY = (block.y - INDENT_Y) / settings.cell_size;
                     }
 
-                    settings.blockCount = blocks.Count;
-                    settings.blocks = blocks;
+                    settings.blockCount = game_blocks.Count;
+                    settings.blocks = game_blocks;
                     settings.playground = playground;
                     settings.window_width = Size.Width;
                     settings.window_height = Size.Height;
@@ -621,7 +668,15 @@ namespace Minisoft1
 
                     sm.save(settings, fname);
 
-                    blocks = new List<Block>();                                               //hura na dalsi level
+                    // vymaz iba tie tapety s ktorymi sa hra ostne iba presmiestni na start
+                    game_blocks = new List<Block>();
+                    foreach (Block block in all_blocks)
+                    {
+                        block.x = block.startX;
+                        block.y = block.startY;
+                    }
+
+                    //hura na dalsi level
                     this.playground = new int[this.settings.rows, this.settings.cols];
                     this.mode2_playground = new int[this.settings.rows, this.settings.cols];
                     ix = 0;
@@ -647,22 +702,22 @@ namespace Minisoft1
                 var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
                 int n = files.Length + 1;
 
-                settings.blockCount = blocks.Count;
+                settings.blockCount = game_blocks.Count;
 
                 // pozicie okolo vyriesi algoritmus
-                foreach (Block block in blocks)
+                foreach (Block block in game_blocks)
                 {
                     block.startX = block.x;
                     block.startY = block.y;
                 }
 
-                foreach (Block block in blocks)
+                foreach (Block block in game_blocks)
                 {
                     block.finalX = (block.x - INDENT_X) / settings.cell_size;
-                    block.finalY = block.y / settings.cell_size;
+                    block.finalY = (block.y - INDENT_Y) / settings.cell_size;
                 }
 
-                settings.blocks = blocks;
+                settings.blocks = game_blocks;
                 settings.playground = playground;
                 settings.window_width = Size.Width;
                 settings.window_height = Size.Height;
@@ -676,7 +731,15 @@ namespace Minisoft1
 
                 sm.save(settings, fname);
 
-                blocks = new List<Block>();                                               //hura na dalsi level
+                // vymaz iba tie tapety s ktorymi sa hra ostne iba presmiestni na start
+                game_blocks = new List<Block>();
+                foreach (Block block in all_blocks)
+                {
+                    block.x = block.startX;
+                    block.y = block.startY;
+                }
+                
+                //hura na dalsi level
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 this.mode2_playground = new int[this.settings.rows, this.settings.cols];
                 ix = 0;
