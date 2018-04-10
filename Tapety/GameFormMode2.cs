@@ -16,7 +16,7 @@ namespace Minisoft1
     {
         Settings settings;
         Block selected;
-        bool clicked, showWin;
+        bool clicked, showWin, next_game_shown;
         Random rnd;
         int[,] playground;
         int game_level_index;
@@ -39,6 +39,8 @@ namespace Minisoft1
         public GameFormMode2(MainForm mainForm)
         {
             DoubleBuffered = true;
+            next_game_shown = false;
+            KeyPreview = true;
             InitializeComponent();
 
             idcolor_map = new Dictionary<int, Color>();
@@ -61,121 +63,7 @@ namespace Minisoft1
             this.colorLabels.Add(color_lab10);
 
             this.mainForm = mainForm;
-        }
-        
-        public obdlznik[] generate_blocks()
-        {
-            ob = new obdlznik[this.settings.blockCount];
-            ob[0].x = this.settings.cols;
-            ob[0].y = this.settings.rows;
-            ob = rozdel(this.settings.blockCount, ob);
-            while (ob == null)
-            {
-                ob = new obdlznik[this.settings.blockCount];
-                ob[0].x = this.settings.cols;
-                ob[0].y = this.settings.rows;
-                ob = rozdel(this.settings.blockCount, ob);
-            }
-            return ob;
-        }
-
-        public obdlznik[] rozdel(int pocet_casti, obdlznik[] obdl)
-        {        // funkcia
-            bool spravne = false;
-            bool jednotkovahrana = false;
-            obdl[0].posX = 0;
-            obdl[0].posY = 0;
-            int r, s, t;                                                //nahodne premenne
-            Random rnd = new Random();                                //vytvorenie random generatoru 
-            int rozdiel = 0;
-            int counter = 0;
-            // Console.WriteLine("posX: " + obdl[0].posX + " posY: " + obdl[0].posY + " x: " + obdl[0].x + " y: " + obdl[0].y);
-            for (int i = 0; i < pocet_casti - 1; i++)
-            {                   //ideme delit v kazdej iteracii cyklu 1 nahodnu cast na 2 mensie
-                while (!spravne)
-                {                                        //nie kazdu malu cast vieme rozdelit(taku co ma velkost jedna uz nerozdelime)
-                                                         //preto ideme dovtedy vo while cykle, az kym nerozdelime na 2 spravne casti o velkosti apson 1
-                    r = rnd.Next(i + 1);                            //nahodne vyberieme, ze ktory utvar ideme delit
-                    s = rnd.Next(2);                              //nahodne vyberieme, ci ho rozrezeme na vysku alebo na sirku      
-                    counter++;
-                    if (counter == 40) return null;
-                    if (s == 0)
-                    {                                  //ak 0, tak ideme rezat na sirku
-                        if ((obdl[r].x > 2) && (obdl[r].y > 1))
-                        {                          //ak mozme rezat, teda ak ma sirku aspon 2, inak znova prejde while cyklus a znovu sa vygeneruju nahodne premenne
-                            if (!jednotkovahrana)
-                            {
-                                t = rnd.Next(1, obdl[r].x);               //nahodne miesto kde ho rozdelime
-                                if ((t == 1) || (t == (obdl[r].x - 1)))
-                                {
-                                    jednotkovahrana = true;
-                                }
-                                obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
-                                obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
-                                obdl[r].x = t;                            //stary skratime o velkost noveho
-                                obdl[i + 1].posX = obdl[r].posX + t;
-                                obdl[i + 1].posY = obdl[r].posY;
-                                rozdiel = t;
-                                spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
-                            }
-                            else
-                            {
-                                t = rnd.Next(2, obdl[r].x - 1);               //nahodne miesto kde ho rozdelime
-                                if ((t > 2) && (t < obdl[r].x - 1))
-                                {
-                                    obdl[i + 1].x = obdl[r].x - t;              //vypocitame a priradime sirku noveho
-                                    obdl[i + 1].y = obdl[r].y;               //priradime rovnaku vysku aku mal stary aj novemu
-                                    obdl[r].x = t;                            //stary skratime o velkost noveho
-                                    obdl[i + 1].posX = obdl[r].posX + t;
-                                    obdl[i + 1].posY = obdl[r].posY;
-                                    rozdiel = t;
-                                    spravne = true;                           //nastalo spravne rozdelenie a tym padom uz bool spravne bude true, cize skonci while cyklus
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if ((obdl[r].y > 2) && (obdl[r].x > 1))
-                        {                          //ak nie nula, teda inak, ideme rezat na vysku
-                            if (!jednotkovahrana)
-                            {
-                                t = rnd.Next(1, obdl[r].y);               //to iste ako for nad nami len nerezeme na sirku ale na vysku
-                                if ((t == 1) || (t == (obdl[r].y - 1)))
-                                {
-                                    jednotkovahrana = true;
-                                }
-                                obdl[i + 1].y = obdl[r].y - t;
-                                obdl[i + 1].x = obdl[r].x;
-                                obdl[r].y = t;
-                                obdl[i + 1].posX = obdl[r].posX;
-                                obdl[i + 1].posY = obdl[r].posY + t;
-                                rozdiel = t;
-                                spravne = true;
-                            }
-                            else
-                            {
-                                t = rnd.Next(2, obdl[r].y - 1);               //nahodne miesto kde ho rozdelime
-                                if ((t > 2) && (t < obdl[r].y - 1))
-                                {
-                                    obdl[i + 1].y = obdl[r].y - t;
-                                    obdl[i + 1].x = obdl[r].x;
-                                    obdl[r].y = t;
-                                    obdl[i + 1].posX = obdl[r].posX;
-                                    obdl[i + 1].posY = obdl[r].posY + t;
-                                    rozdiel = t;
-                                    spravne = true;
-                                }
-                            }
-                        }
-                    }
-                }
-                // Console.WriteLine("posX: " + obdl[i + 1].posX + " posY: " + obdl[i + 1].posY + " x: " + obdl[i + 1].x + " y: " + obdl[i + 1].y + " t: " + rozdiel);
-                spravne = false;                                //opat vratime na povodnu hodnotu, aby nam v dalsej iteracii for cyklu bezal aj while cyklus
-                counter = 0;
-            }
-            return obdl;      //ked skonci for, vraciame vysledne pole v ktorom na kazdom policku je objekt s vyskou a sirkou
-        }
+        }        
 
         private void GameFormMode2_Resize(object sender, EventArgs e)
         {
@@ -222,22 +110,18 @@ namespace Minisoft1
             { 
                 string fname = $"{files[game_level_index]}";
                 this.settings = sm.load(fname);
-                generate_blocks();
-
 
                 this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 1080;
                 this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 415;
 
                 // rozmiestni okolo hracej plochy
-                // TODO: musi sa zlepsit !!!!
                 PositionAlgoritm();
                
                 this.playground = new int[this.settings.rows, this.settings.cols];
-                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 4, 600);
                 this.OnResize(EventArgs.Empty);
 
                 Invalidate();
-                this.AnotherGame.Hide();
             }
         }
         
@@ -320,57 +204,15 @@ namespace Minisoft1
         private void GameFormMode2_Paint(object sender, PaintEventArgs e)
         {
 
-            /* // map block id to its color
-             foreach (Block block in this.settings.blocks)
-             {                
-                 if (!idcolor_map.ContainsKey(block.id))
-                 {
-                     idcolor_map.Add(block.id, block.color);
-                 }
-             }
- 
-             Control control = (Control)sender;
-             int local_indentX = control.Size.Width - 300 + settings.cell_size;
-             int local_indentY = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
- 
-             for (int i = 0; i < this.settings.cols; i++)
-             {
-                 for (int j = 0; j < this.settings.rows; j++)
-                 {
-                     // draw playing area
-                     Pen blackPen = new Pen(Color.Black, 1);
-                     e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X, j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
- 
-                     // draw final state example area
-                     e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
- 
-                     if (idcolor_map.ContainsKey(settings.playground[j, i]))
-                     {
-                         Color c = idcolor_map[settings.playground[j, i]];
-                         Brush brush = new SolidBrush(c);
-                         e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
-                     }
-                 }
-             }
- 
-             // draw blocks last
-             foreach (Block block in settings.blocks)
-             {
-                 block.Kresli(e.Graphics);
-             }
- 
-             if (showWin)
-             {
-                 Graphics g = e.Graphics;
-                 Bitmap main_image = new Bitmap("smile.png");
- 
-                 Color backColor = main_image.GetPixel(1, 1);
-                 main_image.MakeTransparent(backColor);
- 
-                 e.Graphics.DrawImage(
-                     main_image, this.Width - 100, 0, 64, 64);
-             }     
-         }*/
+            if (next_game_shown)
+            {
+                AnotherGame.Show();
+            }
+            else
+            {
+                AnotherGame.Hide();
+            }
+
             // map block id to its color
             foreach (Block block in this.settings.blocks)
             {
@@ -418,6 +260,7 @@ namespace Minisoft1
             {
                 Graphics g = e.Graphics;
                 Bitmap main_image = new Bitmap("smile.png");
+                next_game_shown = true;
 
                 Color backColor = main_image.GetPixel(1, 1);
                 main_image.MakeTransparent(backColor);
@@ -565,7 +408,7 @@ namespace Minisoft1
                                 toY = (block.height / this.settings.cell_size) + fromY;
 
                                 // prepise sa playground podla aktualnych tapiet
-                                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX > 0) && (fromY > 0))
+                                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
                                 {
                                     for (int r = fromY; r < toY; r++)
                                     {
@@ -639,6 +482,7 @@ namespace Minisoft1
                     {
                         selected.x = selected.startX;
                         selected.y = selected.startY;
+
                         if (gridBlocks.Contains(selected))
                         {
                             gridBlocks.Remove(selected);
@@ -666,26 +510,24 @@ namespace Minisoft1
                     Invalidate();
                 }
             }
-            //else if (MouseButtons.Right == e.Button)
-            //{
-            //    for (int i = 0; i < settings.blocks.Count; i++)
-            //    {
-            //        if (e.X < settings.blocks[i].x + settings.blocks[i].width && e.X > settings.blocks[i].x)
-            //        {
-            //            if (e.Y < settings.blocks[i].y + settings.blocks[i].height && e.Y > settings.blocks[i].y)
-            //            {
-            //                // rotate - change W and H
-            //                int W = settings.blocks[i].W;
-            //                settings.blocks[i].W = settings.blocks[i].H;
-            //                settings.blocks[i].H = W;
+        }
 
-            //                settings.blocks[i].recalculate_shape(settings.blocks[i].cell_size);
-            //                Invalidate();
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+        private void GameFormMode2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F3)
+            {
+                if (AnotherGame.Visible)
+                {
+                    next_game_shown = false;
+                    Invalidate();
+                }
+                else
+                {
+                    next_game_shown = true;
+                    Invalidate();
+                }
+
+            }
         }
 
         private void back_to_menu_Click(object sender, EventArgs e)
@@ -702,7 +544,6 @@ namespace Minisoft1
             this.gridBlocks = new List<Block>();
             this.positionedBlocks = new List<Block>();
             update_colors();
-            generate_blocks();
 
             var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
             
@@ -713,13 +554,13 @@ namespace Minisoft1
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
-                this.AnotherGame.Hide();
+                next_game_shown = false;
                 PositionAlgoritm();
             }
             else
             {
                 label1.Text = "Koniec";
-                AnotherGame.Hide();
+                next_game_shown = false;
             }
             Invalidate();
         }

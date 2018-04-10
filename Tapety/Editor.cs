@@ -256,6 +256,20 @@ namespace Minisoft1
                                         all_blocks[j] = all_blocks[j + 1];
                                     }
                                     all_blocks[all_blocks.Count - 1] = selected;
+
+                                    // also for game blocks array
+                                    //if (game_blocks.Count > 0)
+                                    //{
+                                    //    List<Block> temp = new List<Block>();
+
+                                    //    for (int j = 0; j < game_blocks.Count - 2; j++)
+                                    //    {
+                                    //        temp.Add(game_blocks[j]);
+                                    //    }
+                                    //    temp.Add(selected);
+                                    //    Console.WriteLine($"{temp.Count} {game_blocks.Count}");
+                                    //    game_blocks = temp;
+                                    //}
                                 }
                                 break;
                             }
@@ -276,16 +290,9 @@ namespace Minisoft1
                     int dx = e.X - delta.X;
                     int dy = e.Y - delta.Y;
 
-                    // if in window size
-                    //if (dx > 150 && dx + selected.width < this.ClientSize.Width)
-                    //{
-                    //    if (dy > 0 && dy + selected.height < this.ClientSize.Height)
-                    //    {
-                            selected.x = dx;
-                            selected.y = dy;
-                            Invalidate();
-                    //    }
-                    //}
+                    selected.x = dx;
+                    selected.y = dy;
+                    Invalidate();
                 }
                 // upper left move
                 else if (bupper_left)
@@ -424,106 +431,10 @@ namespace Minisoft1
                 // finished moving
                 if (selected != null)
                 {
-                    int cols = Convert.ToInt32(NumberOfCols.Value);
-                    int rows = Convert.ToInt32(NumberOfRows.Value);
-                    int cell_size = Convert.ToInt32(CellSize_editor.Value);
 
-                    int half_size = settings.cell_size / 2;
-
-                    // suradnice bez odsunutia
-                    var noindentX = (selected.x - INDENT_X);
-                    var noindentY = (selected.y - INDENT_Y);
-
-                    // doskakovanie
-                    int dx = noindentX % this.settings.cell_size;
-                    int dy = noindentY % this.settings.cell_size;
-
-
-                    // dole v pravo
-                    if (dx > half_size && dy > half_size)
-                    {
-                        noindentX += settings.cell_size - dx;
-                        noindentY += settings.cell_size - dy;
-                    }
-                    // hore v pravo
-                    else if (dx > half_size && dy <= half_size)
-                    {
-                        noindentX += settings.cell_size - dx;
-                    }
-                    // dole v lavo
-                    else if (dx <= half_size && dy > half_size)
-                    {
-                        noindentY += settings.cell_size - dy;
-                    }
-
-                    // konecny prepocet doskakovania
-                    selected.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
-                    selected.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
-
-                    
-
-                    if ((selected.x < this.settings.cols * this.settings.cell_size + INDENT_X) && 
-                        (selected.y >= INDENT_Y && selected.y < this.settings.rows * this.settings.cell_size))
-                    {
-
-                        
-
-                        // moved same object
-                        for (int r = 0; r < this.settings.rows; r++)
-                        {
-                            for (int s = 0; s < this.settings.cols; s++)
-                            {
-                                // moved same object
-                                if (playground[r, s] == selected.id)
-                                {
-                                    playground[r, s] = 0;
-                                }
-                            }
-                        }
-                        // playing
-                        int fromX = noindentX / this.settings.cell_size;
-                        int fromY = noindentY / this.settings.cell_size;
-
-                        int toX = (selected.width / this.settings.cell_size) + fromX;
-                        int toY = (selected.height / this.settings.cell_size) + fromY;
-
-                        // if in playground borders
-                        if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
-                        {
-                            // v poli a spravny
-                            if (!game_blocks.Contains(selected))
-                                game_blocks.Add(selected);
-
-                            foreach (Block block in this.game_blocks)
-                            {
-                                fromX = (block.x - INDENT_X) / this.settings.cell_size;
-                                fromY = (block.y - INDENT_Y) / this.settings.cell_size;
-
-                                toX = (block.width / this.settings.cell_size) + fromX;
-                                toY = (block.height / this.settings.cell_size) + fromY;
-
-                                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX > 0) && (fromY > 0))
-                                {
-                                    for (int r = fromY; r < toY; r++)
-                                    {
-                                        for (int s = fromX; s < toX; s++)
-                                        {
-                                            playground[r, s] = block.id;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (game_blocks.Contains(selected))
-                            game_blocks.Remove(selected);
-                    }
-
-
-
-                    Console.WriteLine($"ASFAFSF {game_blocks.Count} {all_blocks.Count}");
+                    align_block(selected);
+                    change_playground_ids(selected);
+                   
                     selected = null;
                 }
                 // Upper Left reset and resize
@@ -546,6 +457,8 @@ namespace Minisoft1
                     }
                     changed.W = changed.width / settings.cell_size;
                     changed.H = changed.height / settings.cell_size;
+
+                    change_playground_ids(changed);
                 }
                 // Upper Right reset and resize
                 if (bupper_right)
@@ -565,6 +478,8 @@ namespace Minisoft1
                     }
                     changed.W = changed.width / settings.cell_size;
                     changed.H = changed.height / settings.cell_size;
+
+                    change_playground_ids(changed);
                 }
                 // Lower Left reset and resize
                 if (blower_left)
@@ -584,6 +499,8 @@ namespace Minisoft1
                     }
                     changed.W = changed.width / settings.cell_size;
                     changed.H = changed.height / settings.cell_size;
+
+                    change_playground_ids(changed);
                 }
                 // Lower Right reset and resize
                 if (blower_right)
@@ -602,35 +519,138 @@ namespace Minisoft1
                     }
                     changed.W = changed.width / settings.cell_size;
                     changed.H = changed.height / settings.cell_size;
+
+                    change_playground_ids(changed);
                 }
+
+                for (int r = 0; r < this.settings.rows; r++)
+                {
+                    for (int s = 0; s < this.settings.cols; s++)
+                    {
+                        Console.Write(playground[r, s]);
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine($"________________ {all_blocks.Count} {game_blocks.Count}");
+
                 Invalidate();
             }
-            //else if (MouseButtons.Right == e.Button)
-            //{
-            //    for (int i = 0; i < all_blocks.Count; i++)
-            //    {
-            //        if (e.X < all_blocks[i].x + all_blocks[i].width && e.X > all_blocks[i].x)
-            //        {
-            //            if (e.Y < all_blocks[i].y + all_blocks[i].height && e.Y > all_blocks[i].y)
-            //            {
-            //                // rotate - change W and H
-            //                int W = all_blocks[i].W;
-            //                all_blocks[i].W = all_blocks[i].H;
-            //                all_blocks[i].H = W;
+        }
 
-            //                all_blocks[i].recalculate_shape(all_blocks[i].cell_size);
-            //                Invalidate();
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+        private void align_block(Block picked)
+        {
+            int half_size = settings.cell_size / 2;
+
+            // suradnice bez odsunutia
+            var noindentX = (picked.x - INDENT_X);
+            var noindentY = (picked.y - INDENT_Y);
+
+            // doskakovanie
+            int dx = noindentX % this.settings.cell_size;
+            int dy = noindentY % this.settings.cell_size;
+
+
+            // dole v pravo
+            if (dx > half_size && dy > half_size)
+            {
+                noindentX += settings.cell_size - dx;
+                noindentY += settings.cell_size - dy;
+            }
+            // hore v pravo
+            else if (dx > half_size && dy <= half_size)
+            {
+                noindentX += settings.cell_size - dx;
+            }
+            // dole v lavo
+            else if (dx <= half_size && dy > half_size)
+            {
+                noindentY += settings.cell_size - dy;
+            }
+
+            // konecny prepocet doskakovania
+            picked.x = (noindentX / this.settings.cell_size) * this.settings.cell_size + INDENT_X;
+            picked.y = (noindentY / this.settings.cell_size) * this.settings.cell_size + INDENT_Y;
+        }
+
+        private void change_playground_ids(Block picked)
+        {
+            int half_size = settings.cell_size / 2;
+
+            for (int r = 0; r < this.settings.rows; r++)
+            {
+                for (int s = 0; s < this.settings.cols; s++)
+                {
+                    // moved same object
+                    if (playground[r, s] == picked.id)
+                    {
+                        playground[r, s] = 0;
+                    }
+                }
+            }
+
+
+            // suradnice bez odsunutia
+            var noindentX = (picked.x - INDENT_X);
+            var noindentY = (picked.y - INDENT_Y);
+
+            // playing
+            int fromX = noindentX / this.settings.cell_size;
+            int fromY = noindentY / this.settings.cell_size;
+
+            int toX = (picked.width / this.settings.cell_size) + fromX;
+            int toY = (picked.height / this.settings.cell_size) + fromY;
+
+            if ((picked.x >= 0 + INDENT_X - half_size && picked.x < INDENT_X + half_size + this.settings.cols * this.settings.cell_size) &&
+                (picked.y >= 0 + INDENT_Y - half_size && picked.y < INDENT_Y + half_size + this.settings.rows * this.settings.cell_size))
+            {
+                // if in playground borders
+                if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
+                {
+                    // v poli a spravny
+                    Console.WriteLine($"{game_blocks.Contains(picked)}");
+                    if (!game_blocks.Contains(picked))
+                        game_blocks.Add(picked);
+
+                    foreach (Block block in this.game_blocks)
+                    {
+                        fromX = (block.x - INDENT_X) / this.settings.cell_size;
+                        fromY = (block.y - INDENT_Y) / this.settings.cell_size;
+
+                        toX = (block.width / this.settings.cell_size) + fromX;
+                        toY = (block.height / this.settings.cell_size) + fromY;
+
+                        if ((toX <= settings.cols) && (toY <= settings.rows) && (fromX >= 0) && (fromY >= 0))
+                        {
+                            for (int r = fromY; r < toY; r++)
+                            {
+                                for (int s = fromX; s < toX; s++)
+                                {
+                                    playground[r, s] = block.id;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (game_blocks.Contains(picked))
+                        game_blocks.Remove(picked);
+
+                    picked.x = picked.startX;
+                    picked.y = picked.startY;
+                }
+            }
+            else
+            {
+                if (game_blocks.Contains(picked))
+                    game_blocks.Remove(picked);
+            }
         }
 
         // BUTTONS
         private void save_first_mode_Click(object sender, EventArgs e)
         {
-            if (all_blocks.Count > 0)
+            if (game_blocks.Count > 0)
             {
                 DialogResult dialogResult = MessageBox.Show("Naozaj chcete uložiť úlohu?", "Uloženie pre Mód 1.", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -639,14 +659,6 @@ namespace Minisoft1
                     Directory.CreateDirectory(path);
                     var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
                     int n = files.Length + 1;
-
-                    // pozicie okolo vyriesi algoritmus
-                    //foreach (Block block in blocks)
-                    //{
-                    //    block.x -= (INDENT_X - 30);
-                    //    block.startX = block.x;
-                    //    block.startY = block.y;
-                    //}
 
                     foreach (Block block in game_blocks)
                     {
@@ -688,68 +700,67 @@ namespace Minisoft1
             }
             else
             {
-                MessageBox.Show("Nevytvoril si žiadne tapety");
+                MessageBox.Show("V hracej mriezke nie su ziadne tapety");
             }
         }
 
         private void save_2_blocks_Click(object sender, EventArgs e)
         {
-            // save blocks
-            DialogResult dialogResult = MessageBox.Show("Naozaj chcete uložiť úlohu?", "Uloženie pre Mód 2.", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (game_blocks.Count > 0)
             {
-                string path = "mode2";
-                Directory.CreateDirectory(path);
-                var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
-                int n = files.Length + 1;
-
-                settings.blockCount = game_blocks.Count;
-
-                // pozicie okolo vyriesi algoritmus
-                foreach (Block block in game_blocks)
+                // save blocks
+                DialogResult dialogResult = MessageBox.Show("Naozaj chcete uložiť úlohu?", "Uloženie pre Mód 2.", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    block.startX = block.x;
-                    block.startY = block.y;
+                    string path = "mode2";
+                    Directory.CreateDirectory(path);
+                    var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
+                    int n = files.Length + 1;
+
+                    settings.blockCount = game_blocks.Count;
+
+                    foreach (Block block in game_blocks)
+                    {
+                        block.finalX = (block.x - INDENT_X) / settings.cell_size;
+                        block.finalY = (block.y - INDENT_Y) / settings.cell_size;
+                    }
+
+                    settings.blocks = game_blocks;
+                    settings.playground = playground;
+                    settings.window_width = Size.Width;
+                    settings.window_height = Size.Height;
+
+                    string fname = "";
+
+                    if (n >= 1 && n <= 9)
+                        fname = $"{path}/level0{n}";
+                    else
+                        fname = $"{path}/level{n}";
+
+                    sm.save(settings, fname);
+
+                    // vymaz iba tie tapety s ktorymi sa hra ostne iba presmiestni na start
+                    game_blocks = new List<Block>();
+                    foreach (Block block in all_blocks)
+                    {
+                        block.x = block.startX;
+                        block.y = block.startY;
+                    }
+
+                    //hura na dalsi level
+                    this.playground = new int[this.settings.rows, this.settings.cols];
+                    this.mode2_playground = new int[this.settings.rows, this.settings.cols];
+                    ix = 0;
+                    colorInQueue = 0;
+                    textBox1.BackColor = colours[colorInQueue];
+                    Invalidate();
                 }
-
-                foreach (Block block in game_blocks)
-                {
-                    block.finalX = (block.x - INDENT_X) / settings.cell_size;
-                    block.finalY = (block.y - INDENT_Y) / settings.cell_size;
-                }
-
-                settings.blocks = game_blocks;
-                settings.playground = playground;
-                settings.window_width = Size.Width;
-                settings.window_height = Size.Height;
-
-                string fname = "";
-
-                if (n >= 1 && n <= 9)
-                    fname = $"{path}/level0{n}";
-                else
-                    fname = $"{path}/level{n}";
-
-                sm.save(settings, fname);
-
-                // vymaz iba tie tapety s ktorymi sa hra ostne iba presmiestni na start
-                game_blocks = new List<Block>();
-                foreach (Block block in all_blocks)
-                {
-                    block.x = block.startX;
-                    block.y = block.startY;
-                }
-                
-                //hura na dalsi level
-                this.playground = new int[this.settings.rows, this.settings.cols];
-                this.mode2_playground = new int[this.settings.rows, this.settings.cols];
-                ix = 0;
-                colorInQueue = 0;
-                textBox1.BackColor = colours[colorInQueue];
-                Invalidate();
-
-                save_2_blocks.Enabled = false;          //spatne prepnutie
             }
+            else
+            {
+                MessageBox.Show("V hracej mriezke nie su ziadne tapety");
+            }
+            
         }
     }
 }

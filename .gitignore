@@ -287,3 +287,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 Tapety/Glass/GlassButton.cs
+Tapety/Minisoft1.csproj
+Tapety/bin/Debug/Minisoft1.exe

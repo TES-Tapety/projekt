@@ -30,8 +30,6 @@ namespace Minisoft1
         /// </summary>
         private void InitializeComponent()
         {
-            this.back_to_menu = new Glass.GlassButton();
-            this.AnotherGame = new Glass.GlassButton();
             this.label1 = new System.Windows.Forms.Label();
             this.color_lab1 = new System.Windows.Forms.Label();
             this.color_lab2 = new System.Windows.Forms.Label();
@@ -45,36 +43,16 @@ namespace Minisoft1
             this.color_lab10 = new System.Windows.Forms.Label();
             this.text_lab1 = new System.Windows.Forms.Label();
             this.show_final_state = new Glass.GlassButton();
+            this.back_to_menu = new Glass.GlassButton();
+            this.AnotherGame = new Glass.GlassButton();
             this.SuspendLayout();
-            // 
-            // back_to_menu
-            // 
-            this.back_to_menu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.back_to_menu.Location = new System.Drawing.Point(667, 329);
-            this.back_to_menu.Name = "back_to_menu";
-            this.back_to_menu.Size = new System.Drawing.Size(75, 23);
-            this.back_to_menu.TabIndex = 5;
-            this.back_to_menu.Text = "Menu";
-            this.back_to_menu.UseVisualStyleBackColor = true;
-            this.back_to_menu.Click += new System.EventHandler(this.back_to_menu_Click);
-            // 
-            // AnotherGame
-            // 
-            this.AnotherGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AnotherGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.AnotherGame.Location = new System.Drawing.Point(489, 65);
-            this.AnotherGame.Name = "AnotherGame";
-            this.AnotherGame.Size = new System.Drawing.Size(83, 23);
-            this.AnotherGame.TabIndex = 3;
-            this.AnotherGame.Text = "Ďalšia hra";
-            this.AnotherGame.UseVisualStyleBackColor = true;
-            this.AnotherGame.Click += new System.EventHandler(this.AnotherGame_Click);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F);
-            this.label1.Location = new System.Drawing.Point(497, 25);
+            this.label1.Location = new System.Drawing.Point(665, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 22);
             this.label1.TabIndex = 6;
@@ -171,13 +149,48 @@ namespace Minisoft1
             // show_final_state
             // 
             this.show_final_state.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.show_final_state.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.show_final_state.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.show_final_state.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.show_final_state.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.show_final_state.Location = new System.Drawing.Point(657, 300);
             this.show_final_state.Name = "show_final_state";
+            this.show_final_state.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.show_final_state.Size = new System.Drawing.Size(96, 23);
             this.show_final_state.TabIndex = 14;
             this.show_final_state.Text = "Ukáž riešenie";
-            this.show_final_state.UseVisualStyleBackColor = true;
             this.show_final_state.Click += new System.EventHandler(this.show_final_state_Click);
+            // 
+            // back_to_menu
+            // 
+            this.back_to_menu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.back_to_menu.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.back_to_menu.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.back_to_menu.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.back_to_menu.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
+            this.back_to_menu.Location = new System.Drawing.Point(667, 329);
+            this.back_to_menu.Name = "back_to_menu";
+            this.back_to_menu.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
+            this.back_to_menu.Size = new System.Drawing.Size(75, 23);
+            this.back_to_menu.TabIndex = 5;
+            this.back_to_menu.Text = "Menu";
+            this.back_to_menu.Click += new System.EventHandler(this.back_to_menu_Click);
+            // 
+            // AnotherGame
+            // 
+            this.AnotherGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AnotherGame.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.AnotherGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.AnotherGame.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.AnotherGame.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.AnotherGame.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
+            this.AnotherGame.Location = new System.Drawing.Point(657, 60);
+            this.AnotherGame.Name = "AnotherGame";
+            this.AnotherGame.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
+            this.AnotherGame.Size = new System.Drawing.Size(83, 23);
+            this.AnotherGame.TabIndex = 3;
+            this.AnotherGame.Text = "Ďalšia hra";
+            this.AnotherGame.Click += new System.EventHandler(this.AnotherGame_Click);
             // 
             // GameFormMode2
             // 
@@ -203,6 +216,7 @@ namespace Minisoft1
             this.Text = "Tapety";
             this.Shown += new System.EventHandler(this.GameFormMode2_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameFormMode2_Paint);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GameFormMode2_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameFormMode2_MouseUp);
@@ -213,9 +227,6 @@ namespace Minisoft1
         }
 
         #endregion
-
-        private System.Windows.Forms.Button back_to_menu;
-        private System.Windows.Forms.Button AnotherGame;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label color_lab1;
         private System.Windows.Forms.Label color_lab2;
@@ -228,6 +239,8 @@ namespace Minisoft1
         private System.Windows.Forms.Label color_lab9;
         private System.Windows.Forms.Label color_lab10;
         private System.Windows.Forms.Label text_lab1;
-        private System.Windows.Forms.Button show_final_state;
+        private Glass.GlassButton back_to_menu;
+        private Glass.GlassButton AnotherGame;
+        private Glass.GlassButton show_final_state;
     }
 }
