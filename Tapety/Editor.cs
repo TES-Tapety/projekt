@@ -242,6 +242,7 @@ namespace Minisoft1
                                 if (start_deletion)
                                 {
                                     all_blocks.Remove(all_blocks[i]);
+                                    game_blocks.Remove(all_blocks[i]);
                                 }
                                 else
                                 {

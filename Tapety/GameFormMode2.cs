@@ -230,19 +230,31 @@ namespace Minisoft1
 
                 // rozmiestni okolo hracej plochy
                 // TODO: musi sa zlepsit !!!!
+                PositionAlgoritm();
+               
+                this.playground = new int[this.settings.rows, this.settings.cols];
+                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+                this.OnResize(EventArgs.Empty);
 
-                this.blocks = new Block[this.settings.blockCount];
+                Invalidate();
+                this.AnotherGame.Hide();
+            }
+        }
+        
+        private void PositionAlgoritm()
+        {
+            this.blocks = new Block[this.settings.blockCount];
                 int ix = 0;       
                 int posX = INDENT_X - settings.cell_size ;
                 int posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                 Rectangle boundRect = new Rectangle(0, INDENT_Y + this.settings.cell_size * this.settings.cols, 2000, 10);
 
-                foreach (obdlznik obdl in ob)
+                foreach (Block obdl in this.settings.blocks)
                 {
                     int round = 0;
-                    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                    int W = obdl.x;
-                    int H = obdl.y;
+                    //Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                    int W = obdl.W;
+                    int H = obdl.H;
                     int width = this.settings.cell_size * W;
                     int height = this.settings.cell_size * H;
 
@@ -265,15 +277,15 @@ namespace Minisoft1
 
                         if (!(r1.IntersectsWith(r2)) && free && !(r1.IntersectsWith(boundRect)))
                         {
-                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, color);
-                            block.finalX = obdl.posX;
-                            block.finalY = obdl.posY;
+                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, obdl.color);
+                            block.finalX = obdl.finalX;
+                            block.finalY = obdl.finalY;
                             blocks[ix] = block;
                             ix += 1;
                             posX = INDENT_X - settings.cell_size;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             positionedBlocks.Add(block);
-                            //Debug.WriteLine("UMIESTNUJEM");
+                            Debug.WriteLine("UMIESTNUJEM");
                             break;
                         }
                         else
@@ -300,29 +312,75 @@ namespace Minisoft1
                     }
                 }
 
+                
+                
                 this.settings.blocks = positionedBlocks;
-                this.playground = new int[this.settings.rows, this.settings.cols];
-                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
-                this.OnResize(EventArgs.Empty);
-
-                Invalidate();
-                this.AnotherGame.Hide();
-            }
         }
 
         private void GameFormMode2_Paint(object sender, PaintEventArgs e)
         {
 
+            /* // map block id to its color
+             foreach (Block block in this.settings.blocks)
+             {                
+                 if (!idcolor_map.ContainsKey(block.id))
+                 {
+                     idcolor_map.Add(block.id, block.color);
+                 }
+             }
+ 
+             Control control = (Control)sender;
+             int local_indentX = control.Size.Width - 300 + settings.cell_size;
+             int local_indentY = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+ 
+             for (int i = 0; i < this.settings.cols; i++)
+             {
+                 for (int j = 0; j < this.settings.rows; j++)
+                 {
+                     // draw playing area
+                     Pen blackPen = new Pen(Color.Black, 1);
+                     e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X, j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
+ 
+                     // draw final state example area
+                     e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
+ 
+                     if (idcolor_map.ContainsKey(settings.playground[j, i]))
+                     {
+                         Color c = idcolor_map[settings.playground[j, i]];
+                         Brush brush = new SolidBrush(c);
+                         e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
+                     }
+                 }
+             }
+ 
+             // draw blocks last
+             foreach (Block block in settings.blocks)
+             {
+                 block.Kresli(e.Graphics);
+             }
+ 
+             if (showWin)
+             {
+                 Graphics g = e.Graphics;
+                 Bitmap main_image = new Bitmap("smile.png");
+ 
+                 Color backColor = main_image.GetPixel(1, 1);
+                 main_image.MakeTransparent(backColor);
+ 
+                 e.Graphics.DrawImage(
+                     main_image, this.Width - 100, 0, 64, 64);
+             }     
+         }*/
             // map block id to its color
             foreach (Block block in this.settings.blocks)
-            {                
+            {
                 if (!idcolor_map.ContainsKey(block.id))
                 {
                     idcolor_map.Add(block.id, block.color);
                 }
             }
 
-            Control control = (Control)sender;
+            Control control = (Control) sender;
             int local_indentX = control.Size.Width - 300 + settings.cell_size;
             int local_indentY = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
 
@@ -332,16 +390,20 @@ namespace Minisoft1
                 {
                     // draw playing area
                     Pen blackPen = new Pen(Color.Black, 1);
-                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X, j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
+                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + INDENT_X,
+                        j * this.settings.cell_size + INDENT_Y, this.settings.cell_size, this.settings.cell_size);
 
                     // draw final state example area
-                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
+                    e.Graphics.DrawRectangle(blackPen, i * this.settings.cell_size + local_indentX,
+                        j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
 
                     if (idcolor_map.ContainsKey(settings.playground[j, i]))
                     {
                         Color c = idcolor_map[settings.playground[j, i]];
                         Brush brush = new SolidBrush(c);
-                        e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX, j * this.settings.cell_size + local_indentY, this.settings.cell_size, this.settings.cell_size);
+                        e.Graphics.FillRectangle(brush, i * this.settings.cell_size + local_indentX,
+                            j * this.settings.cell_size + local_indentY, this.settings.cell_size,
+                            this.settings.cell_size);
                     }
                 }
             }
@@ -362,7 +424,7 @@ namespace Minisoft1
 
                 e.Graphics.DrawImage(
                     main_image, this.Width - 100, 0, 64, 64);
-            }     
+            }
         }
 
         private void GameFormMode2_MouseDown(object sender, MouseEventArgs e)
@@ -638,6 +700,7 @@ namespace Minisoft1
             game_level_index++;
             showWin = false;
             this.gridBlocks = new List<Block>();
+            this.positionedBlocks = new List<Block>();
             update_colors();
             generate_blocks();
 
@@ -651,6 +714,7 @@ namespace Minisoft1
                 this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
                 this.AnotherGame.Hide();
+                PositionAlgoritm();
             }
             else
             {

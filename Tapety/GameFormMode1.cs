@@ -229,18 +229,30 @@ namespace Minisoft1
 
                 // rozmiestni okolo hracej plochy
                 // TODO: musi sa zlepsit !!!!
-                this.blocks = new Block[this.settings.blockCount];
+                PositionAlgoritm();
+                this.playground = new int[this.settings.rows, this.settings.cols];
+                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
+                this.OnResize(EventArgs.Empty);
+
+                Invalidate();
+                this.AnotherGame.Hide();
+            }
+        }
+
+        private void PositionAlgoritm()
+        {
+            this.blocks = new Block[this.settings.blockCount];
                 int ix = 0;       
                 int posX = INDENT_X - settings.cell_size ;
                 int posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                 Rectangle boundRect = new Rectangle(0, INDENT_Y + this.settings.cell_size * this.settings.cols, 2000, 10);
 
-                foreach (obdlznik obdl in ob)
+                foreach (Block obdl in this.settings.blocks)
                 {
                     int round = 0;
-                    Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                    int W = obdl.x;
-                    int H = obdl.y;
+                    //Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                    int W = obdl.W;
+                    int H = obdl.H;
                     int width = this.settings.cell_size * W;
                     int height = this.settings.cell_size * H;
 
@@ -263,15 +275,15 @@ namespace Minisoft1
 
                         if (!(r1.IntersectsWith(r2)) && free && !(r1.IntersectsWith(boundRect)))
                         {
-                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, color);
-                            block.finalX = obdl.posX;
-                            block.finalY = obdl.posY;
+                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, obdl.color);
+                            block.finalX = obdl.finalX;
+                            block.finalY = obdl.finalY;
                             blocks[ix] = block;
                             ix += 1;
                             posX = INDENT_X - settings.cell_size;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             positionedBlocks.Add(block);
-                            //Debug.WriteLine("UMIESTNUJEM");
+                            Debug.WriteLine("UMIESTNUJEM");
                             break;
                         }
                         else
@@ -298,16 +310,10 @@ namespace Minisoft1
                     }
                 }
 
+                
+                
                 this.settings.blocks = positionedBlocks;
-                this.playground = new int[this.settings.rows, this.settings.cols];
-                this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
-                this.OnResize(EventArgs.Empty);
-
-                Invalidate();
-                this.AnotherGame.Hide();
-            }
         }
-
         private void GameFormMode1_Paint(object sender, PaintEventArgs e)
         {
             // draw playing area
@@ -392,6 +398,9 @@ namespace Minisoft1
             // TODO: load another level
             game_level_index++;
             showWin = false;
+            this.positionedBlocks = new List<Block>();
+            this.gridBlocks = new List<Block>();
+            update_colors();
 
             var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
             if (game_level_index < max_game_level_index)                                   //tu chybalo =
@@ -402,13 +411,13 @@ namespace Minisoft1
                 this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
                 this.AnotherGame.Hide();
+                PositionAlgoritm();
             }
             else
             {
                 label1.Text = "Koniec";
                 AnotherGame.Hide();
             }
-            generate_blocks();
             Invalidate();
         }
 
