@@ -39,8 +39,8 @@ namespace Minisoft1
 			InitializeComponent();
 			
 			this.settings = settings;
-            this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 100;
-            this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 54 - 100;          
+		    INDENT_X = 300;
+		    INDENT_Y = 250;        
             this.clicked = false;
             this.showWin = false;
 			this.rnd = new Random();
@@ -65,15 +65,6 @@ namespace Minisoft1
         private void GameForm_Resize(object sender, EventArgs e)
         {
             Control control = (Control)sender;
-
-            old_indentX = INDENT_X;
-            old_indentY = INDENT_Y;
-
-            this.INDENT_X = this.Size.Width - (settings.cols * settings.cell_size) - 100;
-            this.INDENT_Y = this.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
-
-            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
-
             if (this.blocks != null)
             {
                 foreach (Block block in this.blocks)
@@ -91,16 +82,6 @@ namespace Minisoft1
 
         void GameFormShown(object sender, EventArgs e)
         {
-            //int min_width = (settings.cols * settings.cell_size) * 3;
-            //int min_height = Screen.PrimaryScreen.WorkingArea.Height;
-
-            //Console.WriteLine($"SHOWN {min_width} {min_height}");
-
-            //if (Screen.PrimaryScreen.WorkingArea.Width < min_width * 2)
-            //    this.WindowState = FormWindowState.Maximized;
-            //if (Screen.PrimaryScreen.WorkingArea.Height < min_height)
-            //    this.WindowState = FormWindowState.Maximized;
-
             this.MinimumSize = new Size((settings.cols * settings.cell_size) * 3, 600);
             this.OnResize(EventArgs.Empty);
             this.draw_game();
@@ -278,7 +259,6 @@ namespace Minisoft1
                         posX = INDENT_X - settings.cell_size;
                         posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                         positionedBlocks.Add(block);
-                        //Debug.WriteLine("UMIESTNUJEM");
                         break;
                     }
                     else
@@ -286,12 +266,10 @@ namespace Minisoft1
                         if (posY > INDENT_Y - settings.cell_size * round)
                         {
                             posY -= 5;
-                            //Debug.WriteLine("idem hore");
                         }
                         else if (posX + width < INDENT_X+settings.cols * settings.cell_size)
                         {
                             posX += 5;
-                            //Debug.WriteLine("idem doprava");
                         }
                         else
                         {
@@ -299,7 +277,6 @@ namespace Minisoft1
                             posX = INDENT_X - (1+round)*settings.cell_size - 5;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                         }
-                        //Debug.WriteLine("x" + " " + posX + " / " + "y" + " "+ posY + " "+ "round"+round);
                     }
                 } 
             }     
@@ -318,14 +295,7 @@ namespace Minisoft1
 					Pen blackPen = new Pen(Color.Black, 1);
 					e.Graphics.DrawRectangle(blackPen, i*this.settings.cell_size+INDENT_X, j*this.settings.cell_size+INDENT_Y, this.settings.cell_size, this.settings.cell_size);
 				}
-			}
-		    
-		    /*Rectangle r2 = new Rectangle(INDENT_X - 5,
-		        INDENT_Y - 5,
-		        settings.rows * settings.cell_size + 10, settings.cols * settings.cell_size + 10);
-		    Pen gPen = new Pen(Color.Gold, 1);
-		    e.Graphics.DrawRectangle(gPen, r2);*/
-		    
+			}		    
             // draw blocks
             foreach(Block block in blocks)
 			{
@@ -345,8 +315,6 @@ namespace Minisoft1
         }
 
         void GameFormMouseDown(object sender, MouseEventArgs e){
-			//if (e.Button == MouseButtons.Left)
-   //         {
                 for (int i = 0; i < blocks.Length; i++)
                 {
                     if (e.X < blocks[i].x + blocks[i].width && e.X > blocks[i].x)
@@ -373,8 +341,6 @@ namespace Minisoft1
 
         void GameFormMouseMove(object sender, MouseEventArgs e)
 		{
-            //if (e.Button == MouseButtons.Left)
-            //{
                 if (clicked)
                 {
                     int dx = e.X - deltaX;
@@ -384,7 +350,6 @@ namespace Minisoft1
                     selected.y = dy;
                     Invalidate();
                 }
-            //}
 		}
 
         private void show_final_state_Click(object sender, EventArgs e)
@@ -405,7 +370,6 @@ namespace Minisoft1
 
         private void AnotherGame_Click(object sender, EventArgs e)
         {
-            //this.Size = new Size((settings.rows * settings.cell_size), (settings.cols * settings.cell_size));
             this.showWin = false;
             this.gridBlocks = new List<Block>();
             update_colors();
@@ -546,7 +510,6 @@ namespace Minisoft1
                         selected.x = selected.startX;
                         selected.y = selected.startY;
                         selected.in_playground = false;
-                        Debug.WriteLine("pripad1");
                         if (gridBlocks.Contains(selected))
                         {
                             gridBlocks.Remove(selected);

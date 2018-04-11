@@ -61,6 +61,8 @@ namespace Minisoft1
             this.colorLabels.Add(color_lab8);
             this.colorLabels.Add(color_lab9);
             this.colorLabels.Add(color_lab10);
+            INDENT_X = 300;
+            INDENT_Y = 250;
 
             this.mainForm = mainForm;
         }        
@@ -68,16 +70,6 @@ namespace Minisoft1
         private void GameFormMode2_Resize(object sender, EventArgs e)
         {
             Control control = (Control)sender;
-
-            // loaded in shown
-            old_indentX = INDENT_X;
-            old_indentY = INDENT_Y;
-
-            this.INDENT_X = this.Size.Width - (settings.cols * settings.cell_size) - 310;
-            this.INDENT_Y = this.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
-
-            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
-
             if (this.settings.blocks != null)
             {
                 foreach (Block block in this.settings.blocks)
@@ -111,9 +103,6 @@ namespace Minisoft1
                 string fname = $"{files[game_level_index]}";
                 this.settings = sm.load(fname);
 
-                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 1080;
-                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 415;
-
                 // rozmiestni okolo hracej plochy
                 PositionAlgoritm();
                
@@ -128,6 +117,7 @@ namespace Minisoft1
         private void PositionAlgoritm()
         {
             this.blocks = new Block[this.settings.blockCount];
+            Boolean switched = false;
                 int ix = 0;       
                 int posX = INDENT_X - settings.cell_size ;
                 int posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
@@ -135,6 +125,7 @@ namespace Minisoft1
 
                 foreach (Block obdl in this.settings.blocks)
                 {
+                    int direct = 0;
                     int round = 0;
                     //Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                     int W = obdl.W;
@@ -169,7 +160,6 @@ namespace Minisoft1
                             posX = INDENT_X - settings.cell_size;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             positionedBlocks.Add(block);
-                            Debug.WriteLine("UMIESTNUJEM");
                             break;
                         }
                         else
@@ -177,12 +167,10 @@ namespace Minisoft1
                             if (posY > INDENT_Y - settings.cell_size * round)
                             {
                                 posY -= 5;
-                                //Debug.WriteLine("idem hore");
                             }
                             else if (posX + width < INDENT_X + settings.cols * settings.cell_size)
                             {
                                 posX += 5;
-                                //Debug.WriteLine("idem doprava");
                             }
                             else
                             {
@@ -191,7 +179,6 @@ namespace Minisoft1
                                 posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             }
 
-                            //Debug.WriteLine("x" + " " + posX + " / " + "y" + " "+ posY + " "+ "round"+round);
                         }
                     }
                 }
@@ -552,7 +539,6 @@ namespace Minisoft1
                 string next_level_path = $"{files[game_level_index]}";
                 this.settings = sm.load(next_level_path);
                 this.playground = new int[this.settings.rows, this.settings.cols];
-                this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
                 next_game_shown = false;
                 PositionAlgoritm();

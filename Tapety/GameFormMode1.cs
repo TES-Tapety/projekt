@@ -62,20 +62,14 @@ namespace Minisoft1
             this.colorLabels.Add(color_lab8);
             this.colorLabels.Add(color_lab9);
             this.colorLabels.Add(color_lab10);
+
+            INDENT_X = 300;
+            INDENT_Y = 250;
         }
 
         private void GameFormMode1_Resize(object sender, EventArgs e)
         {
             Control control = (Control)sender;
-
-            // loaded in shown
-            old_indentX = INDENT_X;
-            old_indentY = INDENT_Y;
-
-            this.INDENT_X = control.Size.Width - (settings.cols * settings.cell_size) - 100;
-            this.INDENT_Y = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
-
-            //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
 
             if (this.settings.blocks != null)
             {
@@ -110,12 +104,7 @@ namespace Minisoft1
             {
                 string fname = $"{files[game_level_index]}";  // first inde starts from 0
                 this.settings = sm.load(fname);
-                
-                this.INDENT_X = this.Size.Width - (settings.cols * settings.cell_size) - 100;
-                this.INDENT_Y = this.Size.Height - (settings.rows * settings.cell_size) + 50;
-                
-
-
+               
                 // rozmiestni okolo hracej plochy
                 PositionAlgoritm();
                 this.playground = new int[this.settings.rows, this.settings.cols];
@@ -128,9 +117,6 @@ namespace Minisoft1
 
         private void PositionAlgoritm()
         {
-            Debug.WriteLine("tapety");
-            Debug.WriteLine(INDENT_X);
-            Debug.WriteLine(INDENT_Y);
             this.blocks = new Block[this.settings.blockCount];
                 int ix = 0;       
                 int posX = INDENT_X - settings.cell_size ;
@@ -173,7 +159,6 @@ namespace Minisoft1
                             posX = INDENT_X - settings.cell_size;
                             posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             positionedBlocks.Add(block);
-                            Debug.WriteLine("UMIESTNUJEM");
                             break;
                         }
                         else
@@ -181,12 +166,10 @@ namespace Minisoft1
                             if (posY > INDENT_Y - settings.cell_size * round)
                             {
                                 posY -= 5;
-                                //Debug.WriteLine("idem hore");
                             }
                             else if (posX + width < INDENT_X + settings.cols * settings.cell_size)
                             {
                                 posX += 5;
-                                //Debug.WriteLine("idem doprava");
                             }
                             else
                             {
@@ -194,8 +177,6 @@ namespace Minisoft1
                                 posX = INDENT_X - (1 + round) * settings.cell_size - 5;
                                 posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
                             }
-
-                            //Debug.WriteLine("x" + " " + posX + " / " + "y" + " "+ posY + " "+ "round"+round);
                         }
                     }
                 }
@@ -218,9 +199,6 @@ namespace Minisoft1
 
             // draw playing area
             // it goes first by the colls - X
-            Debug.WriteLine("mriezka");
-            Debug.WriteLine(INDENT_X);
-            Debug.WriteLine(INDENT_Y);
             for (int i = 0; i < this.settings.cols; i++)
             {
                 for (int j = 0; j < this.settings.rows; j++)
@@ -311,7 +289,6 @@ namespace Minisoft1
                 string next_level_path = $"{files[game_level_index]}";
                 this.settings = sm.load(next_level_path);
                 this.playground = new int[this.settings.rows, this.settings.cols];
-                this.Size = new Size(settings.window_width, settings.window_height);
                 idcolor_map = new Dictionary<int, Color>();
                 next_game_shown = false;
                 PositionAlgoritm();

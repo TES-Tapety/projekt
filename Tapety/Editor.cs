@@ -175,11 +175,13 @@ namespace Minisoft1
         {
             if(start_deletion == false)
             {
+                this.delete_block.ForeColor = Color.Red;
                 start_deletion = true;
                 delete_block.Text = "Skonči Mazanie";
             }
             else
             {
+                this.delete_block.ForeColor = Color.Black;
                 start_deletion = false;
                 delete_block.Text = "Začni Mazanie";
             }
