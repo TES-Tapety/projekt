@@ -125,6 +125,7 @@ namespace Minisoft1
 
                 foreach (Block obdl in this.settings.blocks)
                 {
+                    int switched = 0;
                     int round = 0;
                     //Color color = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                     int W = obdl.W;
@@ -134,6 +135,10 @@ namespace Minisoft1
 
                     while (true)
                     {
+                        if (switched == 1)
+                        {
+                            posY -= height;
+                        }
 
                         Rectangle r1 = new Rectangle(posX - 5, posY - 5, width + 5, height + 5);
                         Rectangle r2 = new Rectangle(INDENT_X - 1, INDENT_Y - 1,
@@ -142,7 +147,7 @@ namespace Minisoft1
                         Boolean free = true;
                         foreach (Block b in positionedBlocks)
                         {
-                            Rectangle r = new Rectangle(b.x - 5, b.y - 5, b.width + 5, b.height + 5);
+                            Rectangle r = new Rectangle(b.x - 5 , b.y - 5, b.width +5, b.height + 5);
                             if (r1.IntersectsWith(r))
                             {
                                 free = false;
@@ -163,20 +168,30 @@ namespace Minisoft1
                         }
                         else
                         {
-                            if (posY > INDENT_Y - settings.cell_size * round)
+                            if (posY > INDENT_Y - 5 * round)
                             {
                                 posY -= 5;
                             }
                             else if (posX + width < INDENT_X + settings.cols * settings.cell_size)
                             {
                                 posX += 5;
+                                if (switched == 0)
+                                {
+                                    switched =  1;
+                                }
+                                else if (switched == 1)
+                                {
+                                    switched = 2;
+                                }
                             }
                             else
                             {
                                 round += 1;
                                 posX = INDENT_X - (1 + round) * settings.cell_size - 5;
                                 posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+                                switched = 0;
                             }
+
                         }
                     }
                 }
@@ -185,6 +200,7 @@ namespace Minisoft1
                 
                 this.settings.blocks = positionedBlocks;
         }
+
         private void GameFormMode1_Paint(object sender, PaintEventArgs e)
         {
 
