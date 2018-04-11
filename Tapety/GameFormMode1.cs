@@ -111,8 +111,8 @@ namespace Minisoft1
                 string fname = $"{files[game_level_index]}";  // first inde starts from 0
                 this.settings = sm.load(fname);
                 
-                this.INDENT_X = Screen.PrimaryScreen.Bounds.Width - (settings.cols * settings.cell_size) - 1050;
-                this.INDENT_Y = Screen.PrimaryScreen.Bounds.Height - (settings.rows * settings.cell_size) - 414;
+                this.INDENT_X = this.Size.Width - (settings.cols * settings.cell_size) - 100;
+                this.INDENT_Y = this.Size.Height - (settings.rows * settings.cell_size) + 50;
                 
 
 
@@ -128,6 +128,9 @@ namespace Minisoft1
 
         private void PositionAlgoritm()
         {
+            Debug.WriteLine("tapety");
+            Debug.WriteLine(INDENT_X);
+            Debug.WriteLine(INDENT_Y);
             this.blocks = new Block[this.settings.blockCount];
                 int ix = 0;       
                 int posX = INDENT_X - settings.cell_size ;
@@ -215,6 +218,9 @@ namespace Minisoft1
 
             // draw playing area
             // it goes first by the colls - X
+            Debug.WriteLine("mriezka");
+            Debug.WriteLine(INDENT_X);
+            Debug.WriteLine(INDENT_Y);
             for (int i = 0; i < this.settings.cols; i++)
             {
                 for (int j = 0; j < this.settings.rows; j++)

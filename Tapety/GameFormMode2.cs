@@ -73,8 +73,8 @@ namespace Minisoft1
             old_indentX = INDENT_X;
             old_indentY = INDENT_Y;
 
-            this.INDENT_X = control.Size.Width - (settings.cols * settings.cell_size) - 300;
-            this.INDENT_Y = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+            this.INDENT_X = this.Size.Width - (settings.cols * settings.cell_size) - 310;
+            this.INDENT_Y = this.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
 
             //Console.WriteLine($"{old_indentX} {old_indentY} || {INDENT_X} {INDENT_Y}");
 
