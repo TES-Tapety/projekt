@@ -40,7 +40,13 @@ namespace Minisoft1
 			
 			this.settings = settings;
 		    INDENT_X = 300;
-		    INDENT_Y = 250;        
+		    INDENT_Y = 250;    
+		    if (settings.cols > 7 || settings.rows > 7)
+		    {
+		        this.WindowState = FormWindowState.Maximized;
+		        INDENT_X = 600;
+		        INDENT_Y = 400;    
+		    }    
             this.clicked = false;
             this.showWin = false;
 			this.rnd = new Random();
@@ -256,15 +262,18 @@ namespace Minisoft1
                     }
                     if (!(r1.IntersectsWith(r2)) && free && !(r1.IntersectsWith(boundRect)))
                     {
-                        Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, color);
-                        block.finalX = obdl.posX;
-                        block.finalY = obdl.posY;
-                        blocks[ix] = block;
-                        ix += 1;
-                        posX = INDENT_X - settings.cell_size;
-                        posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
-                        positionedBlocks.Add(block);
-                        break;
+                        if (r1.X > 0 && r1.Y > 0 && r1.X+r1.Width < this.Size.Width && r1.Y+r1.Height < this.Size.Height)
+                        {
+                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, color);
+                            block.finalX = obdl.posX;
+                            block.finalY = obdl.posY;
+                            blocks[ix] = block;
+                            ix += 1;
+                            posX = INDENT_X - settings.cell_size;
+                            posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+                            positionedBlocks.Add(block);
+                            break;
+                        }
                     }
                     else
                     {

@@ -104,6 +104,14 @@ namespace Minisoft1
             {
                 string fname = $"{files[game_level_index]}";  // first inde starts from 0
                 this.settings = sm.load(fname);
+                INDENT_X = 300;
+                INDENT_Y = 250;  
+                if (settings.cols > 7 || settings.rows > 7)
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                    INDENT_X = 600;
+                    INDENT_Y = 400;    
+                } 
                
                 // rozmiestni okolo hracej plochy
                 PositionAlgoritm();
@@ -156,15 +164,15 @@ namespace Minisoft1
 
                         if (!(r1.IntersectsWith(r2)) && free && !(r1.IntersectsWith(boundRect)))
                         {
-                            Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, obdl.color);
-                            block.finalX = obdl.finalX;
-                            block.finalY = obdl.finalY;
-                            blocks[ix] = block;
-                            ix += 1;
-                            posX = INDENT_X - settings.cell_size;
-                            posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
-                            positionedBlocks.Add(block);
-                            break;
+                                Block block = new Block(ix + 1, posX, posY, W, H, this.settings.cell_size, obdl.color);
+                                block.finalX = obdl.finalX;
+                                block.finalY = obdl.finalY;
+                                blocks[ix] = block;
+                                ix += 1;
+                                posX = INDENT_X - settings.cell_size;
+                                posY = INDENT_Y + this.settings.cell_size * this.settings.cols;
+                                positionedBlocks.Add(block);
+                                break;
                         }
                         else
                         {
@@ -304,6 +312,14 @@ namespace Minisoft1
             {
                 string next_level_path = $"{files[game_level_index]}";
                 this.settings = sm.load(next_level_path);
+                INDENT_X = 300;
+                INDENT_Y = 250;  
+                if (settings.cols > 7 || settings.rows > 7)
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                    INDENT_X = 600;
+                    INDENT_Y = 400;    
+                }
                 this.playground = new int[this.settings.rows, this.settings.cols];
                 idcolor_map = new Dictionary<int, Color>();
                 next_game_shown = false;
