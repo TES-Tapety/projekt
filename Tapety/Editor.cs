@@ -241,15 +241,17 @@ namespace Minisoft1
                         {
                             if (e.Y < all_blocks[i].y + all_blocks[i].height && e.Y > all_blocks[i].y)
                             {
+                                selected = all_blocks[i];
+
                                 if (start_deletion)
                                 {
-                                    all_blocks.Remove(all_blocks[i]);
-                                    game_blocks.Remove(all_blocks[i]);
+                                    all_blocks.Remove(selected);
+                                    game_blocks.Remove(selected);
                                 }
                                 else
                                 {
                                     // remember selected block and clicked coords
-                                    selected = all_blocks[i];
+                                    
                                     delta = new Point(e.X - selected.x, e.Y - selected.y);
 
                                     // set selected as last in array so it is above all other blocks
@@ -694,6 +696,8 @@ namespace Minisoft1
                     //hura na dalsi level
                     this.playground = new int[this.settings.rows, this.settings.cols];
                     this.mode2_playground = new int[this.settings.rows, this.settings.cols];
+                    all_blocks = new List<Block>();
+                    game_blocks = new List<Block>();
                     ix = 0;
                     colorInQueue = 0;
                     textBox1.BackColor = colours[colorInQueue];
@@ -752,6 +756,8 @@ namespace Minisoft1
                     //hura na dalsi level
                     this.playground = new int[this.settings.rows, this.settings.cols];
                     this.mode2_playground = new int[this.settings.rows, this.settings.cols];
+                    all_blocks = new List<Block>();
+                    game_blocks = new List<Block>();
                     ix = 0;
                     colorInQueue = 0;
                     textBox1.BackColor = colours[colorInQueue];

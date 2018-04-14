@@ -70,17 +70,17 @@ namespace Minisoft1
         private void GameFormMode2_Resize(object sender, EventArgs e)
         {
             Control control = (Control)sender;
-            if (this.settings.blocks != null)
-            {
-                foreach (Block block in this.settings.blocks)
-                {
-                    if (block.in_playground)
-                    {
-                        block.x += INDENT_X - old_indentX;
-                        block.y += INDENT_Y - old_indentY;
-                    }
-                }
-            }
+            //if (this.settings.blocks != null)
+            //{
+            //    foreach (Block block in this.settings.blocks)
+            //    {
+            //        if (block.in_playground)
+            //        {
+            //            block.x += INDENT_X - old_indentX;
+            //            block.y += INDENT_Y - old_indentY;
+            //        }
+            //    }
+            //}
 
             Invalidate();
         }
@@ -234,8 +234,8 @@ namespace Minisoft1
             }
 
             Control control = (Control) sender;
-            int local_indentX = control.Size.Width - 300 + settings.cell_size;
-            int local_indentY = control.Size.Height - (settings.rows * settings.cell_size) - 54 - 100;
+            int local_indentX = INDENT_X + (settings.cols * settings.cell_size) + settings.cell_size;
+            int local_indentY = INDENT_Y;
 
             for (int i = 0; i < this.settings.cols; i++)
             {
