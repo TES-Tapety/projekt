@@ -35,6 +35,7 @@ namespace Minisoft1
         int deltaX, deltaY;
         public obdlznik[] ob;
         Block[] blocks;
+        public List<Block> startBlocks;
 
         public GameFormMode2(MainForm mainForm)
         {
@@ -102,6 +103,7 @@ namespace Minisoft1
             { 
                 string fname = $"{files[game_level_index]}";
                 this.settings = sm.load(fname);
+                startBlocks = new List<Block>(this.settings.blocks);
                 INDENT_X = 300;
                 INDENT_Y = 250;  
                 if (settings.cols > 7 || settings.rows > 7)
@@ -206,9 +208,6 @@ namespace Minisoft1
                         }
                     }
                 }
-
-                
-                
                 this.settings.blocks = positionedBlocks;
         }
 
@@ -585,15 +584,28 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            for (int i=0; i < settings.blocks.Count; i++)
+            /*Debug.WriteLine(startBlocks[0].color);
+            Debug.WriteLine(startBlocks[1].color);
+            Debug.WriteLine(startBlocks[2].color);*/
+            for (int i=0; i < startBlocks.Count(); i++)
             {
-                settings.blocks[i].x = INDENT_X + (settings.blocks[i].finalX * settings.cell_size);
-                settings.blocks[i].y = INDENT_Y + (settings.blocks[i].finalY * settings.cell_size);
-
-                if (!gridBlocks.Contains(settings.blocks[i]))
+                for (int j = 0; j < this.settings.blocks.Count(); j++)
                 {
-                    gridBlocks.Add(settings.blocks[i]);
-                    lastMoved.Add(settings.blocks[i]);
+                    if (startBlocks[i].color == this.settings.blocks[j].color)
+                    {
+                        /*Debug.WriteLine(startBlocks[i].color);
+                        Debug.WriteLine(this.settings.blocks[j].color);*/
+                        this.settings.blocks[j].x = INDENT_X + (this.settings.blocks[j].finalX * settings.cell_size);
+                        this.settings.blocks[j].y = INDENT_Y + (this.settings.blocks[j].finalY * settings.cell_size);
+                        
+                        if (!gridBlocks.Contains(this.settings.blocks[j]))
+                        {
+                            gridBlocks.Add(this.settings.blocks[j]);
+                            lastMoved.Add(this.settings.blocks[j]);
+                        }
+
+                        break;
+                    }
                 }
             }
 
