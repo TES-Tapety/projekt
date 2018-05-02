@@ -305,7 +305,7 @@ namespace Minisoft1
             showWin = false;
             this.positionedBlocks = new List<Block>();
             this.gridBlocks = new List<Block>();
-            update_colors();
+            //update_colors();
 
             var files = Directory.GetFiles(path).OrderBy(name => name).ToArray();
             if (game_level_index < max_game_level_index)                                   //tu chybalo =
@@ -364,13 +364,13 @@ namespace Minisoft1
                 block.x = INDENT_X + (block.finalX * settings.cell_size);
                 block.y = INDENT_Y + (block.finalY * settings.cell_size);
 
-                if (!gridBlocks.Contains(block))
-                {
-                    gridBlocks.Add(block);   
-                }
+                //if (!gridBlocks.Contains(block))
+                //{
+                //    gridBlocks.Add(block);   
+                //}
             }
 
-            update_colors();
+            //update_colors();
             Invalidate();
         }
 
@@ -466,11 +466,11 @@ namespace Minisoft1
                             {
                                 // TODO: chyba gridBlocks
 
-                                if (!gridBlocks.Contains(selected))
-                                {
-                                    gridBlocks.Add(selected);
-                                    update_colors();
-                                }
+                                //if (!gridBlocks.Contains(selected))
+                                //{
+                                //    gridBlocks.Add(selected);
+                                //    update_colors();
+                                //}
                             }
                             // check game over
                             int num = 0;
@@ -514,11 +514,11 @@ namespace Minisoft1
                             selected.in_playground = false;                          
 
                             // TODO: chyba gridBlocks
-                            if (gridBlocks.Contains(selected))
-                            {
-                                gridBlocks.Remove(selected);
-                                update_colors();
-                            }
+                            //if (gridBlocks.Contains(selected))
+                            //{
+                            //    gridBlocks.Remove(selected);
+                            //    update_colors();
+                            //}
                         }
                     }
                     else
@@ -528,11 +528,11 @@ namespace Minisoft1
                         selected.in_playground = false;
 
                         // TODO: chyba gridBlocks
-                        if (gridBlocks.Contains(selected))
-                        {
-                            gridBlocks.Remove(selected);
-                            update_colors();
-                        }
+                        //if (gridBlocks.Contains(selected))
+                        //{
+                        //    gridBlocks.Remove(selected);
+                        //    update_colors();
+                        //}
 
                         // moved out of the playground
                         for (int r = 0; r < this.settings.rows; r++)
@@ -554,22 +554,22 @@ namespace Minisoft1
                 }
             }
         }
-        private void update_colors()
-        {
-            for (int i=0 ; i<colorLabels.Count; i++)
-            {
-                if (i < gridBlocks.Count)
-                {
-                    colorLabels[i].BackColor = gridBlocks[i].color;
-                    colorLabels[i].Visible = true;
-                }
-                else
-                {
-                    colorLabels[i].BackColor = SystemColors.Control;
-                    colorLabels[i].Visible = false;
-                }
+        //private void update_colors()
+        //{
+        //    for (int i=0 ; i<colorLabels.Count; i++)
+        //    {
+        //        if (i < gridBlocks.Count)
+        //        {
+        //            colorLabels[i].BackColor = gridBlocks[i].color;
+        //            colorLabels[i].Visible = true;
+        //        }
+        //        else
+        //        {
+        //            colorLabels[i].BackColor = SystemColors.Control;
+        //            colorLabels[i].Visible = false;
+        //        }
 	            
-            }
-        }
+        //    }
+        //}
     }
 }
