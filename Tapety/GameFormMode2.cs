@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Minisoft1
 {
@@ -561,6 +562,7 @@ namespace Minisoft1
             {
                 string next_level_path = $"{files[game_level_index]}";
                 this.settings = sm.load(next_level_path);
+                startBlocks = new List<Block>(this.settings.blocks);
                 INDENT_X = 300;
                 INDENT_Y = 250;  
                 if (settings.cols > 7 || settings.rows > 7)
@@ -584,19 +586,16 @@ namespace Minisoft1
 
         private void show_final_state_Click(object sender, EventArgs e)
         {
-            /*Debug.WriteLine(startBlocks[0].color);
-            Debug.WriteLine(startBlocks[1].color);
-            Debug.WriteLine(startBlocks[2].color);*/
+            List<Block> orderList = new List<Block>();
             for (int i=0; i < startBlocks.Count(); i++)
             {
                 for (int j = 0; j < this.settings.blocks.Count(); j++)
                 {
                     if (startBlocks[i].color == this.settings.blocks[j].color)
                     {
-                        /*Debug.WriteLine(startBlocks[i].color);
-                        Debug.WriteLine(this.settings.blocks[j].color);*/
                         this.settings.blocks[j].x = INDENT_X + (this.settings.blocks[j].finalX * settings.cell_size);
                         this.settings.blocks[j].y = INDENT_Y + (this.settings.blocks[j].finalY * settings.cell_size);
+                        orderList.Add(this.settings.blocks[j]);
                         
                         if (!gridBlocks.Contains(this.settings.blocks[j]))
                         {
@@ -609,6 +608,7 @@ namespace Minisoft1
                 }
             }
 
+            this.settings.blocks = orderList;
             update_colors();
 
             Invalidate();
