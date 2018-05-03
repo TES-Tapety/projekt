@@ -587,6 +587,7 @@ namespace Minisoft1
         private void show_final_state_Click(object sender, EventArgs e)
         {
             List<Block> orderList = new List<Block>();
+            gridBlocks.Clear();
             for (int i=0; i < startBlocks.Count(); i++)
             {
                 for (int j = 0; j < this.settings.blocks.Count(); j++)
