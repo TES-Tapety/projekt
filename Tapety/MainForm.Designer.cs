@@ -126,7 +126,7 @@ namespace Minisoft1
             // 
             this.NumberOfRows.Location = new System.Drawing.Point(104, 40);
             this.NumberOfRows.Maximum = new decimal(new int[] {
-            14,
+            13,
             0,
             0,
             0});
@@ -149,7 +149,7 @@ namespace Minisoft1
             // 
             this.NumberOfCols.Location = new System.Drawing.Point(104, 64);
             this.NumberOfCols.Maximum = new decimal(new int[] {
-            14,
+            13,
             0,
             0,
             0});
@@ -177,7 +177,7 @@ namespace Minisoft1
             0});
             this.CellSize.Location = new System.Drawing.Point(104, 88);
             this.CellSize.Maximum = new decimal(new int[] {
-            60,
+            50,
             0,
             0,
             0});

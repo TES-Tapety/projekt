@@ -54,19 +54,48 @@ namespace Minisoft1
 
 		}
 
-        private void NumberOfRows_ValueChanged(object sender, EventArgs e)
-        {
-            this.settings.rows = Convert.ToInt32(NumberOfRows.Value);
-        }
+		private void NumberOfRows_ValueChanged(object sender, EventArgs e)
+		{
+			if (CellSize.Value == 40)
+			{
+				NumberOfRows.Maximum = 9;
+			}
+
+			if (CellSize.Value == 50)
+			{
+				NumberOfRows.Maximum = 8;
+			}
+			else
+			{
+				NumberOfRows.Maximum = 13;
+			}
+			this.settings.rows = Convert.ToInt32(NumberOfRows.Value);
+		}
 
         private void NumberOfCols_ValueChanged(object sender, EventArgs e)
         {
-            this.settings.cols = Convert.ToInt32(NumberOfCols.Value);
+	        if (CellSize.Value == 40)
+	        {
+		        NumberOfCols.Maximum = 9;
+	        }
+
+	        if (CellSize.Value == 50)
+	        {
+		        NumberOfCols.Maximum = 8;
+	        }
+	        else
+	        {
+		        NumberOfCols.Maximum = 13;
+	        }
+	        this.settings.cols = Convert.ToInt32(NumberOfRows.Value);
         }
 
         private void CellSize_ValueChanged(object sender, EventArgs e)
         {
             this.settings.cell_size = Convert.ToInt32(CellSize.Value);
+            this.settings.rows = 5;
+            NumberOfCols.Value = 6;
+            NumberOfRows.Value = 6;
         }
 
         private void CountOfBlocks_ValueChanged_1(object sender, EventArgs e)

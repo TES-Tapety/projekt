@@ -41,7 +41,7 @@ namespace Minisoft1
 			this.settings = settings;
 		    INDENT_X = 300;
 		    INDENT_Y = 250;    
-		    if (settings.cols > 7 || settings.rows > 7)
+		    if (settings.cols > 7 || settings.rows > 7 || settings.cell_size >= 40)
 		    {
 		        this.WindowState = FormWindowState.Maximized;
 		        INDENT_X = 600;
