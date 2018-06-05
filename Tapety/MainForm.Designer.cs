@@ -106,12 +106,16 @@ namespace Minisoft1
             // 
             // button_first_mode
             // 
+            this.button_first_mode.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button_first_mode.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.button_first_mode.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.button_first_mode.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.button_first_mode.Location = new System.Drawing.Point(12, 138);
             this.button_first_mode.Name = "button_first_mode";
+            this.button_first_mode.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.button_first_mode.Size = new System.Drawing.Size(135, 33);
             this.button_first_mode.TabIndex = 4;
             this.button_first_mode.Text = "Hrať prvý mód";
-            this.button_first_mode.UseVisualStyleBackColor = true;
             this.button_first_mode.Click += new System.EventHandler(this.button_first_mode_Click);
             // 
             // BlockLabel
@@ -211,32 +215,44 @@ namespace Minisoft1
             // 
             // button_second_mode
             // 
+            this.button_second_mode.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.button_second_mode.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.button_second_mode.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.button_second_mode.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.button_second_mode.Location = new System.Drawing.Point(12, 252);
             this.button_second_mode.Name = "button_second_mode";
+            this.button_second_mode.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.button_second_mode.Size = new System.Drawing.Size(135, 33);
             this.button_second_mode.TabIndex = 14;
             this.button_second_mode.Text = "Hrať druhý mód";
-            this.button_second_mode.UseVisualStyleBackColor = true;
             this.button_second_mode.Click += new System.EventHandler(this.button_second_mode_Click);
             // 
             // game_editor_button
             // 
+            this.game_editor_button.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.game_editor_button.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.game_editor_button.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.game_editor_button.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.game_editor_button.Location = new System.Drawing.Point(12, 316);
             this.game_editor_button.Name = "game_editor_button";
+            this.game_editor_button.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.game_editor_button.Size = new System.Drawing.Size(135, 33);
             this.game_editor_button.TabIndex = 15;
             this.game_editor_button.Text = "Editor";
-            this.game_editor_button.UseVisualStyleBackColor = true;
             this.game_editor_button.Click += new System.EventHandler(this.game_editor_button_Click);
             // 
             // mode_one_prepared
             // 
+            this.mode_one_prepared.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.mode_one_prepared.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.mode_one_prepared.GlowColor = System.Drawing.Color.CornflowerBlue;
+            this.mode_one_prepared.InnerBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.mode_one_prepared.Location = new System.Drawing.Point(12, 214);
             this.mode_one_prepared.Name = "mode_one_prepared";
+            this.mode_one_prepared.OuterBorderColor = System.Drawing.Color.DeepSkyBlue;
             this.mode_one_prepared.Size = new System.Drawing.Size(135, 33);
             this.mode_one_prepared.TabIndex = 16;
             this.mode_one_prepared.Text = "Hrať prvý mód";
-            this.mode_one_prepared.UseVisualStyleBackColor = true;
             this.mode_one_prepared.Click += new System.EventHandler(this.mode_one_prepared_Click);
             // 
             // label1
@@ -245,9 +261,10 @@ namespace Minisoft1
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F);
             this.label1.Location = new System.Drawing.Point(12, 178);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 24);
+            this.label1.Size = new System.Drawing.Size(161, 24);
             this.label1.TabIndex = 17;
-            this.label1.Text = "Pripravene levely";
+            this.label1.Text = "Pripravene úrovne";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 

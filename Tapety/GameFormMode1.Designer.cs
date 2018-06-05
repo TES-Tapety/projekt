@@ -43,7 +43,6 @@ namespace Minisoft1
             this.color_lab8 = new System.Windows.Forms.Label();
             this.color_lab9 = new System.Windows.Forms.Label();
             this.color_lab10 = new System.Windows.Forms.Label();
-            this.text_lab1 = new System.Windows.Forms.Label();
             this.show_final_state = new Glass.GlassButton();
             this.SuspendLayout();
             // 
@@ -177,15 +176,6 @@ namespace Minisoft1
             this.color_lab10.TabIndex = 6;
             this.color_lab10.Visible = false;
             // 
-            // text_lab1
-            // 
-            this.text_lab1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.text_lab1.Location = new System.Drawing.Point(10, 326);
-            this.text_lab1.Name = "text_lab1";
-            this.text_lab1.Size = new System.Drawing.Size(109, 23);
-            this.text_lab1.TabIndex = 3;
-            this.text_lab1.Text = "Postupnosť farieb";
-            // 
             // show_final_state
             // 
             this.show_final_state.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -220,7 +210,6 @@ namespace Minisoft1
             this.Controls.Add(this.color_lab9);
             this.Controls.Add(this.color_lab10);
             this.Controls.Add(this.AnotherGame);
-            this.Controls.Add(this.text_lab1);
             this.Name = "GameFormMode1";
             this.Text = "Tapety";
             this.Shown += new System.EventHandler(this.GameFormMode1_Shown);
@@ -247,7 +236,6 @@ namespace Minisoft1
 	    private System.Windows.Forms.Label color_lab8;
 	    private System.Windows.Forms.Label color_lab9;
 	    private System.Windows.Forms.Label color_lab10;
-	    private System.Windows.Forms.Label text_lab1;
         private Glass.GlassButton AnotherGame;
         private Glass.GlassButton back_to_menu;
         private Glass.GlassButton show_final_state;

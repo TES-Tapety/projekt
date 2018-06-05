@@ -56,16 +56,6 @@ namespace Minisoft1
             this.gridBlocks = new List<Block>();
 		    this.positionedBlocks = new List<Block>();
 		    this.colorLabels = new List<Label>();
-		    this.colorLabels.Add(color_lab1);
-		    this.colorLabels.Add(color_lab2);
-		    this.colorLabels.Add(color_lab3);
-		    this.colorLabels.Add(color_lab4);
-		    this.colorLabels.Add(color_lab5);
-		    this.colorLabels.Add(color_lab6);
-		    this.colorLabels.Add(color_lab7);
-		    this.colorLabels.Add(color_lab8);
-		    this.colorLabels.Add(color_lab9);
-		    this.colorLabels.Add(color_lab10);
 		}
 
         private void GameForm_Resize(object sender, EventArgs e)
